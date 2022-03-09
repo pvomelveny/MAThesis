@@ -1,15 +1,19 @@
 %====================%
 % Packages 
 %====================%
-\usepackage{accents}
-\usepackage{xcolor} % Nicer Colors
+%\usepackage{accents}  % Better accents. I'm not using this
+\usepackage{enumitem} % Better labels
+%\usepackage[explicit]{titlesec}
+\usepackage[normalem]{ulem}     % Thing
+\usepackage{stackrel} % Stack text nicely
+\usepackage{xcolor}   % Nicer Colors
 
 %====================%
 % Re-Define 
 %====================%
 % Sort out the true phi
-\def\badphi{\phi}
-\def\phi{\varphi}
+\def \badphi {\phi}
+\def \phi {\varphi}
 
 %====================%
 % New Commands 
@@ -44,9 +48,17 @@
 \newcommand{\cone}{\mathrm{cone}}
 
 %====================%
+% Theorem Environs
+%====================%
+\newtheorem{dummy}{}[section]
+\theoremstyle{definition}
+\newtheorem*{Result}{Main Result}
+
+%====================%
 % Draft Helpers
 %====================%
 % \todo : Make a box with todo comments
-\newcommand{\todo}[1]{\textcolor{orange}\par \noindent
-    \framebox{\begin{minipage}[c]{0.95 \textwidth} TO DO:
+\newcommand{\todo}[1]{\par \noindent
+    \framebox{\begin{minipage}[c]{0.95 \textwidth}
+            \textcolor{red}{TO DO:}
             #1 \end{minipage}}\par}

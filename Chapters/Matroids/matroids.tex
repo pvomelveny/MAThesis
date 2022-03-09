@@ -9,12 +9,107 @@
 \begin{document}
 
 
-\chapter{Matriods}
+\chapter{Matroids}
 
 Much of our concern is around matroids, so best we get a clear idea of what one is.
+\todo{Literally any other introductory sentence to this chapter.}
 
 \section{What is a Matroid?}
 
+Matroids are, in a broad sense, a generalization of the notion of independence among elements of sets.
+There are several axiomatizations of matroids, and while all are equivalent proving this is nontrivial enough for the relations to affectionaitly be called \textit{cryptomorphisms}.
+We will primarily be concerned with two axiomatizations, one based on the notion of independent sets and another based on what are called flats.
 
-and things!
+
+\todo{We should mention the graph and matrix as natural jumping of points into matroids.}
+\todo{Introduce a graph and a set of vectors that we can use as the generator of some(/the same?) matroids.
+    Then  we can use them as examples as we introduce definitions and whatnot}
+
+\subsection{Independent Set Axioms}
+
+This formalization is both a natural starting point and closest to the original\cite{whitneyAbstractPropertiesLinear1935}.
+\begin{definition}[Matroid --- Indegendent Set Axioms]\label{def:MatroidIndpendentAxioms}
+    A  \emph{matroid} is an ordered pair \( \sM = (E, \I) \), where \( E \) is a finite set called the \emph{ground set} and \( \I \subseteq 2^E \), with the properties:
+    \begin{enumerate}[label=\roman*.]
+        \item \( \emptyset \in \I \).
+        \item If \( I \in \I \) and \( I' \subseteq I \), then \( I' \in \I \).
+        \item If \( I_1, I_2 \in \I \) and \( |I_1| \leq |I_2|\), then there exists some \( e \in I_2 \setminus I_1 \)
+              such that \( I_1 \cup \{e\} \in \I \).
+    \end{enumerate}
+\end{definition}
+\todo{Do I cite definitions like this? I could cite Oxley or something}
+
+Those with some background in linear algebra may be able to see how this holds for some finite collection of vectors.
+And, if you consider a matrix is just a nice way of holding on to a finite set of vectors, you may begin to see where our matroids got their name.
+
+\todo{Work through our example graph and vectors to turn them into a ground set and independent set.}
+
+\subsection{The Flat Axioms}
+
+The second axiomatization of matroids we will need is, perhaps, slightly less intuitive.
+\begin{definition}[Matroid --- Flat Axioms]{\label{def:MatroidFlatAxioms}}
+    A \emph{matroid} is an ordered pair \( \sM = (E, \cF) \), where \( E \) is a finite set of elements called the ground set and \( F \subseteq 2^E \) is a collection of \emph{flats}
+    such that
+    \begin{enumerate}[label=\roman*.]
+        \item \( E \in \cF \).
+        \item If \(F_1, F_2 \in \cF\), then \( F_1 \cap F_2 \in \cF \)
+        \item If \( F \in \cF \) and \(F_1, F_2, \dots , F_k \in \cF \) are the minimal, with respect to inclusion, flats containing \( F \),
+              then the sets \( F_1 \setminus F,\, F_2 \setminus F,\, \dots,\, F_k \setminus F \) partition \( E \setminus F \).
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Closure]{\label{def:Closure}}
+    \hfill
+    \todo{Define closure in terms of flats? Or closure such that flats are closed...}
+
+\end{definition}
+
+
+\begin{definition}[Rank]{\label{def:rank}}
+    Let \( \sM = (E, \I) \) be a matroid and \( X \subseteq E \)
+    \todo{If we define closure with respect just to flats then we can define rank based on closure.
+        Or if we go the other way around, we can define closure based on rank (and flats based on closure?)}
+\end{definition}
+
+\todo{This feels a bit backwards when we start by introducing the independent set axioms first.
+    Oxley, for example, first defines a basis of a matroid,
+    then the restriction of a matroid to a subset of the ground set,
+    then closure,
+    then defines rank as the cardinality of the basis of the restriction
+    (also there's a proof that bases are all the same size).
+
+    Should I ease the transition between definitions that way? It would take up space, but I have space to take up I suppose.}
+
+\begin{lemma}[The Collection of Flats Form a Lattice]
+    \hfill
+    \todo{This seems important}
+\end{lemma}
+
+\section{Matroids from Graphs; Matroids from Matrices}
+
+\subsection{Graphical Matroids}
+\todo{Maybe here we make a matroid from our graph?
+    Or we do it in subsubsections as we define matroids}
+
+\subsection{Representable Matroids}
+\todo{If we didn't do it above, we do it here}
+
+\subsection{Unrepresentable Matroids}
+\todo{Fun fact about how most matroids don't come from a matrix.}
+
+\section{The Characteristic Polynomial}
+
+\subsection{The Chromatic Polynomial of a Graph}
+Some motivation.
+\todo{Work out the chromatic polynomial of the example graph we've been using}
+
+\subsection{The Characteristic Polynomial of a Matroid}
+\todo{Define the Characteristic Polynomial}
+
+\subsubsection{Relation between Characteristic Polynomial (of a Matroid of a Graph) and Chromatic Polynomial (of a Graph)}
+\todo{Give the basic little translation}
+
+\subsection{The Reduced Characteristic Polynomial}
+\todo{Show what reduced means.
+    Segway into Chow Rings. Chapter end?}
 \end{document}
