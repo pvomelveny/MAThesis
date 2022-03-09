@@ -21,17 +21,17 @@
 
 % Formatting commands needed for the final draft
 % Note the extra space at the end, which is unfortunately necessary:      
-\newcommand\myname{Your Name }
-\newcommand\mytitle{YOUR TITLE } % The graduate division requires this to be in caps.
+\newcommand\myname{Patrick O'Melveny }
+\newcommand\mytitle{THIS IS A TITLE } % The graduate division requires this to be in caps.
 \newcommand\mydegree{Master of Arts } % change to  Master of Science if applicable
-\newcommand\myfield{Your Field } % e.g., Mathematics
+\newcommand\myfield{Mathematics } % e.g., Mathematics
 \newcommand\thismonth{Month } % graduation month: May / August / December
-\newcommand\thisyear{Year } % e.g., 2014
-\newcommand\myadviser{Your adviser } % Adviser
-\newcommand\myadviserstitle{Associate Professor }
-\newcommand\committeememberone{Your committee member } % Committee member 1
-\newcommand\committeememberonetitle{Assistant Professor } 
-\newcommand\committeemembertwo{Your committee member } % Committee member 2
+\newcommand\thisyear{2022 } % e.g., 2014
+\newcommand\myadviser{Dr.\ Dustin Ross } % Adviser
+\newcommand\myadviserstitle{Assistant Professor }
+\newcommand\committeememberone{Dr.\ Federico Ardila } % Committee member 1
+\newcommand\committeememberonetitle{Professor } 
+\newcommand\committeemembertwo{Dr.\ Matthias Beck } % Committee member 2
 \newcommand\committeemembertwotitle{Professor }
 
 \documentclass[12pt,oneside]{sfsuthesis}  
@@ -47,51 +47,42 @@
 %                                                                  %
 %==================================================================% 
 \usepackage[draft]{MAThesisOutputFormat}
-
-\RequirePackage{standalone}
-
+\usepackage{standalone}
 
 %==========%
 % biblatex %
 %==========%
-
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{thesis.bib}
 
 
 
 %=========================%
-% CUSTOM PACKAGES GO HERE %
+% CUSTOM COMMANDS GO HERE %
 %=========================%
-%\usepackage{TCbasic}
-\usepackage{xcolor} % here as example, can be removed
+\input{preamble.tex}
 
-
+%================================%
+%             Thesis             %
+%================================%
 \begin{document}
 
+%==============%
+%     Title    %
+%==============%
 \thesistitle
 
 % Main body of work:
+\include{Content/Background/background.tex}
+
 \input{content}
+
 
 
 
 %==============%
 % Bibliography %
 %==============%
-
-% BibTex %
-%\bibliographystyle{amsplain}
-%\addcontentsline{toc}{chapter}{Bibliography}
-%\singlespacing
-%\bibliography{thesis}
-
-%BibLatex :
 \printbibliography
 
 \end{document}
-
-
-
-
-% TLC

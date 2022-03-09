@@ -1,4 +1,4 @@
-# MAThesisTemplate
+# SFSU MA Thesis
 LaTeX files for Master's Theses at San Francisco State University
 [Version 1.2 --- May 11th 2019]
 ## Contents

@@ -3,9 +3,11 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{MAThesisOutputFormat}[2018/02/25 MAThesisOutputFormat]
 
-\RequirePackage{amsthm,amsmath,amssymb,amsfonts,latexsym,graphicx,enumerate,setspace,verbatim,tocloft,rotating}
-%\RequirePackage{color}                       % For creating colored text and background
-%\RequirePackage{hyperref}                 % For creating hyperlinks in cross references
+\RequirePackage{amsthm,amsmath,amssymb,amsfonts}
+\RequirePackage{latexsym,graphicx,enumerate,setspace,verbatim,tocloft,rotating}
+\RequirePackage{color}               % For creating colored text and background
+\RequirePackage{hyperref}            % For creating hyperlinks in cross references
+\RequirePackage{subfiles}
 % other possibly useful packages: textcomp,mathrsfs,amscd,epsfig,euscript,cancel
 
 %%%%% Draft title page
@@ -212,8 +214,8 @@ for the degree: \mydegree in \myfield at San Francisco State University.
 \vspace{1in}
 
 \hrule{\hspace{3.5in}} \\
-\committeememberone \\
-\committeememberonetitle of \myfield 
+\committeemembertwo \\
+\committeemembertwotitle of \myfield 
 
 }
 }
@@ -238,7 +240,7 @@ San Francisco State University \\
 \vspace{.3in}
 
 \doublespacing{\noindent
-\input{abstract} % maximum one page
+\input{Frontmatter/abstract/abstract.tex} % maximum one page
 }
 
 \vspace*{\fill}
@@ -263,7 +265,7 @@ Date
 \vspace{.3in}
 \begin{quote}
 \noindent
-\input{acknowledgements}
+\input{Frontmatter/acknowledgements/acknowledgements.tex}
 \end{quote}
 
 \renewcommand{\contentsname}{\vspace{-1.8in} \begin{center} \normalsize \rm TABLE OF CONTENTS \end{center}}

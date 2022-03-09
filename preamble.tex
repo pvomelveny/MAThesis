@@ -1,0 +1,52 @@
+%====================%
+% Packages 
+%====================%
+\usepackage{accents}
+\usepackage{xcolor} % Nicer Colors
+
+%====================%
+% Re-Define 
+%====================%
+% Sort out the true phi
+\def\badphi{\phi}
+\def\phi{\varphi}
+
+%====================%
+% New Commands 
+%====================%
+%% Nice Letters
+% Blackboard Bold
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\bbS}{\mathbb{S}}
+% Fancy Math Cal Letters
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cF}{\mathcal{F}}
+% The hipster letters
+\newcommand{\sM}{\mathsf{M}}
+\newcommand{\bSigma}{\boldsymbol{\Sigma}}
+\newcommand{\ow}{\overline{w}}
+\newcommand{\oP}{\overline{P}}
+\newcommand{\oQ}{\overline{Q}}
+\newcommand{\ochi}{\overline{\chi}}
+%% Math Operators
+\newcommand{\Cub}{\operatorname{Cub}}
+\newcommand{\oCub}{\overline{\Cub}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\oVol}{\overline{\Vol}}
+\newcommand{\MVol}{\operatorname{MVol}}
+%% Math Symbols
+\newcommand{\cl}{\mathrm{cl}}
+\newcommand{\rk}{\mathrm{rk}}
+\newcommand{\Inn}{\mathrm{Inn}}
+\newcommand{\cone}{\mathrm{cone}}
+
+%====================%
+% Draft Helpers
+%====================%
+% \todo : Make a box with todo comments
+\newcommand{\todo}[1]{\textcolor{orange}\par \noindent
+    \framebox{\begin{minipage}[c]{0.95 \textwidth} TO DO:
+            #1 \end{minipage}}\par}
