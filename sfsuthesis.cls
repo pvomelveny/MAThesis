@@ -314,7 +314,7 @@
   \vskip 1.5em}
 \fi
 \newcommand*\chaptermark[1]{}
-\setcounter{secnumdepth}{2}
+\setcounter{secnumdepth}{3}
 \newcounter {part}
 \newcounter {chapter}
 \newcounter {section}[chapter]

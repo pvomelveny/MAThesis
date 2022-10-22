@@ -11,105 +11,1547 @@
 
 \chapter{Matroids}
 
-Much of our concern is around matroids, so best we get a clear idea of what one is.
-\todo{Literally any other introductory sentence to this chapter.}
+The underpinning of all our work are mathematical objects known as matroids.
+Though, as we've noted, they've been around since the 1930's, they're not, yet, household objects every mathematician knows.
+This is the shallowest scratch into the world of matroids, slanted heavily towards what's necessary for our problem at hand.
+There are many full books on matroids, for those curious to dig into more depth.
+We are partial to the treatment by Oxley's \textit{Matroid Theory}~\cite{oxleyMatroidTheory2011}.
 
-\section{What is a Matroid?}
+We will build up to matroids by developing some intuition from more familiar, motivating mathematical objects.
+Then we will introduce the definition(s) of matroids and introduce the characteristic polynomial.
+We will wrap up this chapter by stating the Heron-Rota-Welsh conjecture.
 
-Matroids are, in a broad sense, a generalization of the notion of independence among elements of sets.
-There are several axiomatizations of matroids, and while all are equivalent proving this is nontrivial enough for the relations to affectionaitly be called \textit{cryptomorphisms}.
-We will primarily be concerned with two axiomatizations, one based on the notion of independent sets and another based on what are called flats.
+\section{Linear Algebra Done Hastily}
+
+When the vague notion of independence is mentioned in a mathematical context, we expect that minds wander to \emph{linear} independence.
+A central concept to the field of linear algebra, this is likely the vast majority's first introduction to the topic.
+Happily, this mirrors, closely enough, the initial development of matroids.
+The patterns that emerge viewing the independence of collections of vectors will, quite directly, inspire the first of our definitions of a matroid.
+
+\subsection{Linear Independence}
+First, let us recall the definition of linear independence.
+\begin{definition}[Linear Independence]\th\label{def:lin_independence}
+    Given a finite set of vectors \( \{ v_1, v_2, \dots, v_k \} \subseteq F^n \), for some field \( F \),
+    the set of vectors is called \emph{linearly independent} if the only solution to the linear combination
+    \[
+        \alpha_1 v_1 + \alpha_2 v_2 + \cdots + \alpha_k v_k = 0
+    \]
+    is \( \alpha_1 = \alpha_2 = \cdots = \alpha_k = 0 \).
+    Otherwise, we say the set is \emph{linearly dependent}.
+\end{definition}
+While this is a familiar definition to many of us, it will be illustrative to all to take a more concrete example.
+We'll define the vectors \( a = (1, 0, 0), b = (0, 1, 0), c = (0, 0, 1), \) and \( d = (1, 1, 0) \).
+Then we have the set \( E = \{ a, b, c, d \} \subseteq \R^3 \).
+\begin{figure}[H]
+    \centering
+    % Tikz Code
+    \tdplotsetmaincoords{60}{120}
+    \begin{tikzpicture} [scale=3, tdplot_main_coords,
+            axis/.style={-,black,thin},
+            vector/.style={-stealth,blue,very thick},
+            vector guide/.style={dashed,red,thick}]
+
+        %standard tikz coordinate definition using x, y, z coords
+        \coordinate (O) at (0,0,0);
+
+        %tikz-3dplot coordinate definition using x, y, z coords
+
+        \pgfmathsetmacro{\ax}{1}
+        \pgfmathsetmacro{\ay}{1}
+        \pgfmathsetmacro{\az}{1}
+
+        \coordinate (A) at (\ax,0,0);
+        \coordinate (B) at (0,\ay,0);
+        \coordinate (C) at (0,0,\az);
+        \coordinate (D) at (\ax,\ay,0);
+
+        %draw axes
+        \draw[axis] (0,0,0) -- (1.25,0,0) node[anchor=north east]{$x$};
+        \draw[axis] (0,0,0) -- (0,1.25,0) node[anchor=north west]{$y$};
+        \draw[axis] (0,0,0) -- (0,0,1.25) node[anchor=south]{$z$};
+
+        %draw our set of vectors:
+        \draw[vector] (O) -- (A);
+        \draw[vector] (O) -- (B);
+        \draw[vector] (O) -- (C);
+        \draw[vector] (O) -- (D);
+
+        %draw guide lines to components
+        % \draw[vector guide]         (O) -- (\ax,\ay,0);
+        % \draw[vector guide] (\ax,\ay,0) -- (A);
+        % \draw[vector guide]         (A) -- (0,0,\az);
+        % \draw[vector guide] (\ax,\ay,0) -- (0,\ay,0);
+        % \draw[vector guide] (\ax,\ay,0) -- (0,\ay,0);
+        % \draw[vector guide] (\ax,\ay,0) -- (\ax,0,0);
+        \node[tdplot_main_coords,anchor=east]
+        at (\ax,0,0){a};
+        \node[tdplot_main_coords,anchor=south]
+        at (0,\ay,0){b};
+        \node[tdplot_main_coords,anchor=west]
+        at (0,0,\az){c};
+        \node[tdplot_main_coords,anchor=west]
+        at (\ax, \ay,0){d};
+        % \node[circle, fill, blue, inner sep=1.5, tdplot_main_coords]
+        % at (0, 0, 0){};
+        % \node[tdplot_main_coords,anchor=south west]
+        % at (0, 0, 0){e};
+    \end{tikzpicture}
+    % Caption
+    \caption{The collection of vectors in \(E\)}
+    \label{fig:vectorMatroid}
+\end{figure}
+The observant will note that this of course cannot be linearly independent, and indeed we can confirm by showing the linear combination
+\[
+    1a + 1b + 0 c + (-1)d = 0.
+\]
+But now, a fun little game we could play, at least by our personal reckoning of fun, is to find all subsets of \( E_V \) that \emph{are} linearly independent.
+For example, consider \( \{ c, d\} \subseteq E_v \).
+\begin{figure}[H]
+    \centering
+    % Tikz Code
+    \tdplotsetmaincoords{60}{120}
+    \begin{tikzpicture} [scale=3, tdplot_main_coords,
+            axis/.style={-,black,thin},
+            vector/.style={-stealth,blue,very thick},
+            hidden vector/.style={-stealth,black, thick},
+            vector guide/.style={dashed,red,thick}]
+
+        %standard tikz coordinate definition using x, y, z coords
+        \coordinate (O) at (0,0,0);
+
+        %tikz-3dplot coordinate definition using x, y, z coords
+
+        \pgfmathsetmacro{\ax}{1}
+        \pgfmathsetmacro{\ay}{1}
+        \pgfmathsetmacro{\az}{1}
+
+        \coordinate (A) at (\ax,0,0);
+        \coordinate (B) at (0,\ay,0);
+        \coordinate (C) at (0,0,\az);
+        \coordinate (D) at (\ax,\ay,0);
+
+        %draw axes
+        \draw[axis] (0,0,0) -- (1.25,0,0) node[anchor=north east]{$x$};
+        \draw[axis] (0,0,0) -- (0,1.25,0) node[anchor=north west]{$y$};
+        \draw[axis] (0,0,0) -- (0,0,1.25) node[anchor=south]{$z$};
+
+        %draw our set of vectors:
+        %\draw[hidden vector] (O) -- (A);
+        %\draw[hidden vector] (O) -- (B);
+        \draw[vector] (O) -- (C);
+        \draw[vector] (O) -- (D);
+
+        %draw guide lines to components
+        % \draw[vector guide]         (O) -- (\ax,\ay,0);
+        % \draw[vector guide] (\ax,\ay,0) -- (A);
+        % \draw[vector guide]         (A) -- (0,0,\az);
+        % \draw[vector guide] (\ax,\ay,0) -- (0,\ay,0);
+        % \draw[vector guide] (\ax,\ay,0) -- (0,\ay,0);
+        % \draw[vector guide] (\ax,\ay,0) -- (\ax,0,0);
+        %\node[tdplot_main_coords,anchor=east]
+        %at (\ax,0,0){a};
+        %\node[tdplot_main_coords,anchor=south]
+        %at (0,\ay,0){b};
+        \node[tdplot_main_coords,anchor=west]
+        at (0,0,\az){c};
+        \node[tdplot_main_coords,anchor=west]
+        at (\ax, \ay,0){d};
+    \end{tikzpicture}
+    % Caption
+    \caption{A linearly independent subset of \(E\)}
+    \label{fig:subsetOfE}
+\end{figure}
+Take a look to confirm there is no nonzero linear combination of our elements that gives us the \( 0 \)-vector.
+Given the relatively small number of elements, it would not take too long to identify every possible subset of \( E_V \) that is linearly independent;
+for the impatient however, they are precisely
+\[
+    \big\{
+    \emptyset,
+    \{ a \},  \{ b \},  \{ c \},  \{ d \},
+    \{ a,b \},  \{ a,c \},  \{ a,d \},  \{ b,c \},  \{ b,d \}, \{ c, d \},
+    \{ a, b, c \},  \{ a, c, d \}, \{ b, c, d\}
+    \big\}.
+\]
+For the impatient \emph{and} untrusting, we suggest that the only thing really necessary to check here is that each 3-element set is linearly independent and that there are no other possible 3-element sets in \( E_V \) that are linearly independent.
+
+As a point of pure notation, the above list is ugly.
+We are going to be working with sets of this form so much in this paper that, in order to avoid a shortage of curly brackets, we will introduce a more tidy notation.
+Going forward, we will write the elements of the internal sets adjacent to each other to represent the set containing them;
+e.x.\ we will write the set \( \big\{ \{ a, b \}, \{ a, b, d \} \big\} \) as \( \{ ab, abd \} \).
+Thus, we will more compactly identify the linearly independent subsets of \( E_V \) as
+\[
+    \{
+    \emptyset,
+    a, b, c, d,
+    ab, ac, ad, bc, bd, cd,
+    abc, acd, bcd
+    \}.
+\]
+
+Now that we have this collection,
+this leads to our next totally fun and normal activity.
+Namely, looking for patterns amongst these independent sets.
+
+\subsection{Noteworthy Properties of Linearly Independent Subsets}
+
+We suspect that those with some knowledge of linear algebra will immediately be ready to note that the largest independent subsets of \( E_V \) have 3 elements.
+And, sure enough, that is true!
+But this is more a property of the vector space, \( \R^3 \) in this case, that we're pulling the vectors from than some intrinsic relationship or property of the subsets.
+We'd like to call attention to some properties that may be less obvious (or so obvious one forgets they're even there).
+First, something entirely uninteresting.
+
+\begin{property}[The empty set is an independent subset]
+    For any finite collection of vectors, \( E \), in vector space,
+    \[
+        \emptyset \subseteq E
+    \]
+    and \( \emptyset \) is linearly independent.
+\end{property}
+That \( \emptyset \) is linearly independent is what we call vacuously true.
+That is to say, it's true mostly as a quirk of how we define linear independence.
+Since we can't form a non-zero linear combination that gives the 0-vector, because there are \emph{no} elements at all, it can't be linearly dependent.
+But then if it's not linearly dependent, it has to be independent.
+Proof by being pedantic, really the heart of mathematics if one thinks about it.
+Next, a property that will surprise no one who has taken a linear algebra class, but is worth making explicit.
+
+\begin{property}[Any subset of a linearly independent set is itself linearly independent]
+    For any linearly independent set of vectors, \( I \), in vector space, if
+    \[
+        I' \subseteq I,
+    \]
+    then \( I' \) is linearly independent.
+\end{property}
+Recall we suggested that in order to check that our list of independent subsets of \( E_V \) was correct, it was sufficient to just check the subsets with the most elements.
+This property tells us that if we've figured out the maximal subsets, then filling in the rest is just a matter of taking subsets of those.
+One may even begin to see the specter of combinatorics lurking.
+This property falls out easily from our definition.
+If no non-zero linear combination of vectors in a set gives us the 0-vector, then using fewer vectors isn't going to change that.
+Finally, we have a more subtle property.
+
+\begin{property}[The ``independence augmentation'' property]
+    Let \( I = \{v_1, v_2, \ldots, v_m\} \) and \( J = \{ u_1, u_2, \ldots, u_n \} \) be linearly independent sets in a vector space, such that \( m < n \).
+    Then there exists a \( k \in [n] \) such that the set
+    \[
+        I \cup u_k = \{v_1, v_2, \ldots, v_m, u_k \}
+    \]
+    is linearly independent.
+\end{property}
+In other words, we can always find an element of a larger independent set to include in a smaller one that will leave the (new, augmented) set independent.
+Going back to our running example, consider the sets \( acd \) and \( ab \).
+Then \( c \in acd \) is such an element, and we confirm that \( ab \cup c = abc \) is indeed linearly independent.
+This property is not immediately obvious, though may be believable to those who have done a proof based linear algebra class.
+
+These are the three properties of linearly independent sets we wish to highlight here.
+We could use these properties alone motivate the first definition of a matroid.
+However, we have one more detour before we get to matroids proper.
+There is another area where independence arises quite naturally, and it will be useful to know going forward.
+
+\section{Graphic Content}
+%\section{Graph Theory for the Independently Minded}
+
+The next place our intuition building journey takes us is the world of graphs.
+Graph theory was the other motivator of matroids, so we too shall delve in.
+While we tried to not assume too much, we did, secretly, expect the average reader would feel comfortable enough with linear algebra.
+Graphs, on the other hand we will quickly build up from scratch and develop a notion of independence.
+Luckily, this is actually a fairly short process.
+
+\subsection{What a Graph Is}
+Not to be confused with the graph of a function or whatever it is business analysts put in shareholder presentations, graphs for us are essentially a collection of points, called vertices, and lines between them, called edges.
+There are quite a few definitions of graphs, each allowing for slightly different properties, but for our purposes, we can use a rather basic definition.
+\begin{definition}[Graph]\label{def:graph}
+
+    A \emph{graph} is a tuple of sets \( G = (V, E) \), where \( V \) is a set of objects known as vertices and
+    \[
+        E \subseteq \big\{ \{x, y\} \; | \; x, y \in V \big\}
+    \]
+    is a set of edges.
+\end{definition}
+A brief aside for our friends who actually care about graphs;
+The definition here is for an \emph{undirected simple graph permitting loops}.
+The treatment of graphs and their relation to matroids in this paper extends easily enough for most other graphs because, as far as matroids are concerned, this kind of graph carries pretty much all the information necessary.
+Indeed, we will see soon enough that even allowing loops is an unnecessary flourish.
+We again recommend Oxley~\cite{oxleyMatroidTheory2011} for the serious graph theorist's entry into matroids.
+
+For the rest of us, this definition may feel rather opaque.
+Here, an example and corresponding picture should help immensely.
+Let \( V = \{ v_1, v_2, v_3, v_4 \} \) be a vertex set.
+Now we must define edges between vertices.
+For later convenience, we will name these edges.
+Let \( a = \{ v_1, v_2 \}, \; b = \{v_2,v_3\},\; c = \{ v_3, v_4 \},\; d = \{ v_1, v_3 \}, \) and \( e = \{ v_4, v_4 \} \);
+then let \( E = \{ a, b, c, d, e \} \) be our edge set.
+Recall that, for example,  \( c \) represents an edge, or connection, between the vertex \( v_3 \) and the vertex \( v_4 \).
+With both those pieces, we have the graph \( G = (E, V) \).
+The corresponding picture of our graph is below.
+
+\begin{figure}[H]\label{fig:simpleGraph}
+    \centering
+    \begin{tikzpicture}[scale=.8,
+            graphVertex/.style={fill=black, draw=black, shape=circle},
+            none/.style={},
+            graphEdge/.style={very thick}]
+
+        \node [style=graphVertex, label={above left:\( v_1 \)}] (0) at (-3.5, 3.5) {};
+        \node [style=graphVertex, label={right:\( v_4 \)}] (1) at (3.5, 3.5) {};
+        \node [style=graphVertex, label={below left:\( v_2 \)}] (2) at (-3.5, -3.5) {};
+        \node [style=graphVertex, label={below right:\( v_3 \)}] (3) at (3.5, -3.5) {};
+        \node [style=none] (4) at (3.5, 4.75) {};
+        \node [style=none] (5) at (-4, 0) {};
+        \node [style=none] (6) at (-4, 0) {\( a \)};
+        \node [style=none] (7) at (0, -4) {\( b \)};
+        \node [style=none] (8) at (4, 0) {\( c \)};
+        % \node [style=none] (9) at (3.5, 5) {\( e \)};
+        \node [style=none] (10) at (0.25, 0.25) {\( d \)};
+
+        \draw [style=graphEdge] (2) to (0);
+        \draw [style=graphEdge] (2) to (3);
+        \draw [style=graphEdge] (3) to (1);
+        \draw [style=graphEdge] (0) to (3);
+        % \draw [style=graphEdge, in=150, out=-180, looseness=1.50] (4.center) to (1);
+        % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (1) to (4.center);
+    \end{tikzpicture}
+
+    \caption{Our example graph \( G \)}
+
+\end{figure}
+
+Now that we know what a graph is, it's time to figure out what ``independence'' could possibly mean.
 
 
-\todo{We should mention the graph and matrix as natural jumping of points into matroids.}
-\todo{Introduce a graph and a set of vectors that we can use as the generator of some(/the same?) matroids.
-    Then  we can use them as examples as we introduce definitions and whatnot}
+
+\subsection{Independence in the Realm of Graphs}
+
+The first thing to note is that we will define independence on the set of edges of a graph;
+that is, for some graph \( G = (V, E) \), an independent set will be some subset \( I \subseteq E \), meeting some criteria we'll discuss below.
+What then would it mean for a set of edges to be independent?
+Well, if we take some subset of the edges, we restrict which vertices are accessible via those edges.
+But there might still be redundant edges.
+Could we remove additional edges from our set and still be able to reach all the same vertices?
+The answer to that determines if a set of edges is independent, when we can't make our collection of edges any smaller without disconnecting a vertex, or dependent, when we can.
+
+To formalize this we will need to learn a few graph theoretic terms.
+First, we need the notion of a walk.
+\begin{definition}[Walk]
+    Given a graph \( G = (V, E) \), a \emph{walk} is an alternating sequence of vertices and edges
+    \[
+        (v_1, e_1, v_2, e_2, v_3, \ldots, e_{k-1}, v_k),
+    \]
+    where each \( v_i \in V \), \( e_j \in E \) and \( v_i \in e_i \) and \( v_{i+1} \in e_i \)
+\end{definition}
+Intuitively, a walk starts at some vertex and then follows an edge to another, connected vertex then continues to follow edges to vertices until ending at some vertex.
+If we put our finger on a vertex and trace along edges to another vertex, we've defined a walk.
+Now that we have a walk, we may define a cycle.
+\begin{definition}[Cycle]
+    A \emph{cycle} is a walk
+    \[
+        (v_1, e_1, v_2, e_2, v_3, \ldots, e_{k-1}, v_k),
+    \]
+    where \( v_1 = v_k \) and \( v_i \neq v_j \) when \( i \neq j \) otherwise.
+
+    Further, we say a set of edges \emph{contains a cycle} if any subset of those edges, with the corresponding vertices, is a cycle.
+\end{definition}
+That is, a cycle is a walk that starts and ends at the same place and otherwise passes through unique vertices.
+Given the notion of independence we began to motivate above, hopefully the utility of defining a cycle is apparent.
+Any subset of edges that contains a cycle must be dependent, as we can always remove the last edge from the walk and still have all the same vertices connected.
+With this, our definition of independence can finally be formalized.
+
+\begin{definition}[Independence (of edges of a graph)]
+    Let \( G = (V, E) \) be a graph.
+    Then a subset of edges \( I \subseteq E \) is \emph{independent} if it does not contain a cycle.
+\end{definition}
+
+Let us immediately take to our example for this section to consider some possible sets of edges.
+
+\begin{figure}[H]\label{fig:independentEdges}
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
+                none/.style={},
+                graphEdge/.style={thin},
+                inEdge/.style={blue, very thick}]
+
+            \node [style=graphVertex, label={above left:\( v_1 \)}] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex, label={below left:\( v_2 \)}] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex, label={below right:\( v_3 \)}] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex, label={right:\( v_4 \)}] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0.25, 0.35) {\( d \)};
+
+            \draw [style=inEdge] (0) to (1);
+            \draw [style=inEdge] (1) to (2);
+            \draw [style=inEdge] (2) to (3);
+            \draw [style=graphEdge] (0) to (2);
+            % \draw [style=graphEdge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+
+        \subcaption{Independent: the set of edges \( \{ a, b , c \} \) does not contain a cycle}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
+                none/.style={},
+                graphEdge/.style={thin},
+                inEdge/.style={red, very thick}]
+
+            \node [style=graphVertex, label={above left:\( v_1 \)}] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex, label={below left:\( v_2 \)}] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex, label={below right:\( v_3 \)}] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex, label={right:\( v_4 \)}] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0.25, 0.35) {\( d \)};
+
+            \draw [style=inEdge] (0) to (1);
+            \draw [style=inEdge] (1) to (2);
+            \draw [style=graphEdge] (2) to (3);
+            \draw [style=inEdge] (0) to (2);
+            % \draw [style=graphEdge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+
+        \subcaption{Dependent: The edges in \( \{ a, b , d \} \) contain a cycle}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
+                none/.style={},
+                graphEdge/.style={thin},
+                inEdge/.style={blue, very thick}]
+
+            \node [style=graphVertex, label={above left:\( v_1 \)}] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex, label={below left:\( v_2 \)}] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex, label={below right:\( v_3 \)}] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex, label={right:\( v_4 \)}] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0.25, 0.35) {\( d \)};
+
+            \draw [style=inEdge] (0) to (1);
+            \draw [style=graphEdge] (1) to (2);
+            \draw [style=inEdge] (2) to (3);
+            \draw [style=graphEdge] (0) to (2);
+            % \draw [style=graphEdge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+
+        \subcaption{Independent: The edge set \( \{ a, c \} \) does not contain a cycle. It's not necessary for all vertices to be connected}
+    \end{subfigure}
+    \caption{Some examples of independent/dependent sets of edges}
+\end{figure}
+
+Now that we've got some practice under our belt, it's time to play our favorite game again.
+Given our example graph, \( G = (V, E) \), we want to identify the set of all possible independent vectors.
+A few moments of tracing paths along the graph, hunting for cycles, will reveal that from our set of edges \( E = \{ a, b, c, d, e \} \), the independent subsets are precisely
+\[
+    \{
+    \emptyset,
+    a, b, c, d,
+    ab, ac, ad, bc, bd, cd,
+    abc, acd, bcd
+    \}.
+\]
+
+This should look familiar!
+Suspiciously so, even.
+The independent subsets are the same as those we found in our collection of vectors.
+Clearly then all the properties of linearly independent subsets we showed above also hold in this example.
+Indeed, this is not just a quirk of our example.
+Given any graph, the independent subsets of the edge set will obey the same properties as the linearly independent subsets of a set of vectors.
+It was the reoccurrence of these properties across different mathematical objects that inspired the creation of matroids.
+
+\section{Matroids, Finally}
+
+Matroids were initially developed by Hassler Whitney in the paper \textit{On the Abstract Properties of Linear Dependence}~\cite{whitneyAbstractPropertiesLinear1935}.
+The introduction of Whitney's paper parallels our journey so far, covering, much more succinctly, shared properties of linear independence and independence of graph edges.
+He then goes on  to introduce several equivalent definitions of a matroid.
+
+An interesting feature of matroids is just how many definitions exist.
+Plenty more have been added since the several introduced by Whitney, and
+any one of these definitions can be taken axiomatically and from them any other definition may be derived.
+However, it can be extremely non-obvious that a given definition is equivalent to some other.
+The path between the various axiomatizations can be so difficult to see that they have been affectionately called \textit{cryptomorphic} to one another.
+
+We will primarily be concerned with two axiomatizations, one based on the notion of independent sets and another based on what are called \emph{flats}.
+The first definition follows closely from the background we've developed so far.
+This allows us to more easily define the terms and properties of matroids that we will need in the second definition.
+It is this second definition that will be of key importance for the following chapters, so it is important to develop it here.
 
 \subsection{Independent Set Axioms}
 
-This formalization is both a natural starting point and closest to the original\cite{whitneyAbstractPropertiesLinear1935}.
-\begin{definition}[Matroid --- Indegendent Set Axioms]\label{def:MatroidIndpendentAxioms}
-    A  \emph{matroid} is an ordered pair \( \sM = (E, \I) \), where \( E \) is a finite set called the \emph{ground set} and \( \I \subseteq 2^E \), with the properties:
-    \begin{enumerate}[label=\roman*.]
+The first definition of matroids should, again, look very familiar.
+
+\begin{definition}[Matroid --- Independent Set Axioms]\th\label{def:MatroidIndpendentAxioms}
+    A \emph{matroid} is a 2-tuple  \( \sM = (E, \I) \), where \( E \) is a finite set, called the \emph{ground set}, and \( \I \subseteq 2^E \) is a collection of subsets of \( E \), called the \emph{independent sets}, with the following properties:
+    \begin{enumerate}[label=(I\arabic*)]
         \item \( \emptyset \in \I \).
         \item If \( I \in \I \) and \( I' \subseteq I \), then \( I' \in \I \).
         \item If \( I_1, I_2 \in \I \) and \( |I_1| \leq |I_2|\), then there exists some \( e \in I_2 \setminus I_1 \)
-              such that \( I_1 \cup \{e\} \in \I \).
+              such that \( I_1 \cup e \in \I \).
     \end{enumerate}
 \end{definition}
-\todo{Do I cite definitions like this? I could cite Oxley or something}
 
-Those with some background in linear algebra may be able to see how this holds for some finite collection of vectors.
-And, if you consider a matrix is just a nice way of holding on to a finite set of vectors, you may begin to see where our matroids got their name.
+They correspond precisely to the properties we identified in linearly independent subsets and that we saw again in independent edge sets.
+We can take this opportunity to define our now familiar examples as a matroid.
+\begin{example}
 
-\todo{Work through our example graph and vectors to turn them into a ground set and independent set.}
+    We let the ground set \( E = \{ a, b, c, d, e \} \), and the pick the independent sets to be
+    \[
+        \I = \{
+        \emptyset,
+        a, b, c, d,
+        ab, ac, ad, bc, bd, cd,
+        abc, acd, bcd
+        \}.
+    \]
 
-\subsection{The Flat Axioms}
+    Coming as probably no surprise, this has the same independence relations as both our vector example and our graph example.
+    We should confirm that \( \I \) obeys the properties (I1)-(I3), but we already know that particular set must.
+    We will name this example matroid
+    \[
+        \sM = (E, \I).
+    \]
 
-The second axiomatization of matroids we will need is, perhaps, slightly less intuitive.
-\begin{definition}[Matroid --- Flat Axioms]{\label{def:MatroidFlatAxioms}}
-    A \emph{matroid} is an ordered pair \( \sM = (E, \cF) \), where \( E \) is a finite set of elements called the ground set and \( F \subseteq 2^E \) is a collection of \emph{flats}
-    such that
-    \begin{enumerate}[label=\roman*.]
+\end{example}
+
+
+
+\subsubsection{Aside: Representable Matroids}
+Given that we've already seen the example ``matroid'' arise twice in other contexts, it is natural to ask if we've gained anything new with matroids.
+If every matroid could just be studied as a finite collection of vectors and its independent subsets, we don't really have to go thorough the trouble defining a whole new object.
+
+It turns out that this is not the case.
+A matroid that can arise from a finite set of vectors, like our example, is called \emph{representable}.
+However, there are \emph{unrepresentable} matroids.
+A lot of them in fact.
+
+The distinction between representable and unrepresentable matroids has no bearing on the results of this thesis, but it's worth noting here.
+Our examples are representable, as it allows us to leverage some visual intuition, but everything we say here holds for all matroids.
+
+\subsection{The Uphill Path to Flats}
+
+A benefit of introducing the independence axioms first, we feel, is that they are readily interpretable.
+At least after developing a bit of intuition in the realm of linear independence.
+For much of the rest of our paper however, we won't be thinking of matroids in this form.
+We will need a formulation of matroids that use something called \emph{flats}.
+
+To get to this new definition of matroids, or even state what a flat is, we will have to build up our vocabulary surrounding matroids.
+Our goal here is to develop everything necessary to define a flat.
+The path there may seem rather wandering, we will introduce quite a few definitions here.
+But there are no shortcuts; each new definition builds on the last, until we have a nice tower of terms with which to use.
+
+Given their history, matroids borrow a lot of terminology from linear algebra and graph theory.
+For the most part, their meaning is related to that in the original context, so it can be a useful starting point.
+Still, it is not necessary to have heard of them before;
+these definitions exist perfectly fine on their own in the world of matroids, as we shall see.
+
+We use the independent set axioms to these terms and state properties, but we could have started with any of the axioms and developed all these terms.
+It's actually quite a fun exercise to develop parallel definitions from different starting axioms.
+
+\subsubsection{All Your Bases Belong to Matroid}
+\todo{change this title}
+
+First, we will finally address a pattern we've noted earlier, that the largest independent sets all seem to have the same number of elements, or, as we like to say in the business, the same \emph{cardinality}.
+To do so we'll introduce the notion of a basis of a matroid.
+\begin{definition}[Basis]\th\label{def:basis}
+    Given a matroid \( \cM = (E, \I) \), an independent set \( B \in \I \) is a \emph{basis} of \( \sM \) if
+    \[
+        B \cup e \notin \I
+    \]
+    for all \( e \in E \setminus B \).
+    That is to say, a basis \( B \) is a maximally independent subset of \( E \) with respect to set inclusion.
+\end{definition}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.54\textwidth}
+        \centering
+        \tdplotsetmaincoords{60}{120}
+        \begin{tikzpicture} [scale=3, tdplot_main_coords,
+                axis/.style={-,black,thin},
+                vector/.style={-stealth,blue,very thick},
+                hidden vector/.style={-stealth,black, thick},
+                vector guide/.style={dashed,red,thick}]
+
+            %standard tikz coordinate definition using x, y, z coords
+            \coordinate (O) at (0,0,0);
+
+            %tikz-3dplot coordinate definition using x, y, z coords
+
+            \pgfmathsetmacro{\ax}{1}
+            \pgfmathsetmacro{\ay}{1}
+            \pgfmathsetmacro{\az}{1}
+
+            \coordinate (A) at (\ax,0,0);
+            \coordinate (B) at (0,\ay,0);
+            \coordinate (C) at (0,0,\az);
+            \coordinate (D) at (\ax,\ay,0);
+
+            %draw axes
+            \draw[axis] (0,0,0) -- (1.25,0,0) node[anchor=north east]{$x$};
+            \draw[axis] (0,0,0) -- (0,1.25,0) node[anchor=north west]{$y$};
+            \draw[axis] (0,0,0) -- (0,0,1.25) node[anchor=south]{$z$};
+
+            %draw our set of vectors:
+            \draw[vector] (O) -- (A);
+            %\draw[hidden vector] (O) -- (B);
+            \draw[vector] (O) -- (C);
+            \draw[vector] (O) -- (D);
+
+            %draw guide lines to components
+            \node[tdplot_main_coords,anchor=east]
+            at (\ax,0,0){a};
+            %\node[tdplot_main_coords,anchor=south]
+            %at (0,\ay,0){b};
+            \node[tdplot_main_coords,anchor=west]
+            at (0,0,\az){c};
+            \node[tdplot_main_coords,anchor=west]
+            at (\ax, \ay,0){d};
+        \end{tikzpicture}
+        \subcaption{A basis in linear algebra is a minimal spanning set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                none/.style={},
+                graphEdge/.style={thin},
+                inEdge/.style={blue, very thick}]
+
+            \node [style=graphVertex, label={above left:\( v_1 \)}] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex, label={below left:\( v_2 \)}] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex, label={below right:\( v_3 \)}] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex, label={right:\( v_4 \)}] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0.25, 0.4) {\( d \)};
+
+            \draw [style=inEdge] (0) to (1);
+            \draw [style=graphEdge] (1) to (2);
+            \draw [style=inEdge] (2) to (3);
+            \draw [style=inEdge] (0) to (2);
+            % \draw [style=graphEdge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+        \subcaption{A basis of graph is a spanning tree}
+    \end{subfigure}
+    \caption{The set \( \{acd\} \) is a basis of \( \sM \), which we can view in the vector and graph setting}
+    \label{fig:basisExamples}
+\end{figure}
+
+For those recalling their linear algebra, yes, this does have the very useful property we expect from something called a basis.
+
+\begin{proposition}\th\label{thm:basesSameSize}
+    All bases of a matroid contain the same number of elements.
+\end{proposition}
+
+\begin{proof}
+    Let \( B_1 \) and \( B_2 \) be two bases of \( \cM \).
+    It must be the case that  \( |B_1| < |B_2| \), \( |B_1| > |B_2| \), or \( |B_1| = |B_2| \).
+    Let's assume that  \( |B_1| < |B_2| \).
+    Then since \( B_1, B_2 \in \I \), we may use the property (I3) of matroids.
+    There exists some \( b \in B_2 \setminus B_1 \) such that \( B_1 \cup b \in \I \).
+    This is a contradiction with our definition of a basis, since adding any element not already in \( B_1 \) should make it dependent.
+
+
+    We have then that \( |B_1| \geq |B_2| \), but assuming the case \( |B_1| > |B_2| \), we will arrive at a contradiction by the same steps as above.
+    Thus, \( |B_1| = |B_2| \), and we conclude that all bases of \( \cM \) have the same number of elements.
+\end{proof}
+
+As we see in the examples in figure~\ref{fig:basisExamples}, a basis has a very literal interpretation in the context of vector spaces and graphs.
+If pressed for an intuition of a basis in the more general matroid setting, we'd say that they give us an idea of ``how much'' (in)dependence is going on amongst the elements ground set; likely accompanied by us literally waving our hands through the air.
+If our matroid has 1000 elements in its ground set, but its bases only have size 3, then there must be a lot of dependence amongst all those elements of the ground set.
+However vague the idea, it would be very useful to be able to quantify ``how much'' independence is going on in any subset \( X \subseteq E \) of a matroids ground set.
+To get there we'll first need to learn how to make some new matroids.
+
+\subsubsection{New Matroids From Old}
+Let's say we already have some matroid \( \cM = (E, \I) \).
+Then \( \I \) already has a notion about which of all possible subsets of \( E \) are independent.
+So if we consider some subset \( X \subseteq E \) of the ground set, we should be able to use \( \cM \)'s independent sets to construct independent sets for \( X \) as a ground set.
+This is in fact very easy to do, and we call the resulting matroid a restriction matroid.
+
+\begin{definition}[Restriction Matroid]\th\label{def:restrictionMatroid}
+    Let \( \cM = (E, \I) \) be a matroid.
+    Then for any subset \( X \subseteq E \), we may define the \emph{restriction matroid}, \( \cM|X \), as
+    \[
+        \cM|X = ( X, \I|X )
+    \]
+    where \( \I|X = \{I \in \I \; | \; I \subseteq X\} \).
+\end{definition}
+
+Essentially we just declare \( X \) to be the new ground set and just forget about any independent sets of \( \cM \) that contain any elements not in \( X \).
+
+We will need restriction matroids to get to our definition of flats, we would also like to introduce one other way we could make a new matroid from an extant one.
+These are called contraction matroids, and they are \emph{dual} to restriction matroids.
+The fact they're dual to restriction matroids isn't really that important here, but as mathematicians we feel compelled to point out duality anytime we see it.
+While these aren't strictly necessary for flats, it's a surprise tool that will help us later.
+\todo{Should I introduce contraction matroids here? They aren't immediately necessary, but where else would I?}
+\todo{I think i need contraction matroids? but if i don't i'll just come back and delete this section}
+
+\begin{definition}[Contraction Matroids]\th\label{def:contractionMatroid}
+
+    Let \( \cM = (E, \I) \) be a matroid.
+    For any subset \( T \subseteq E \) of the ground set, construct the restriction matroid \( M|T \).
+    Then let \( B_T \) be a basis of \( M|T \).
+    The \emph{contraction matroid}, \( \cM/T \), is defined as
+    \[
+        \cM/T = ( E \setminus T, \I/T ),
+    \]
+    where \( \I/T = \{ I \subseteq (E \setminus T) \; | \; I \cup B_T \in \I \} \).
+
+\end{definition}
+
+This definition is more difficult to explain succinctly, but we can compare it with the restriction matroid to try to get some sense of what this does.
+The restriction matroid imparts independence on a subset \( X \subseteq E \) by saying subsets are independent if they would be independent in the original matroid.
+The contraction matroid assigns independence on everything \emph{not} in the subset \( T \subseteq E \),  based on if they'd still be independent if we were to add (a basis of) T back in.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.54\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                none/.style={},
+                graphEdge/.style={thin},
+                Edge/.style={black, very thick}]
+
+            \node [style=graphVertex] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0.25, 0.4) {\( d \)};
+
+            \draw [style=Edge] (0) to (1);
+            \draw [style=Edge] (1) to (2);
+            \draw [style=Edge] (2) to (3);
+            \draw [style=Edge] (0) to (2);
+            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+        \subcaption*{A graph representing a matroid \( \sM \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                none/.style={},
+                graphEdge/.style={thin},
+                Edge/.style={black, very thick}]
+
+            %\node [style=graphVertex] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            % \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4.6) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0, -2.4) {\( d \)};
+
+            %\draw [style=Edge] (0) to (1);
+            \draw [style=Edge, bend left=15] (1) to (2);
+            \draw [style=Edge] (2) to (3);
+            \draw [style=Edge, bend left=15] (2) to (1);
+            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+        \subcaption*{A graph representing a matroid \( \sM' \)}
+    \end{subfigure}
+    \caption{To provide a modicum of explanation as to why these are called \emph{contractions}, we note that \( \sM/a \) and \( \sM' \) are isomorphic}
+    \label{fig:contractionMatroid}
+
+\end{figure}
+
+%With restriction matroids in hand, we can now turn any subset of a matroid into a matroid itself.
+
+\subsubsection{Rank and Closure}
+
+Before we got sidetracked making new matroids, we were noting that somehow the size of a basis tells us something important about a matroid.
+Indeed, this is an important enough property to get its own name, the \emph{rank} of a matroid.
+Better, we can extend the notion of rank to any subset of the ground set of a matroid.
+
+\begin{definition}[Rank]\th\label{def:rank}
+
+    Let \( \cM = (E, \I) \) be a matroid.
+    The \emph{rank function} is the map
+    \begin{align*}
+        \rk_\cM \, : \; 2^E & \to \Z_{\geq 0} \\
+        X                   & \mapsto |B_X|
+    \end{align*}
+    where \( B_X \) is any basis of the restriction matroid \( \cM|X \).
+    That is to say the rank of any subset \( X \) is the size of the largest independent set contained in \( X \).
+
+    Since \( \cM|E = \cM \), we write \( \rk_\cM(E) \) as \( \rk_\cM(\cM) \), and it is called the \emph{rank} of \( \cM \).
+\end{definition}
+Unless we are in imminent danger of confusion, we will notate \( \rk_\cM(X) \) as just \( \rk(X) \).
+In the land of linear algebra, the rank corresponds to the dimension spanned by the vectors.
+Just as adding more vectors into a linear span won't necessarily increase the dimension spanned, increasing the number of your elements in your subset will not necessarily increase the rank.
+For instance, in our running example we see that \( \rk(ab) = \rk(abd) = 2 \),
+and naturally no subset of elements of the matroid will have a rank larger than the basis of the matroid itself.
+
+This notion that we can add more elements to a subset without changing its rank leads, at last, to the final preliminary definition.
+
+\begin{definition}[Closure]\th\label{def:closure}
+    Given a matroid \( \cM = (E, \I) \), the \emph{closure operator} is a function
+    \begin{gather*}
+        \cl_\cM \, : \; 2^E \to 2^E \\
+        X \mapsto \{ e \in E \; | \; \rk(X \cup e) = \rk(X) \}.
+    \end{gather*}
+
+    For any \( X \subseteq E \), we call \( \cl(X) \) the closure of \( X \).
+\end{definition}
+
+Again we will write the closure operator as \( \cl(X) \) almost exclusively.
+If a basis captures how much ``independence'' is in a set of elements, the closure of a subset generates a set that is as ``dependent'' as possible for a given rank (using the elements of that initial set).
+One might ask if there is anything special about these sets that are as big as they can be with respect to closure.
+A very insightful question, if we do say so ourselves.
+
+\subsection{Our Flag Means Totally-Ordered Subsets of the Lattice of Flats}
+\todo{This title is too pop culture specific, change it}
+
+If you didn't notice our subtle hint above, it may come as a surprise that sets that are as ``big'' or ``dependent'' as possible for a given rank are precisely flats.
+
+\begin{definition}[Flat]\th\label{def:flat}
+    Given a matroid \( \cM = (E, \I) \) and subset \( X \subseteq E \), if
+    \[
+        X = \cl(X),
+    \]
+    then \( X \) is a \emph{flat} of \( \cM \).
+\end{definition}
+
+What if instead of independent sets, we collect all the flats of a matroid.
+For example, in \( \sM \), we could start applying the closure opreator left and right until we collect the set
+\[
+    \cF = \{ \emptyset, a, b, c, d, abd, ac, bc, cd, abcd \}.
+\]
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \tdplotsetmaincoords{60}{120}
+        \begin{tikzpicture} [scale=3, tdplot_main_coords,
+                axis/.style={-, black, very thin},
+                vector/.style={-stealth, black, thin},
+                flat vector/.style={-stealth, red, very thick},
+                vector guide/.style={dashed, red, very thick}]
+
+            %standard tikz coordinate definition using x, y, z coords
+            \coordinate (O) at (0,0,0);
+
+            %tikz-3dplot coordinate definition using x, y, z coords
+
+            \pgfmathsetmacro{\ax}{1}
+            \pgfmathsetmacro{\ay}{1}
+            \pgfmathsetmacro{\az}{1}
+
+            \coordinate (A) at (\ax,0,0);
+            \coordinate (B) at (0,\ay,0);
+            \coordinate (C) at (0,0,\az);
+            \coordinate (D) at (\ax,\ay,0);
+
+            %draw axes
+            \draw[axis] (0,0,0) -- (1.25,0,0) node[anchor=north east]{$x$};
+            \draw[axis] (0,0,0) -- (0,1.25,0) node[anchor=north west]{$y$};
+            \draw[axis] (0,0,0) -- (0,0,1.25) node[anchor=south]{$z$};
+
+            %draw our set of vectors:
+            \draw[flat vector] (O) -- (A);
+            \draw[vector] (O) -- (B);
+            \draw[vector] (O) -- (C);
+            \draw[vector] (O) -- (D);
+
+            \node[tdplot_main_coords,anchor=east]
+            at (\ax,0,0){a};
+            \node[tdplot_main_coords,anchor=south]
+            at (0,\ay,0){b};
+            \node[tdplot_main_coords,anchor=west]
+            at (0,0,\az){c};
+            \node[tdplot_main_coords,anchor=west]
+            at (\ax, \ay,0){d};
+            % \node[circle, fill, blue, inner sep=1.5, tdplot_main_coords]
+            % at (0, 0, 0){};
+            % \node[tdplot_main_coords,anchor=south west]
+            % at (0, 0, 0){e};
+        \end{tikzpicture}
+
+        \subcaption{Rank 1: The single element \( a \) is a flat}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.3\textwidth}
+        \tdplotsetmaincoords{60}{120}
+        \begin{tikzpicture} [scale=3, tdplot_main_coords,
+                axis/.style={-, black, very thin},
+                vector/.style={-stealth, black, thin},
+                flat vector/.style={-stealth, red, very thick},
+                vector guide/.style={dashed, red, very thick}]
+
+            %standard tikz coordinate definition using x, y, z coords
+            \coordinate (O) at (0,0,0);
+
+            %tikz-3dplot coordinate definition using x, y, z coords
+
+            \pgfmathsetmacro{\ax}{1}
+            \pgfmathsetmacro{\ay}{1}
+            \pgfmathsetmacro{\az}{1}
+
+            \coordinate (A) at (\ax,0,0);
+            \coordinate (B) at (0,\ay,0);
+            \coordinate (C) at (0,0,\az);
+            \coordinate (D) at (\ax,\ay,0);
+
+            %draw axes
+            \draw[axis] (0,0,0) -- (1.25,0,0) node[anchor=north east]{$x$};
+            \draw[axis] (0,0,0) -- (0,1.25,0) node[anchor=north west]{$y$};
+            \draw[axis] (0,0,0) -- (0,0,1.25) node[anchor=south]{$z$};
+
+            %draw our set of vectors:
+            \draw[flat vector] (O) -- (A);
+            \draw[flat vector] (O) -- (B);
+            \draw[vector] (O) -- (C);
+            \draw[flat vector] (O) -- (D);
+
+            %draw guide lines to components
+            \draw[vector guide]         (A) -- (D);
+            \draw[vector guide]         (B) -- (D);
+            % \draw[vector guide]         (A) -- (0,0,\az);
+            % \draw[vector guide] (\ax,\ay,0) -- (0,\ay,0);
+            % \draw[vector guide] (\ax,\ay,0) -- (0,\ay,0);
+            % \draw[vector guide] (\ax,\ay,0) -- (\ax,0,0);
+            \node[tdplot_main_coords,anchor=east]
+            at (\ax,0,0){a};
+            \node[tdplot_main_coords,anchor=south]
+            at (0,\ay,0){b};
+            \node[tdplot_main_coords,anchor=west]
+            at (0,0,\az){c};
+            \node[tdplot_main_coords,anchor=west]
+            at (\ax, \ay,0){d};
+            % \node[circle, fill, blue, inner sep=1.5, tdplot_main_coords]
+            % at (0, 0, 0){};
+            % \node[tdplot_main_coords,anchor=south west]
+            % at (0, 0, 0){e};
+        \end{tikzpicture}
+        \subcaption{Rank 2: Note \( ab \) is not a flat, but \(  abd \) is}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.3\textwidth}
+        \tdplotsetmaincoords{60}{120}
+        \begin{tikzpicture} [scale=3, tdplot_main_coords,
+                axis/.style={-, black, very thin},
+                vector/.style={-stealth, black, thin},
+                flat vector/.style={-stealth, red, very thick},
+                vector guide/.style={dashed, red, very thick}]
+
+            %standard tikz coordinate definition using x, y, z coords
+            \coordinate (O) at (0,0,0);
+
+            %tikz-3dplot coordinate definition using x, y, z coords
+
+            \pgfmathsetmacro{\ax}{1}
+            \pgfmathsetmacro{\ay}{1}
+            \pgfmathsetmacro{\az}{1}
+
+            \coordinate (A) at (\ax,0,0);
+            \coordinate (B) at (0,\ay,0);
+            \coordinate (C) at (0,0,\az);
+            \coordinate (D) at (\ax,\ay,0);
+
+            %draw axes
+            \draw[axis] (0,0,0) -- (1.25,0,0) node[anchor=north east]{$x$};
+            \draw[axis] (0,0,0) -- (0,1.25,0) node[anchor=north west]{$y$};
+            \draw[axis] (0,0,0) -- (0,0,1.25) node[anchor=south]{$z$};
+
+            %draw our set of vectors:
+            \draw[flat vector] (O) -- (A);
+            \draw[flat vector] (O) -- (B);
+            \draw[flat vector] (O) -- (C);
+            \draw[flat vector] (O) -- (D);
+
+            %draw guide lines to components
+            \draw[vector guide]         (A) -- (D);
+            \draw[vector guide]         (B) -- (D);
+            \draw[vector guide]         (C) -- (1, 0, 1);
+            \draw[vector guide]         (C) -- (0, 1, 1);
+            \draw[vector guide]         (A) -- (1, 0, 1);
+            \draw[vector guide]         (B) -- (0,1, 1);
+            \draw[vector guide]         (1,1,1) -- (0,1, 1);
+            \draw[vector guide]         (1,1,1) -- (1,0, 1);
+            \draw[vector guide]         (1,1,1) -- (D);
+
+
+            \node[tdplot_main_coords,anchor=east]
+            at (\ax,0,0){a};
+            \node[tdplot_main_coords,anchor=south]
+            at (0,\ay,0){b};
+            \node[tdplot_main_coords,anchor=west]
+            at (0,0,\az){c};
+            \node[tdplot_main_coords,anchor=west]
+            at (\ax, \ay,0){d};
+            % \node[circle, fill, blue, inner sep=1.5, tdplot_main_coords]
+            % at (0, 0, 0){};
+            % \node[tdplot_main_coords,anchor=south west]
+            % at (0, 0, 0){e};
+        \end{tikzpicture}
+        \subcaption{Rank 3: The matroid itself is rank 3, so the flat of this rank is the whole ground set, \( abcd \)}
+    \end{subfigure}
+    \caption{Examples of flats of rank 1, 2, and 3} in our example matroid \( \sM \), viewed as vectors
+\end{figure}
+Since flats are maximal with respect to rank, they naturally divide up by rank; i.e.
+\begin{align*}
+    \cF_0 & = \{ \emptyset \}       \\
+    \cF_1 & = \{ a, b, c, d \}      \\
+    \cF_2 & = \{ abd, ac, bc, cd \} \\
+    \cF_3 & = \{ abcd\},            \\
+\end{align*}
+where everything in \( \cF_k \) has rank \( k \).
+When laid out like this we may begin to note some interesting patterns.
+Indeed, just like independent sets have some useful properties, so do the set of flats.
+
+\begin{proposition}[Properties of Flats]\th\label{prop:matroidFlatAxioms}
+    Let \( \cM = (E, \I) \), be a matroid.
+    Then the set
+    \[
+        \cF = \{ X \subseteq E \; | \; X = \cl(X) \}
+    \]
+    is the set of flats of \( \cM \), and \( \cF \) has the following properties:
+    \begin{enumerate}[label=(F\arabic*)]
         \item \( E \in \cF \).
         \item If \(F_1, F_2 \in \cF\), then \( F_1 \cap F_2 \in \cF \)
-        \item If \( F \in \cF \) and \(F_1, F_2, \dots , F_k \in \cF \) are the minimal, with respect to inclusion, flats containing \( F \),
+        \item If \( F \in \cF \) and \(F_1, F_2, \dots , F_k \in \cF \) are the minimal flats such that each \( F_i \subsetneq F \),
               then the sets \( F_1 \setminus F,\, F_2 \setminus F,\, \dots,\, F_k \setminus F \) partition \( E \setminus F \).
     \end{enumerate}
+
+    Further, if \( E' \) is any ground set and \( \cF' \subseteq 2^{E'} \) is a collection of subsets of the ground set such that properties (F1)--(F3) hold,
+    then \( \cM' = (E', \cF') \) is a matroid.
+\end{proposition}
+
+Let's unpack this proposition, as flats are a bit more difficult than independent sets as a foundation of matroids.
+Property (F1) says that the ground set, \( E \), is a flat.
+This follows directly from the fact that the closure of a basis has to be every element of the ground set, since you can't ever get a higher rank than a basis.
+
+The second property (F2) says that the set of flats in closed under intersection;
+i.e.\ the elements shared between any two flats is a flat itself.
+This follows from the properties of closure and a bit of set theory; it's a fun little exercise to prove.
+% \begin{proof}
+%     The closure operator has the following properties:
+%     \begin{enumerate}[label=\roman*.]
+%         \item \(X \subseteq \cl(X)\), for all \( X \subseteq E \),
+%         \item if \( X \subseteq Y \subseteq E \), then \( \cl(X) \subseteq \cl(Y) \),
+%         \item \( \cl\big(\cl(X)\big) = \cl(X) \).
+%     \end{enumerate}
+
+%     Then since \( F_1 \cap F_2 \subseteq F_1 \), we have \( \cl(F_1 \cap F_2) \subseteq \cl(F_1) \), by property~ii.
+%     But since \( F_1 \) is a flat, \( \cl(F_1) = F_1 \), so \( \cl(F_1 \cap F_2) \subseteq \cl(F_1) \).
+%     By the same argument we have \( \cl(F_1 \cap F_2) \subseteq F_2 \).
+%     Together that means \( \cl(F_1 \cap F_2) \subseteq F_1 \cap F_2 \).
+
+%     But by property~i, \( F_1 \cap F_2  \subseteq \cl(F_1 \cap F_2) \).
+%     Thus, we have
+%     \[
+%         F_1 \cap F_2  \subseteq \cl(F_1 \cap F_2) \subseteq F_1 \cap F_2,
+%     \]
+%     and so we conclude \( \cl(F_1 \cap F_2) = F_1 \cap F_2\); i.e./ \( F_1 \cap F_2 \) is a flat.
+% \end{proof}
+
+The last property, (F3), looks more intimidating than it is.
+In essence, if you take a flat, \( F \) (with \( F \neq E \), since no flats have higher rank than \( E \)), then for every element \emph{not} in \( F \) you're going to find it in a flat that is one rank higher.
+This shouldn't be too surprising, since if an element, let's call it \( x \), is not in \( F \), then \( \cl(F \cup x) \) will have to have a higher rank than \( F \).
+That this \emph{partitions} \( E \setminus F \) just means that each \( e \in E \) that's not in \( F \) is going to appear in exactly one flat one rank higher (specifically the flat \( \cl(F \cup e) \)).
+
+Finally, the proposition asserts that if we start with a ground set and then a collection of subsets of that ground set that meet all three properties (F1)--(F3), then that is sufficient to characterize a matroid.
+That is (F1)--(F3) is another axiomatization of a matroid.
+A recommended exercise would be to reconstruct all the definitions in the preceding section starting with just these axioms, with a goal to reconstruct a notion of an independent set.
+
+These properties actually impart a very interesting structure on the set of flats that we will now explore.
+
+\subsubsection{The Lattice of Flats}
+
+First, we recall, or learn here and now, that any collection of subsets of a set form a partially ordered set.
+
+\begin{definition}{Partially Ordered Set}\th\label{def:poset}
+    A \emph{partially ordered set}, often called a poset, is a 2-tuple \( (P, \preceq) \), where \( P \) is a set of elements, and \( \preceq \), is a relation between some, but not necessarily all, of the elements of \( P \) with the following properties:
+    \begin{enumerate}[label=\roman*.]
+        \item\(a \preceq a\),
+        \item if \( a \preceq b \) and \( b \preceq a \), then \( a = b \),
+        \item if \( a \preceq b \) and \( b \preceq c \), then \( a \preceq c \),
+    \end{enumerate}
+    for all \( a, b, c \in P \)
 \end{definition}
 
-\begin{definition}[Closure]{\label{def:Closure}}
-    \hfill
-    \todo{Define closure in terms of flats? Or closure such that flats are closed...}
+With the definition in hand, we can verify that \( (\cF, \subseteq) \) is a partially ordered set, where \( \cF \) is the set of all flats of a matroid.
+But we can do even better than that.
+Some posets have an even stronger structure, called a lattice.
+
+\begin{definition}[Lattice]\th\label{def:lattice}
+    A partially ordered set \( (L, \preceq) \) is a \emph{lattice} if there exist binary operations
+    \[
+        \vee \, : \; L \times L \to L,
+    \]
+    called a \emph{join}, and
+    \[
+        \wedge \, : \; L \times L \to L,
+    \]
+    called a \emph{meet}, such that the following properties hold for all \( a, b \in L \):
+    \begin{enumerate}[label=\roman*.]
+        \item \(a \vee b \in L\); \( a \preceq a \vee b \) and \( b \preceq a \vee b \); for any \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) then \( a \vee b \preceq c \),
+        \item \(a \wedge b \in L\); \( a \wedge b \preceq a \) and \( a \wedge b \preceq b \); for any \( c \in L \) such that \( c \preceq a \) and \( c \preceq b \) then \( c \preceq a \wedge b \),
+    \end{enumerate}
 
 \end{definition}
 
+If you've never seen this definition before, it can be a bit heavy on symbols, but once we ground it in our set of flats it won't be too bad.
+First though, we must establish that the set of flats does indeed form a lattice.
 
-\begin{definition}[Rank]{\label{def:rank}}
-    Let \( \sM = (E, \I) \) be a matroid and \( X \subseteq E \)
-    \todo{If we define closure with respect just to flats then we can define rank based on closure.
-        Or if we go the other way around, we can define closure based on rank (and flats based on closure?)}
-\end{definition}
-
-\todo{This feels a bit backwards when we start by introducing the independent set axioms first.
-    Oxley, for example, first defines a basis of a matroid,
-    then the restriction of a matroid to a subset of the ground set,
-    then closure,
-    then defines rank as the cardinality of the basis of the restriction
-    (also there's a proof that bases are all the same size).
-
-    Should I ease the transition between definitions that way? It would take up space, but I have space to take up I suppose.}
-
-\begin{lemma}[The Collection of Flats Form a Lattice]
-    \hfill
-    \todo{This seems important}
+\begin{lemma}[The Collection of Flats Form a Lattice]\th\label{thm:flatLattice}
+    Let \( \cM \) be a matroid and \( \cF \) be the set of all flats of \( \cM \).
+    Then \( ( \cF, \subseteq) \) is a lattice, with the operations
+    \begin{align*}
+        F_1 \wedge F_2 & = F_1 \cap F_2      \\
+        F_1 \vee F_2   & = \cl(F_1 \cup F_2)
+    \end{align*}
+    for any \( F_1, F_2 \in \cF \)
 \end{lemma}
+\begin{proof}
+    It is sufficient to show that \( \cF \) is a meet-semilattice and that \( \cF \) has a maximal element.
 
-\section{Matroids from Graphs; Matroids from Matrices}
+    To show that \( F \) is a meet-semilattice, we must prove that the meet operation is well-defined.
+    Let \( F_1, F_2 \in \cF \) be flats.
+    Then from property (F2), \( F_1 \cap F_2 \) is a flat.
+    Naturally, for any \( F_3 \in \cF \) such that  \( F_3 \subseteq  F_1 \) and \( F_3 \subseteq F_2 \), then \( F_3 \subseteq F_1 \cap F_2 \).
+    Thus, the meet operation is well-defined.
 
-\subsection{Graphical Matroids}
-\todo{Maybe here we make a matroid from our graph?
-    Or we do it in subsubsections as we define matroids}
+    The maximal element of \( \cF \) is, trivially, the ground set, \( E \), itself which is a flat by property (F1).
+    A meet-semilattice with a maximal element is a lattice, and so \( \cF \) forms a lattice.
+\end{proof}
 
-\subsection{Representable Matroids}
-\todo{If we didn't do it above, we do it here}
+Now, finally we can talk about a lattice of flats.
+To motivate this, let's look at the lattice of our example matroid, \( \sM \).
+It is, if not traditional, convenient to structure a lattice graphically in a \emph{Hasse diagram}.
 
-\subsection{Unrepresentable Matroids}
-\todo{Fun fact about how most matroids don't come from a matrix.}
+\begin{figure}[H]
+    \centering
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAZgBoA2AXVJADcBDAGwFcYkQ2BfU9TXfQigAMpACzU6TVu3pceIDNjwEiAJjESGLNohAAjObyUCiojTS3TdAY0MK+ywcnLnJ29taghuR-iuGkqppSOiD0erDe8op+TupBFiEytlG+jqaBwe66eik+9sb+zpmJ2SCedjHpKGRCWVZhuZGcEjBQAObwRKAAZgBOEAC2SCIgOBBIAIz5-UMjNONIqjMDw4iji4jEK3PrCxOIojtrk-tIAKzHU2eI5FeI6mMH5zSMWGChcBBvXjQAFjB6F5EGBmIxGAt6FhGOxIB8QK9wjBGAAFBwmXR9LDtP44BEgOB-LA9PF7fQwMDAoT3R6bADs9zITyQd3kszWTPpjJuAA57mZmYg+WzVkgBZsXgSiSSpvdJZsAJz3FyCpUi3Z0m5q3qioValqcIA
+    \begin{tikzcd}[every arrow/.append style={dash}]
+        &  &                              & abcd                                                  &                                         &  &                                             \\
+        &  &                              &                                                        &                                         &  &                                             \\
+        abd \arrow[from=rrrrrrdd]\arrow[rrruu]                &  & ac \arrow[from=lldd, crossing over] \arrow[ruu]              &                                             & bc \arrow[luu]                         &  & cd \arrow[llluu]                           \\
+        &  &                              &                                                        &                                         &  &                                             \\
+        a \arrow[uu] \arrow[to=rruu, crossing over] &  & b \arrow[lluu, crossing over] \arrow[rruu, crossing over] &                                           & c \arrow[lluu, crossing over] \arrow[uu, crossing over] \arrow[rruu, crossing over] &  & d \arrow[uu]  \\
+        &  &                              &                                                        &                                         &  &                                             \\
+        &  &                              & \emptyset{}\arrow[llluu] \arrow[luu] \arrow[ruu] \arrow[rrruu]  &                                         &  &
+    \end{tikzcd}
+    \caption{The Hasse diagram of flats of our example matroid \( \sM \)}
+\end{figure}
+
+When reading a Hasse diagram, if we have two entries \( x \) and \( y \), with a line connecting them and \( x \) is higher on the page than \( y \), we say \( x \) \emph{covers} \( y \).
+This corresponds to the relation \( y \preceq x \).
+In the lattice of flats, each level corresponds to a rank, starting at the bottom, which is rank 0.
+If \( F_1 \) covers \( F_2 \), then \( F_2 \subset F_1 \).
+All of those properties in the definition of the lattice just mean that taking the intersection of two flats, or the closure of the union of two flats, will uniquely identify another element of the lattice (connected by lines to your original two entries).
+
+
+When considering a matroid in terms of flats, one often sees \( \cM = (E, \cL) \) in lieu of \( \cM = (E, \cF) \) as a reminder that the set of flats forms a lattice.
+We will follow that convention going forward as well.
+
+This lattice structure is key to the construction of our objects of interest in the following chapters, as we will soon see.
+The final definition we need from matroids are called flags, and they are, basically, just reasonable collections of flats.
+
+\subsubsection{Flags}
+
+Given a matroid \( \cM = (E, \cL) \), let \( \cL^\ast \) be the set of proper flats of \( \cM \);
+i.e.\ all flats with rank greater than 0 and not including \( E \).
+Since \textit{every} lattice of flats always has 1 element of rank~0 as a minimal element and \( E \) as the unique maximal element, \( \cL^\ast \) is just the interesting bits of \( \cL \).
+
+\begin{definition}[Flag]\label{def:flag}
+
+    If \( \cM = (E, \cL) \) is a matroid, then a \emph{flag} is a totally ordered subset \( \scrF \subseteq \cL^\ast \) of the proper flats of a matroid,
+    \[
+        \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_k \} \subseteq \cL^\ast.
+    \]
+
+    If \( \rk(\cM) = r + 1 \), then a flag \( \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_r \} \) is a \emph{maximal} flag of \( \cM \).
+
+\end{definition}
+
+Flags are, then, just collections of flats where you can nest all the flats; a little set theoretic \textit{matryoshka}.
+On the Hasse diagram, a flag is any collection of entries connected by lines (with the option to skip intermediate flags).
+Maximal flats will be those that take you along a path on the Hasse diagram from rank 1 all the way up to the rank right below that of the matroid itself, including something from every rank in between.
+One thing to remember, for every flat \( F \), the single element flag \( \scrF = \{ F \} \) is, indeed, a flag.
+
+\todo{Should i list flags of \( \sM \)?}
+
+\subsubsection{`Tis the Gift to Be Simple}
+
+If a serious matroid theorist is, for some inexplicable reason, subjecting themselves to this section, we feel the need to admit one simplifying assumption, pun unintended, we intend to make (and have implicitly made with our example).
+Since we care primarily about the lattice structure of our matroid, we assume all of our matroids are \emph{simple}.
+
+For the rest of us, the non-serious, a brief explanation.
+A matroid is simple if it does not have any \emph{loops}, elements in the ground set that have rank 0, or \emph{parallel edges}, sets of elements that share identical (in)dependence relations.
+If this feels overly restrictive, worry not, for Oxley\cite[p.~49]{oxleyMatroidTheory2011} comes to our rescue.
+\todo{get the right page number for oxley}
+\begin{proposition}[Simplification Preserves Lattice Structure]\th\label{thm:simplificationLattice}
+    For any matroid \( \cM \), there exists a unique, up to labeling, matroid \( \si(\cM) \), called the \emph{simplification of \( \cM \)}
+    such that
+    \begin{enumerate}[label=\roman*.]
+        \item \( \si(\cM) \) is simple,
+        \item if \( \cL \) is the lattice of flats of \( \cM \) and \( \cL' \) is the lattice of flats of \( \si(\cM) \), then
+              \[
+                  \cL \cong \cL'.
+              \]
+    \end{enumerate}
+\end{proposition}
+
+If we care mostly about the lattice of matroids, then we can take any matroid and find a simple matroid with an identical lattice structure.
+We'll see the main practical benefit of working with simple matroids in the next section.
+However, we also get convenience, we don't have to keep track of unnecessary letters, and aesthetics, the lattice diagrams look much nicer, as a bonus.
+If we take our matroid to be simple, then our lattice structure has the following properties.
+
+\begin{proposition}[Properties of the Lattice of Simple Matroids]\th\label{thm:simpMatroidProps}
+    Let \( \cM = (E, \cL) \) be a simple matroid.
+    Then
+    \begin{enumerate}[label=\roman*.]
+        \item the empty set is the minimal, rank 0, element of \( \cL \),
+        \item for every \( e \in E \), there is unique rank 1 flat, \( F_e \), such that \( F_e = e \),
+        \item for any flat \( F \in \cL \), if \( e \in F \), then \( F_e \in F \),
+        \item for any flat \( F \in \cL \), \( F = \biguplus_{e \in F}F_e \).
+              \todo{Do we need the last two properties? If not, maybe don't present them if i'm not going to prove them}
+    \end{enumerate}
+\end{proposition}
+
+If this seems like a lot, the big takeaway is that this promises that the very bottom of our lattice will always be the empty set, and that the rank 1 flats correspond to the elements of the ground set.
+For those coming in with lattice knowledge, the second two properties mean the lattice of a simple matroid is \emph{atomic}.
+We can verify these properties in our example, \( \sM \), which is a simple matroid.
+
+That admission of simplification done, we have now learned everything we need about the construction of matroids.
+It's time to learn about some polynomials.
 
 \section{The Characteristic Polynomial}
 
-\subsection{The Chromatic Polynomial of a Graph}
-Some motivation.
-\todo{Work out the chromatic polynomial of the example graph we've been using}
+The conjecture by Heron, Rota, and Welsh, that we promise we are getting to, has to deal with the characteristic polynomial of a matriod.
+This is some polynomial we can cook up using the structure of a matroid, which is fair enough.
+But when presented on its own, it feels, at least to us, that it comes out of nowhere.
+Why anyone would make up this polynomial or why we'd start conjecturing about it can is not at all clear.
+
+So first, a little history back in the realm of graphs.
+
+\subsection{Coloring Graphs and the Chromatic Polynomial}
+
+Let us play another game.
+This time, pick a graph, \( G \), like the one pictured below.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1,
+            vertex/.style={fill=black, draw=black, shape=circle, scale=0.8}]
+        \node [style=vertex] (0) at (-1.5, -1.5) {};
+        \node [style=vertex] (1) at (1.5, -1.5) {};
+        \node [style=vertex] (2) at (0, 1) {};
+        \node [style=vertex] (3) at (0, 3) {};
+
+        \draw (3) to (2);
+        \draw (2) to (0);
+        \draw (2) to (1);
+        \draw (0) to (1);
+    \end{tikzpicture}
+    \caption{An example graph, \(G\)}
+\end{figure}
+
+Let's say we have three colors, and we want to color the vertices of the graph so that no two connected vertices have the same color.
+Such an arrangement of colors would be called a 3-coloring of \( G \).
+It's not too hard to come up with some colors that work.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1,
+            vertex/.style={fill=#1, draw=#1, shape=circle, scale=0.8}]
+        \node [style=vertex][green] (0) at (-1.5, -1.5) {};
+        \node [style=vertex][red] (1) at (1.5, -1.5) {};
+        \node [style=vertex][blue] (2) at (0, 1) {};
+        \node [style=vertex][red] (3) at (0, 3) {};
+
+        \node [] (4) at (0.7, 3) {red};
+        \node [] (5) at (0.8, 1) {blue};
+        \node [] (6) at (2.1, -1.5) {red};
+        \node [] (7) at (-2.25, -1.5) {green};
+
+        \draw (3) to (2);
+        \draw (2) to (0);
+        \draw (2) to (1);
+        \draw (0) to (1);
+    \end{tikzpicture}
+    \caption{A 3-coloring of \(G\)}
+\end{figure}
+
+But now, suppose we wanted to know how many unique ways we could use those three colors to color the graph.
+This isn't too bad.
+We could just get out our markers and start coloring lots of graphs.
+Honestly, it sounds relaxing.
+
+But now let's suppose we want to know how many ways we can use 1000 colors to color our little graph, or 10,000, or a billion.
+Since our set of markers only has 12 distinct colors, we will have to turn to math to solve this one, sadly.
+
+The strategy is not too complicated, just pick a vertex and say how many colors we have to choose from, then find a connected vertex that hasn't been assigned a color yet, and say how many colors it is allowed to choose from.
+Repeat until we're out of vertices to label.
+Instead of picking a specific number, let's say we have \( n \) colors to choose from.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.8,
+                vertex/.style={fill=#1, draw=#1, shape=circle, scale=0.5}]
+            \node [style=vertex][black] (0) at (-1.5, -1.5) {};
+            \node [style=vertex][black] (1) at (1.5, -1.5) {};
+            \node [style=vertex][black] (2) at (0, 1) {};
+            \node [style=vertex, scale=1.5][red] (3) at (0, 3) {};
+
+            \node [] (4) at (0.5, 3) {\( n \)};
+            \node [] (5) at (0.8, 1) {};
+            \node [] (6) at (1.75, -1) {};
+            \node [] (7) at (-1.75, -2) {};
+
+            \draw (3) to (2);
+            \draw (2) to (0);
+            \draw (2) to (1);
+            \draw (0) to (1);
+        \end{tikzpicture}
+
+        %\subcaption{Independent: the set of edges \( \{ a, b , c \} \) does not contain a cycle}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.8,
+                vertex/.style={fill=#1, draw=#1, shape=circle, scale=0.5}]
+            \node [style=vertex][black] (0) at (-1.5, -1.5) {};
+            \node [style=vertex][black] (1) at (1.5, -1.5) {};
+            \node [style=vertex, scale=1.5][blue] (2) at (0, 1) {};
+            \node [style=vertex][red] (3) at (0, 3) {};
+
+            \node [] (4) at (0.5, 3) {\( n \)};
+            \node [] (5) at (1.0, 1) {\( (n -1) \)};
+            \node [] (6) at (1.75, -1) {};
+            \node [] (7) at (-1.75, -2) {};
+
+            \draw (3) to (2);
+            \draw (2) to (0);
+            \draw (2) to (1);
+            \draw (0) to (1);
+        \end{tikzpicture}
+
+        %\subcaption{Dependent: The edges in \( \{ a, b , d \} \) contain a cycle}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.8,
+                vertex/.style={fill=#1, draw=#1, shape=circle, scale=0.5}]
+            \node [style=vertex][black] (0) at (-1.5, -1.5) {};
+            \node [style=vertex, scale=1.5][red] (1) at (1.5, -1.5) {};
+            \node [style=vertex][blue] (2) at (0, 1) {};
+            \node [style=vertex][red] (3) at (0, 3) {};
+
+            \node [] (4) at (0.5, 3) {\( n \)};
+            \node [] (5) at (1.0, 1) {\( (n -1) \)};
+            \node [] (6) at (2.25, -1) {\( (n - 1) \)};
+            \node [] (7) at (-1.75, -2) {};
+
+            \draw (3) to (2);
+            \draw (2) to (0);
+            \draw (2) to (1);
+            \draw (0) to (1);
+        \end{tikzpicture}
+
+        %\subcaption{Dependent: The edges in \( \{ a, b , d \} \) contain a cycle}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.8,
+                vertex/.style={fill=#1, draw=#1, shape=circle, scale=0.5}]
+            \node [style=vertex, scale=1.5][green] (0) at (-1.5, -1.5) {};
+            \node [style=vertex][red] (1) at (1.5, -1.5) {};
+            \node [style=vertex][blue] (2) at (0, 1) {};
+            \node [style=vertex][red] (3) at (0, 3) {};
+
+            \node [] (4) at (0.5, 3) {\( n \)};
+            \node [] (5) at (1.0, 1) {\( (n -1) \)};
+            \node [] (6) at (2.25, -1) {\( (n - 1) \)};
+            \node [] (7) at (-1.75, -2) {\( (n - 2) \)};
+
+            \draw (3) to (2);
+            \draw (2) to (0);
+            \draw (2) to (1);
+            \draw (0) to (1);
+        \end{tikzpicture}
+
+        %\subcaption{Independent: The edge set \( \{ a, c \} \) does not contain a cycle. It's not necessary for all vertices to be connected}
+    \end{subfigure}
+    \caption{The process of figuring out the number of \( n \)-colorings of \( G \); the choice of starting vertex doesn't matter, though that's not necessarily obvious}
+\end{figure}
+
+We then just have to multiply the number of possibilities together.
+For \( G \), if we have \( n \) colors to choose from, there are \( n {(n-1)}^2 (n - 2) \) different ways to arrange those colors on the graph.
+We've just discovered the \emph{chromatic polynomial} of \( G \).
+But there's nothing particularly special about our choice of graph, we will get some, we will get something like this for any graph we come up with.
+
+\begin{proposition}[Chromatic Polynomial of a Graph]\th\label{def:chromaticPoly}
+
+    Let \( \chi_G(n) \) be the number of \( n \)-colorings of graph \( G \).
+    Then the map
+    \[
+        z \mapsto \chi_G(z)
+    \]
+    is a polynomial with integer coefficients, known as the \emph{chromatic polynomial} of \( G \).
+
+\end{proposition}
+
+For our purposes we will always expand our polynomials, so for our worked example above we have
+\[
+    \chi_G(z) = z^4 - 4z^3 + 5z^2 - 2z.
+\]
+
+Early work in chromatic polynomials was done by none other than our good friend Whitney~\cite{whitneyColoringGraphs1932}, and expanded on by the mathematician Tutte in his development of what we now call Tutte polynomials~\cite{tutteContributionTheoryChromatic1954}.
 
 \subsection{The Characteristic Polynomial of a Matroid}
-\todo{Define the Characteristic Polynomial}
 
-\subsubsection{Relation between Characteristic Polynomial (of a Matroid of a Graph) and Chromatic Polynomial (of a Graph)}
-\todo{Give the basic little translation}
+It was following in this work on chromatic polynomials that Gian-Carlo Rota, who you may recognize as usually sandwiched between Heron and Welsh, extended this concept to matroids~\cite{rotaFoundationsCombinatorialTheory1964}.
+To do this, Rota extended something called the \emph{M\"obius function} to lattices (technically any locally finite poset), which for matroids means it uses the lattice structure of the flats.
+We present an equivalent definition that's easier to state, but with the downside that the relationship to the lattice is obfuscated.
 
-\subsection{The Reduced Characteristic Polynomial}
-\todo{Show what reduced means.
-    Segway into Chow Rings. Chapter end?}
+\begin{definition}[Characteristic Polynomial]\th\label{def:characteristicPoly}
+
+    Let \( \cM = (E, \cL) \) be a matroid.
+    Then the \emph{characteristic polynomial} of \( \cM \) is given by
+    \[
+        \chi_\cM(z) = \sum_{X \subseteq E} {(-1)}^{|X|}z^{\rk(\cM) - \rk(X)}.
+    \]
+\end{definition}
+
+You may notice that each term of the polynomial will have a power of \( z \) between 0 and \( \rk(\cM) \).
+The Heron-Rota-Welsh is a conjecture about the coefficients of this polynomial, specifically once we collect the terms.
+
+\begin{definition}[Whitney Numbers of the Fisrt Kind]\label{def:whitneyNumber}
+    Let \( \cM \) be a matroid with characteristic polynomial
+    \begin{align*}
+        \chi_\cM(z) & = \sum_{X \subseteq E} {(-1)}^{|X|}z^{\rk(\cM) - \rk(X)} \\
+                    & = \sum_{k=0}^{\rk(\cM)} w_k z^{\rk(\cM) - k}.
+    \end{align*}
+    The coefficients \( w_0, w_1, \dots, w_{\rk(\cM)} \) are the \emph{Whitney numbers of the first kind}.
+
+\end{definition}
+
+We will return to these numbers very soon.
+Before that, a few interesting facts about the characteristic polynomial.
+
+\begin{proposition}
+    Let \( \cM \) be a matroid with a loop; that is some element \( e \in E \) such that \( \rk(e) = 0 \).
+    Then
+    \[
+        \chi_\cM(z) = 0.
+    \]
+\end{proposition}
+Getting to ignore these trivial characteristic polynomials is the concrete benefit for assuming we only deal in simple matroids.
+A loop makes the characteristic polynomial easy to calculate, just not at all interesting
+
+Finally, we want to wrap up the graph connection.
+Since any graph can be represented by a matroid, and the characteristic polynomial is in some sense inspired by the chromatic polynomial, it would be natural to ask if there is a relation between them.
+And there is, in fact, a very nice one.
+
+\begin{proposition}
+    Let \( G \) be a graph and \( \cM(G) \) be the matroid that comes from \( G \).
+    Then
+    \[
+        \chi_G(z) = z^c \chi_{\cM(G)}(z),
+    \]
+    where \( c \) is the number of connected components of \( G \).
+\end{proposition}
+
+For those who want more on the connections between these values, and how they relate to the more general Tutte polynomial, we found the overview given by Ardila~\cite{ardilaTuttePolynomialsHyperplane2022} to be a great help.
+
+\section{The Heron-Rota-Welsh Conjecture}
+
+We now have all the knowledge of matroids necessary to state the Heron-Rota-Welsh conjecture.
+Developed and formalized by Heron~\cite{heronMatroidPolynomials1972}, Rota~\cite{rotaCombinatorialTheoryOld1970}, and Welsh~\cite{welshMatroidTheory1976}, this was a conjecture about the coefficients of the characteristic polynomial of matroids.
+We say ``was'' because, as noted in the introduction, this has proven by Adiprasito, Huh, and Katz~\cite{adiprasitoHodgeTheoryCombinatorial2018}.
+We're going to keep calling it a conjecture though.
+
+First, a few definitions necessary to carefully state the conjecture.
+
+\begin{definition}[Unimodal]\th\label{def:unimodal}
+    A sequence of numbers \( x_0, x_1, \dots, x_k \) is called \emph{unimodal} if there exists an index \( i \) such that
+    \[
+        x_0 \leq x_1 \leq \cdots \leq x_i \geq \cdots \geq x_{k-1} \cdots x_k.
+    \]
+
+\end{definition}
+
+The values of a unimodal sequence get larger until a certain point, and after they start to decrease.
+Such a sequence is also known as \emph{concave}, since the average of any two non-consecutive points in the sequence will be less than a point in between them;
+i.e.\ for a sequence \( x_0, x_1, \dots, x_k \) and \( i < j < k \),
+\[
+    2x_j \geq x_i + x_k.
+\]
+We can define an even stronger condition.
+
+\begin{definition}[Log-Concavity]\th\label{def:logConcave}
+    A sequence of numbers \( x_0, x_1, \dots, x_k \) is called \emph{logarithmically concave}, or log-concave, if
+    \[
+        x_i^2 \geq x_{i-1} x_{i+1}
+    \]
+    for \( 0 < i < n \).
+\end{definition}
+
+When all \( x_i \) are positive, log-concavity implies the sequence is also unimodal.
+This is the last piece of the puzzle.
+
+\begin{theorem}[Heron-Rota-Welsh Conjecture]\th\label{thm:HRW}
+    Assume we have a matroid \( \cM = (E, \cL) \) of rank \( r + 1 \).
+    If
+    \[
+        \chi_\cM(z) = \sum_{k=0}^{\rk(\cM)} w_k z^{\rk(\cM) - k}
+    \]
+    is the characteristic polynomial of \( \cM \), where \( w_0, w_1, \dots, w_r \) are the Whitney numbers of the first kind, then
+    \[
+        w_i^2 \geq w_{i-1}w_{i+1}
+    \]
+    for \( 0 < i < \rk(M) \).
+
+    That is, the coefficients of the characteristic polynomial of the matroid \( \cM \) are log-concave.
+\end{theorem}
+
+Since we want to show something about the characteristic polynomials of the matroid, we need a way to study it.
+To do so, we are going to find the characteristic polynomial in some unexpected places, and then leverage properties of those other settings.
+
 \end{document}

@@ -1,19 +1,28 @@
 %====================%
 % Packages 
 %====================%
-%\usepackage{accents}  % Better accents. I'm not using this
 \usepackage{enumitem} % Better labels
 %\usepackage[explicit]{titlesec}
-\usepackage[normalem]{ulem}     % Thing
-\usepackage{stackrel} % Stack text nicely
-\usepackage{xcolor}   % Nicer Colors
+\usepackage[normalem]{ulem}         % Better underline, but keep default emph
+\usepackage{stackrel}               % Stack text nicely
+\usepackage{xcolor}                 % Nicer Colors
+\usepackage{mathrsfs}               % I need more curly letters 
+\usepackage{caption}                % Better captions and
+\usepackage{subcaption}             % Captions for subfigures
+\usepackage{float}                   % Be strict about [H]ere in figures
+\usepackage[reftex]{theoremref}     % Use \th\label{name} and \thref 
+\usepackage{tikz}                   % Tikz
+\usepackage{tzplot}
+\usepackage{tikz-3dplot}
+\usepackage{tikz-cd}
+\usepackage[obeyFinal]{easy-todo} % Add to-do's
 
 %====================%
 % Re-Define 
 %====================%
 % Sort out the true phi
-\def \badphi {\phi}
-\def \phi {\varphi}
+\def\badphi{\phi}
+\def\phi{\varphi}
 
 %====================%
 % New Commands 
@@ -28,37 +37,49 @@
 \newcommand{\J}{\mathcal{J}}
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cM}{\mathcal{M}}
 % The hipster letters
 \newcommand{\sM}{\mathsf{M}}
+\newcommand{\scrF}{\mathscr{F}}
 \newcommand{\bSigma}{\boldsymbol{\Sigma}}
 \newcommand{\ow}{\overline{w}}
 \newcommand{\oP}{\overline{P}}
 \newcommand{\oQ}{\overline{Q}}
 \newcommand{\ochi}{\overline{\chi}}
 %% Math Operators
-\newcommand{\Cub}{\operatorname{Cub}}
-\newcommand{\oCub}{\overline{\Cub}}
-\newcommand{\Vol}{\operatorname{Vol}}
-\newcommand{\oVol}{\overline{\Vol}}
-\newcommand{\MVol}{\operatorname{MVol}}
+\DeclareMathOperator{\Cub}{Cub}
+\DeclareMathOperator{\pCub}{\overline{Cub}}
+\DeclareMathOperator{\Vol}{Vol}
+\DeclareMathOperator{\oVol}{\overline{Vol}}
+\DeclareMathOperator{\MVol}{MVol}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\si}{si}
+
 %% Math Symbols
-\newcommand{\cl}{\mathrm{cl}}
-\newcommand{\rk}{\mathrm{rk}}
 \newcommand{\Inn}{\mathrm{Inn}}
 \newcommand{\cone}{\mathrm{cone}}
 
 %====================%
 % Theorem Environs
 %====================%
+\theoremstyle{plain} % Heading is bold, text italic.
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}[chapter]
+
+\theoremstyle{definition}  % Heading is bold, text is roman
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newtheorem{property}{Property}[chapter]
+
+\theoremstyle{remark}  % Heading is italic, text is roman
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem{claim}{Claim}[chapter]
+
 \newtheorem{dummy}{}[section]
 \theoremstyle{definition}
 \newtheorem*{Result}{Main Result}
-
-%====================%
-% Draft Helpers
-%====================%
-% \todo : Make a box with todo comments
-\newcommand{\todo}[1]{\par \noindent
-    \framebox{\begin{minipage}[c]{0.95 \textwidth}
-            \textcolor{red}{TO DO:}
-            #1 \end{minipage}}\par}

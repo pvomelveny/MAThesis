@@ -4,3 +4,6 @@ Matroids
 matroid
 Polytopes
 polytope
+axiomatizations
+meet-semilattice
+matriod
