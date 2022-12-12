@@ -1046,10 +1046,10 @@ Indeed, just like independent sets have some useful properties, so do the set of
     \]
     is the set of flats of \( \cM \), and \( \cF \) has the following properties:
     \begin{enumerate}[label=(F\arabic*)]
-        \item \( E \in \cF \).
-        \item If \(F_1, F_2 \in \cF\), then \( F_1 \cap F_2 \in \cF \)
+        \item \( E \in \cF \).\label{def:F1}
+        \item If \(F_1, F_2 \in \cF\), then \( F_1 \cap F_2 \in \cF \)\label{def:F2}
         \item If \( F \in \cF \) and \(F_1, F_2, \dots , F_k \in \cF \) are the minimal flats such that each \( F_i \subsetneq F \),
-              then the sets \( F_1 \setminus F,\, F_2 \setminus F,\, \dots,\, F_k \setminus F \) partition \( E \setminus F \).
+              then the sets \( F_1 \setminus F,\, F_2 \setminus F,\, \dots,\, F_k \setminus F \) partition \( E \setminus F \).\label{def:F3}
     \end{enumerate}
 
     Further, if \( E' \) is any ground set and \( \cF' \subseteq 2^{E'} \) is a collection of subsets of the ground set such that properties (F1)--(F3) hold,
@@ -1460,7 +1460,7 @@ We present an equivalent definition that's easier to state, but with the downsid
 \end{definition}
 
 You may notice that each term of the polynomial will have a power of \( z \) between 0 and \( \rk(\cM) \).
-The Heron-Rota-Welsh is a conjecture about the coefficients of this polynomial, specifically once we collect the terms.
+The Heron-Rota-Welsh conjecture is about the coefficients of this polynomial, specifically once we collect the terms.
 
 \begin{definition}[Whitney Numbers of the Fisrt Kind]\label{def:whitneyNumber}
     Let \( \cM \) be a matroid with characteristic polynomial

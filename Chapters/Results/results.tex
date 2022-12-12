@@ -8,8 +8,436 @@
 
 \begin{document}
 
-\chapter{Chapter Title}
+\chapter{Bringing It All Together}
 
-\section{Section Name}
+\todo{I'm not sure what context we'll already have from the last chapter. probably most basic things will be covered.
+    I'm just going to put weird filler text between theorems for now}
+
+\section{An Important Theorem}
+
+The authors work with Lauren Nowak and Dustin Ross has lead to the following theorem:
+
+\begin{theorem}[Nowak-O-Ross]\th\label{thm:suffAF}
+    \todo{restate this theorem better}
+    \todo{I should add the weight function if i'm going to state this for a general fan}
+    Let \( \bSigma \) be a simplicial \todo{tropical?} fan, pure of dimension \( r \), and \( \ast \in \Inn(N_\R) \) an inner product.
+    Then \( (\bSigma_\cM, \ast) \) is AF if
+    \begin{enumerate}[label=\roman*.]
+        \item for every cone \( \sigma \in \bSigma(k) \), with \( k \leq r - 2 \),
+              \[
+                  \Star(\tau, \bSigma_\cM) \setminus \{ 0 \}
+              \]
+              is connected,
+        \item for each 2-dimensional face of the associated normal complex, \( C(\bSigma, z) \), for some cubical \( z \in \Cub(\bSigma, \ast) \), the quadratic form associated to the volume polynomial has exactly one positive eigenvalue.
+    \end{enumerate}
+\end{theorem}
+
+This is the key theorem that will allow us to pull everything together to prove log-concavity of characteristic polynomials.
+
+\section{Assorted Lemmas}
+
+To prove the above theorem holds the Bergman fan of \textit{any} matroid, we will need a few helping facts.
+Some of these are classic results and some are classic-ish, with a short proof provided.
+First a classical result from linear algebra.
+\todo{actually, maybe i should introduce this just before I try to prove property ii? This feels a little shoehorned in here.}
+
+\begin{lemma}[Sylvester's Law of Inertia]\th\label{thm:sylvester}
+    Two symmetric square matrices, \( A \) and \( B \), of the same size have the same number of positive, negative and zero eigenvalues if and only if they are congruent;
+    that is if
+    \[
+        B = SAS^{T}
+    \]
+    where \( S \) is non-singular.
+\end{lemma}
+
+Hopefully the utility of this is fairly clear.
+If we're going to be hunting eigenvalues, matrices are somewhere near.
+This lemma means we won't lose information about the sign of eigenvalues if we manipulate the matrix, just so long as we do it in an invertible way.
+
+\subsection{Surprise Auxiliary Matroid Theory}
+
+We lied about having all the information on matroids necessary after the first chapter, apologies.
+We need a little more to get us to the end.
+First, we need a way to chop matroids up into smaller bits.
+
+\subsubsection{New Matroids From Old}
+Let's say we already have some matroid \( \cM = (E, \I) \).
+Then \( \I \) already has a notion about which of all possible subsets of \( E \) are independent.
+So if we consider some subset \( X \subseteq E \) of the ground set, we should be able to use \( \cM \)'s independent sets to construct independent sets for \( X \) as a ground set.
+This is in fact very easy to do, and we call the resulting matroid a restriction matroid.
+
+\begin{definition}[Restriction Matroid]\th\label{def:restrictionMatroid}
+    Let \( \cM = (E, \I) \) be a matroid.
+    Then for any subset \( X \subseteq E \), we may define the \emph{restriction matroid}, \( \cM|X \), as
+    \[
+        \cM|X = ( X, \I|X )
+    \]
+    where \( \I|X = \{I \in \I \; | \; I \subseteq X\} \).
+\end{definition}
+
+Essentially we just declare \( X \) to be the new ground set and just forget about any independent sets of \( \cM \) that contain any elements not in \( X \).
+Rather than providing a subset to restrict to, one often finds it useful to specify just the things we want to forget.
+
+\begin{definition}[Deletion Matroid]\th\label{def:deletionMatroid}
+    Let \( \cM = (E, \I) \) be a matroid and \( Y \subseteq E \).
+    The matroid that results from the \emph{deletion} of \( Y \) from \( \cM \), sometimes called a \emph{deletion matroid}, is defined as
+    \[
+        \cM \backslash Y = \cM|(E \setminus Y)
+    \]
+\end{definition}
+
+Clearly if \( X = (E \setminus Y) \), then \( \cM|X = \cM \backslash Y \).
+The choice of deletion or restriction is just a matter of what one wants to emphasize, what we keep or what we remove.
+
+The other way to build a matroid out of an existing one is a little less obvious.
+These are called contraction matroids, and they are \emph{dual} to restriction matroids.
+While they're a bit easier to define using duality, we want to avoid introducing all the machinery for that.
+Still, as mathematicians we feel compelled to point out duality anytime we see it.
+
+\begin{definition}[Contraction Matroids]\th\label{def:contractionMatroid}
+
+    Let \( \cM = (E, \I) \) be a matroid.
+    For any subset \( T \subseteq E \) of the ground set, construct the restriction matroid \( M|T \).
+    Then let \( B_T \) be a basis of \( M|T \).
+    The \emph{contraction matroid}, \( \cM/T \), is defined as
+    \[
+        \cM/T = ( E \setminus T, \I/T ),
+    \]
+    where \( \I/T = \{ I \subseteq (E \setminus T) \; | \; I \cup B_T \in \I \} \).
+
+\end{definition}
+
+This definition is more difficult to explain succinctly, but we can compare it with the restriction matroid to try to get some sense of what this does.
+We can think of  restriction matroid as imparting independence on a subset \( X \subseteq E \) by saying subsets are independent if they would be independent in the original matroid.
+The contraction matroid, then, assigns independence on everything \emph{not} in the subset \( T \subseteq E \),  based on if they'd still be independent if we were to add (a basis of) T back in.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.54\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                none/.style={},
+                graphEdge/.style={thin},
+                Edge/.style={black, very thick}]
+
+            \node [style=graphVertex] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0.25, 0.4) {\( d \)};
+
+            \draw [style=Edge] (0) to (1);
+            \draw [style=Edge] (1) to (2);
+            \draw [style=Edge] (2) to (3);
+            \draw [style=Edge] (0) to (2);
+            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+        \subcaption*{A graph representing a matroid \( \sM \)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=.5,
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                none/.style={},
+                graphEdge/.style={thin},
+                Edge/.style={black, very thick}]
+
+            %\node [style=graphVertex] (0) at (-3.5, 3.5) {};
+            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
+            \node [style=graphVertex] (2) at (3.5, -3.5) {};
+            \node [style=graphVertex] (3) at (3.5, 3.5) {};
+            \node [style=none] (4) at (3.5, 4.75) {};
+            \node [style=none] (5) at (-4, 0) {};
+            % \node [style=none] (6) at (-4, 0) {\( a \)};
+            \node [style=none] (7) at (0, -4.6) {\( b \)};
+            \node [style=none] (8) at (4, 0) {\( c \)};
+            % \node [style=none] (9) at (3.5, 5) {\( e \)};
+            \node [style=none] (10) at (0, -2.4) {\( d \)};
+
+            %\draw [style=Edge] (0) to (1);
+            \draw [style=Edge, bend left=15] (1) to (2);
+            \draw [style=Edge] (2) to (3);
+            \draw [style=Edge, bend left=15] (2) to (1);
+            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
+            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
+        \end{tikzpicture}
+        \subcaption*{A graph representing a matroid \( \sM' \)}
+    \end{subfigure}
+    \caption{To provide a modicum of explanation as to why these are called \emph{contractions}, we note that \( \sM/a \) and \( \sM' \) are isomorphic}\label{fig:contractionMatroid}
+
+\end{figure}
+
+Importantly, we can combine deletion and contraction, and indeed the resulting matroids are a rather central point of study in matroid theory.
+
+\begin{definition}[Matroid Minor]\th\label{def:minor}
+    A \emph{minor} of a matroid \( \cM \) is any matroid resulting in any combination of deletions and contractions of \( \cM \).
+
+    Further, any series of deletions and contractions can always be rearranged to, and so any matroid minor is of the form,
+    \[
+        \cM \backslash X / Y,
+    \]
+    where \( X, Y \subseteq E \) are disjoint and possibly empty.
+
+    When \( X \cap Y \) is nonempty, we call \( \cM \backslash X / Y \) a \emph{proper minor} of \( \cM \).
+\end{definition}
+
+\subsubsection{Matroid Minors and Flats}
+
+The careful reader may have noted that the definitions of restriction and contraction matroids are given in terms of independent sets, but we've clearly established we are all about flats here.
+Luckily, we have a very useful property relating the lattice of minors and to the lattice of the original matroid.
+First though, a little notation.
+If \( F \) is a flat of \( \cM \), we will define
+\[
+    \cM_{[\emptyset, F]} = \cM|F
+\]
+to be the restriction by \( F \), and
+\[
+    \cM_{[F, E]} = \cM  / F
+\]
+to be the contraction by \( F \).
+For any two flats \( F_1 \) and \( F_2 \) of \( \cM \), we write
+\[
+    \cM_{[F_1, F_2]} = \cM / F_1 \backslash (E \setminus F_2)
+\]
+to be the minor that results from contracting by \( F_1 \) and restricting to \( F_2 \).
+Notation in hand, we can now state a classic result of matroid theory~\cite[p.~116]{oxleyMatroidTheory2011}.
+\todo{ahh how do i cite things well?}
+
+\begin{proposition}\th\label{thm:minorLattice}
+    Let \( F_1 \) and \( F_2 \) be flats of a matroid \( \cM = (E, \cL)\).
+    Then the lattice of flats of the minor \( \cM_{[F_1, F_2]} \) is isomorphic to the interval of \( \cL \)
+    \[
+        [F_1, F_2] = \{ F_1 \preceq F \preceq F_1 \; | \; F \in \cL \}.
+    \]
+\end{proposition}
+
+This means the lattice of a minor can be ``seen'' within the lattice structure of our original matroid, just up to some relabeling of the nodes.
+We note that this proposition only works for flats, not arbitrary subsets of the ground set, but that's more than enough for what we need.
+
+Of note then is that if \( F_1 \) and \( F_2 \) are adjacent to each other in the lattice of flats, then \( \cM_{[F_1, F_2]} \) is isomorphic to a matroid whose sole flag is \( \{ \emptyset \subsetneq E \} \).
+The Bergman fan of such a matroid is just the point \( \{ 0 \} \), living in a \( 0 \)-dimnesional vector space.
+
+\subsection{Quotients, Products, and Stars}
+
+Finally, we are going to see that quotienting the vector spaces that Bergman fans live in by cones of the fan will split up both the space and the fan itself in very nice ways.
+
+\begin{proposition}\th\label{thm:quotientBijection}
+    Let \( \bSigma_\cM \subset \bN_E \) be the Bergman fan of a matroid, and
+    \[
+        \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_k \} \subseteq \cL^\ast
+    \]
+    be a proper flag of flats.
+    Define, for convenience, \( F_0 = \emptyset \) and \( F_{k+1} = E \).
+    Then the map
+    \begin{gather*}
+        \varphi:\, \bN_E/\langle \sigma_{\scrF} \rangle \to \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}} \\
+        e_I \mapsto \bigoplus_{i=1}^{k+1} e_{I \cap (F_i \setminus F_{i-1})}
+    \end{gather*}
+    is an isomorphism.
+\end{proposition}
+\begin{proof}
+    Consider the very similar map
+    \begin{gather*}
+        \varphi':\, \bN_E \to \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}} \\
+        e_I \mapsto \bigoplus_{i=1}^{k+1} e_{I \cap (F_i \setminus F_{i-1})}.
+    \end{gather*}
+    We will show \( \varphi' \) is a surjective linear map and that its kernel is exactly \( \Span(\sigma_\scrF)  \).
+    With that, we can leverage Noether's first isomorphism theorem, and we will have that \( \varphi \) is an isomorphism.
+
+    Our map is linear by its definition, so let's first show that it is surjective.
+    This isn't too bad.
+    Consider some vector \( w \in  \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}}\),
+    is of the form
+    \[
+        w = \bigoplus_{i=1}^{k+1} \left( \sum_{j \in (F_i \setminus F_{i-1} )} \lambda_j e_j \right);
+    \]
+    i.e.; each is a linear combination of the elements in some \( F_i \setminus F_{i-1} \).
+    This of course is the image of the vector
+    \[
+        v = \sum_{i=1}^{k+1} \left( \sum_{j \in (F_i \setminus F_{i-1} )} \lambda_j e_j \right),
+    \]
+    so we have surjectivity.
+
+    Next we want to show that any element in the \( \Span(\sigma_\scrF) \) in the kernel.
+    We can figure this out seeing what gets mapped to 0 in any one of the \( \bN_{F_i \setminus F i-1} \).
+    From construction of the space, anything in \( \Span( e_{F_i \setminus F{i-1}}) \) is 0 in \( \bN_{F_i \setminus F_{i-1}} \) in particular, the ray \( e_{F_i \setminus F_{i-1}} \) itself.
+    So we can see that some \( v \in \Span( \sigma ) \) is of the form
+    \[
+        v = \lambda_1 e_{F_1} + \lambda_2 e_{F_2} + \cdots + \lambda_k e_{F_k},
+    \]
+    and under our map will be
+    \begin{align*}
+        \phi'(v) & = \lambda_1 \phi'(e_{F_1}) + \lambda_2 \phi'(e_{F_2}) + \cdots + \lambda_k \phi'(e_{F_k})                                                                                                                                                 \\
+                 & = \lambda_1 \left(e_{F_1}\right) + \lambda_2 \left(e_{F_1} \oplus  e_{F_2 \setminus F_1}\right) + \cdots + \lambda_k \left(e_{F_1} \oplus \lambda_k e_{F_2 \setminus F_1} \oplus \cdots \oplus \lambda_k e_{F_k \setminus F_{k-1}}\right) \\
+                 & = (\lambda_1 + \lambda_2 + \cdots + \lambda_k) e_{F_1} \oplus (\lambda_2 + \lambda_3 + \cdots + \lambda_k) e_{F_2 \setminus F_1} \oplus \cdots \oplus \lambda_k e_{F_k \setminus F_{k-1}}                                                 \\
+                 & = (\lambda_1 + \lambda_2 + \cdots + \lambda_k) 0 \oplus (\lambda_2 + \lambda_3 + \cdots + \lambda_k) 0 \oplus \cdots \oplus \lambda_k 0                                                                                                   \\
+                 & = 0
+    \end{align*}
+    Finally we note that the only other thing mapped to 0 would be an element of the form \( \lambda e_{E \setminus F_k} \) which is 0 when mapped to \( \bN_{F_{k+1} \setminus F_k} \).
+    It is not immediately obvious that this is in \( \Span(\sigma_\scrF) \).
+    However, we recall that in \( \bN_E  \), \( e_E = 0 \), which means \( e_{E \setminus F_k} = -e_{F_k} \), which clearly is in the span of \( \sigma_\scrF \).
+    We may conclude then that \( \ker( \phi' ) = \Span(\sigma_\scrF) \).
+
+    With that we have
+    \[
+        \bN_E/\langle \sigma_{\scrF} \rangle \cong \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}}
+    \]
+    by Noether's first isomorphism theorem we have that \( \phi \) is an isomorphism between these spaces.
+\end{proof}
+
+With our isomorphism in hand, we may use it to show that the stars of a matroid's Bergman fan have a local structure equivalent to the product of the Begrman fans of its minors.
+
+\begin{lemma}\th\label{thm:starBijection}
+    Let \( \bSigma_\cM \subseteq \bN_E \) be the Bergman fan of a matroid,
+    and \( \sigma \in \bSigma(k) \) be a cone with ray generators corresponding to some flag \( \scrF \).
+
+    The isomorphism given in \th\ref{thm:quotientBijection} induces a bijection
+    \[
+        \Star(\sigma, \bSigma_{\cM}) \to \prod_{i=1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
+    \]
+\end{lemma}
+\begin{proof}
+    \todo{Words for this proof. Words bad}
+\end{proof}
+
+\section{The Bergman Fan of Matroids are AF}
+
+
+\begin{theorem}
+    \todo{is this more a corollary? maybe?}
+    For any matroid, \( \cM \), inner product, \( \ast \in \Inn \), and cubical value \( z \in \Cub(\bSigma_\cM, \ast) \),
+    \( (\bSigma_\cM, z) \) is AF.
+\end{theorem}
+
+We need only show that the conditions of \th\ref{thm:suffAF} are met specifically for Bergman fans of matroids.
+We'll tackle this one condition at a time.
+
+\begin{lemma}[Connectedness]\th\label{thm:matroidConnected}
+    Let \( \bSigma_\cM \) be the Bergman fan of a matroid of rank \( r + 1 \).
+    For every cone \( \sigma \in \bSigma_\cM(k) \), with \( k \leq r - 2 \),
+    \[
+        \Star(\tau, \bSigma_\cM) \setminus \{ 0 \}
+    \]
+    is connected.
+\end{lemma}
+\begin{proof}
+    To prove this, it is sufficient to show that for any two rays in the fan, we may find a series of faces
+    \[
+        \rho_1 \prec \tau_1 \succ \rho_2 \prec \cdots \succ \rho_{k-1} \prec \tau_{k-1} \succ \rho_k
+    \]
+    where each \( \rho_i \) is a ray and each \( \tau_i \) is a 2-dimmensional face.
+    Since any point in a fan is connected to a ray, specifically one of the generating rays of the cone the point lives in, a path like this between arbitrary rays is enough to show our fan is connected without the origin.
+
+    For some notational convenience, we will write
+    \[
+        \rho_1 \sim \tau_1 \sim \rho_2 \sim \cdots \sim \rho_{k-1} \sim \tau_{k-1} \sim \rho_k
+    \]
+    and let the reader interpret the correct face inclusions.
+    If this seems lazy, please take it up with Fields Medal winner June Huh, from whom we lifted this notation.
+    Additionally, in keeping with our general convention, we'll write \( e_F \) for the ray generated by \( \sum_{i \in F} e_{\{i\}} \) and \( \tau_{F_1, F_2} \) for the cone generated by rays \( e_{F_1} \) and \( e_{F_2} \).
+    Finally, we note that \( \bSigma_\cM \) are at least rank 3 matroids, and so has maximal cones of dimension at least 2.
+    A 1 dimensional fan is, indeed, not connected if you remove the origin.
+
+    Now, we will consider this in two steps.
+    First we'll look at \( \bSigma_\cM \setminus \{ 0 \} \) itself.
+    Let \( e_{F}, e_{F'} \in \bSigma_\cM(1) \) be two arbitrary rays of our fan.
+    If there exists some ground element \( i \in F \cap F' \), then, trivially, we have the sequence
+    \[
+        e_F \sim \tau_{\{F, \{i\}\}} \sim e_{\{i\}} \sim \tau_{\{\{i\}, F'\}} \sim e_F'.
+    \]
+    So, let us consider instead that \( F \cap F' = \emptyset \).
+    Let \( a \in F \) be an element of \( F \) and \( b \in F' \).
+    To start, we have the sequence
+    \[
+        e_F \sim \tau_{\{F, \{a\}\}} \sim e_{\{a\}}.
+    \]
+    Now, recall the properties of the flats of a matroid, specifically property~\ref{def:F3}.
+    This tells us that the flats of rank 2 partition \( E \setminus \{a\} \) and so there must be a rank 2 flat, \( \widehat{F} \), such that \( \{ a, b \} \subseteq \widehat{F} \).
+    Then we have
+    \[
+        e_{\{a\}} \sim \tau_{\left\{\{a\}, \widehat{F}\right\}} \sim e_{\widehat{F}} \sim \tau_{\left\{\widehat{F}, b\right\}} \sim e_{\{b\}} \sim \tau_{\{\{b\}, F'\}} \sim e_{F'},
+    \]
+    showing a sequence from \( e_F \) to \( e_F' \), as desired.
+    With that we have shown there is always a path along 2 dimensional faces between any two rays of the Bergman fan of a matroid, and so is connected even without the origin.
+
+    Next, we'll turn to the stars of our matroid.
+    Let \( k \leq r - 2 \) and \( \sigma_\scrF \in \bSigma_\cM(K) \) be a \( k \)-dimensional cone.
+    We have that \( \Star( \sigma_\scrF, \bSigma_\cM) \) is a fan with maximal cones of dimension \( r - k \), which specifically means they are at least \( 2 \)-dimensional.
+    From \th\ref{thm:starBijection}, we know that, given \( \scrF = \{ F_1 \subsetneq \cdots \subsetneq F_k \} \), we have that \( \Star( \sigma_\scrF, \bSigma_\cM) \) is in bijection with the product fan
+    \[
+        \prod_{i = 1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
+    \]
+    So, it is sufficient to show this product fan is connected.
+    Recall that cones of the product fan are of the form
+    \[
+        (\sigma_1, \sigma_2, \dots, \sigma_k) \in \bSigma_{\cM_{[\emptyset, F_1]}} \times \bSigma_{\cM_{[F_{1}, F_2]}} \times \cdots \times \bSigma_{\cM_{[F_{k-1}, F_k]}} \times \bSigma_{\cM_{[F_{k}, E]}},
+    \]
+    and that the dimension of the cone \( (\sigma_1, \sigma_2, \dots, \sigma_k) \) is the sum of the dimensions of each cone \( \sigma_i \).
+    Rays of the product fan are then of the form \( (0, 0, \dots, 0,  \rho, 0, \dots, 0) \) where \( \rho \) is a ray of the corresponding fan in the product.
+
+    Now, to show our product fan is connected, we'll break this down into two cases.
+    We will omit irrelevant zeros from our notation going forward for ease of reading, but we can add as many zeros in other positions as necessary without changing any part of the proof.
+    In the first case, our two rays come from different fans in the product
+    If \( (\rho_1, 0) \) and \( (0, \rho_2) \) are rays, then, trivially, there exists the path
+    \[
+        (\rho_1, 0) \sim (\rho_1, \rho_2) \sim (0, \rho_2)
+    \]
+    connecting them.
+    The more nuanced case is if we have two rays from the same fan.
+
+    Consider two rays \( \rho_1, \rho_2 \in \bSigma(1)\).
+    If the minor that generates \( \bSigma \) is at least rank 3, then our work above shows there must exist a path between them using only the cones of \( \bSigma \).
+    Where this breaks down, however, is if the minor has rank 2; i.e., the Bergman fan has only 1-dimensional cones.
+    We can't, after removing the origin, get between rays solely within this fan.
+    Recall though that our star fan must be pure of at least dimension 2.
+    This means if this \(\bSigma \) has only 1-dimensional cones, then there is at least one other nonzero fan, which we'll call \( \bm{\Sigma'} \), in the product that has at least a one ray.
+    Let \( \eta \in  \bm{\Sigma'} \) be said ray.
+    Then we have the path
+    \[
+        (\rho_1, 0) \sim (\rho_1, \eta) \sim (0, \eta) \sim (\rho_1, \eta) ~ (\rho_1, 0)
+    \]
+    connecting the two rays of \( \bSigma \).
+
+    With this we've shown that any possible star of a Bergman fan of a matroid is connected even without the origin.
+\end{proof}
+
+Next we may turn to the other requirement, that the quadratic form that determines the volume of the 2-dimensional faces of the normal complex have exactly one negative eigenvalue.
+
+\begin{lemma}[Volume Quadratic Form Has 1 Negative Eigenvalue]\th\label{thm:matroidNegEigen}
+
+\end{lemma}
+\begin{proof}
+    \todo{type up proof}
+\end{proof}
+
+\section{The Log-Concavity of Characteristic Polynomials of Matroids}
+
+\begin{Result}
+    \todo{type out main result}
+\end{Result}
+
+From the work of Nathanson and Ross~\cite{nathansonTropicalFansNormal2021}, we have that there always exist a cubical value of
+\begin{lemma}
+    There is always a cubical value of a Bergman fan of a matroid.
+\end{lemma}
+So, we also \th\ref{thm:suffAF} works for any pseudo-cubical values as well.
+
+\begin{lemma}
+    The values \( \alpha \) and \( \beta \) correspond to pseudo-cubcal \( z \)-values.
+\end{lemma}
+\begin{proof}
+    \todo{write out this proof}
+\end{proof}
+
+We are done!
 
 \end{document}
