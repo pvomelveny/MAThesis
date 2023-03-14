@@ -8,6 +8,7 @@
 \usepackage{xcolor}                 % Nicer Colors
 \usepackage{bm}                     % Nicer bold math symbols
 \usepackage{mathrsfs}               % I need more curly letters 
+\usepackage{mathtools}              % Mostly just for \substack
 \usepackage{caption}                % Better captions and
 \usepackage{subcaption}             % Captions for subfigures
 \usepackage{float}                   % Be strict about [H]ere in figures
@@ -24,6 +25,9 @@
 % Sort out the true phi
 \def\badphi{\phi}
 \def\phi{\varphi}
+% How should we format vectors?
+\renewcommand{\vec}[1]{\bm{#1}}
+\renewcommand{\hat}[1]{\widehat{#1}}
 
 %====================%
 % New Commands 
@@ -66,6 +70,18 @@
 %% Math Symbols
 \newcommand{\Inn}{\mathrm{Inn}}
 \newcommand{\cone}{\mathrm{cone}}
+
+%====================%
+% Messing with things
+%====================%
+% add verticle lines to matrices
+% https://texblog.net/latex-archive/maths/amsmath-matrix/
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+    \hskip -\arraycolsep
+    \let\@ifnextchar\new@ifnextchar
+    \array{#1}}
+\makeatother
 
 %====================%
 % Theorem Environs
