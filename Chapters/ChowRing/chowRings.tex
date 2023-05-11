@@ -3,7 +3,7 @@
 \RequirePackage{standalone}
 \usepackage[draft]{../../MAThesisOutputFormat}
 \input{../../preamble.tex}
-\usepackage[backend=biber,style=numeric]{biblatex}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
 \addbibresource{../../thesis.bib}
 
 \begin{document}
@@ -11,37 +11,280 @@
 \chapter{Chow Rings}
 
 It is time now to delve into the world of algebra, developing the notion of a Chow ring of a matroid.
-This section that will be more challenging to parse without at least some background in abstract algebra.
+The primary goal of this section will be to establish the link between the Chow ring and the characteristic polynomial.
+This will form the first segment of our bridge from combinatorics to geometry.
 
-Much of this section will be presenting results of Adiprasito-Huh-Katz that establish the link between the Chow ring and the characteristic polynomial, forming a necessary bridge
+This section will take some algebraic knowledge for granted; we're not going to define a ring, for example.
+The main takeaway will be in the last section and should be enough to move on to the next chapter.
+However, even for those with some basic algebra we don't expect Chow rings to be a familiar object, so our first order of business is to define them.
 
+\section{What is a Chow Ring?}
 
-\section{Defining a Chow Ring}
+Broadly, Chow rings are a tool from algebraic geometry for studying the intersections of algebraic varieties.
+Chow groups of an algebraic variety are equivalence classes of algebraic cycles of its subvarieties, graded by their codimension.
+They were named after Wei-Liang Chow, who formalized these cycles in \cite{chowEquivalenceClassesCycles1956}.
+Under certain conditions, a product structure can be induced on these groups to give a ring, which encodes additional information about the intersections of the subvarieties.
 
-We will, for example, be taking the notion of a ring entirely for granted.
-Really though, even for those with some background, we don't expect Chow rings to be are somewhat specialized.
-a development of intersection theory in algebraic geometry.
-Not something everyone has seen for sure.
-Luckily, we can exploit the structure of matroids to define a Chow ring without having to go the long way through intersection theory.
+For those who don't already have some idea of what a Chow ring is, the above probably invites more questions than it clarifies.
+Happily, as hinted by the fact that the title of this chapter is not ``A Brief Introduction to Algebraic Geometry and Intersection Theory'', we will not have to tackle the full theory to get a result here.
+While there are algebraic varieties hiding in the wings, we will see that the combinatorial data of a matroid allow us to define its corresponding Chow ring quite directly.
 
-A Chow ring is ``a generalization of cohomology for alegbraic geometry''
-\todo{Introduce the Chow Ring of a matroid. From lattice of flats to quotient ring}
-\todo{Use our example matroid and construct its Chow Ring}
+\subsection{The Chow Ring of a Matroid}
 
-\subsection{Properties of Chow Rings}
-\todo{Use words like \emph{homogeneous polynomial}, \emph{graded ring}, etc\dots}
+For our purposes, we will define the Chow ring to be this ``short-cut'' construction.
+That this construction corresponds to the idea of the Chow ring presented above comes from the work started by De Cocini and Procesi \cite{deconciniWonderfulModelsSubspace1995} and generalized to the form we will use by Feichtner and Yuzvinsky \cite{feichtnerChowRingsToric2004}.
+\begin{definition}[The Chow Ring of a Matroid]\label{def:chowRing}
+    Let \( \cM = (E, \cL)\) be a matroid.
+    Associate a polynomial ring with \( \cM \) given by
+    \[
+        P_\cM = \R[x_F \; | \; F \in \cL^\ast],
+    \]
+    and let
+    \begin{align*}
+        I_\cM & = \left\langle x_{F_1}x_{F_2} \; \middle| \; F_1 \not\subseteq F_2\, \text{and}\, F_2 \not\subseteq F_1 \right\rangle, \\
+        J_\cM & = \left\langle \sum_{e_1 \in F} x_{F} - \sum_{e_2 \in F} x_{F} \; \middle| \; e_1, e_2 \in E \right\rangle
+    \end{align*}
+    be ideals of \(P_\cM\).
+
+    The \emph{Chow ring of \( \cM \)} is given by the quotient
+    \[
+        A^{\bullet}(\cM) = \frac{P_{\cM}}{I_{\cM} + J_{\cM}}.
+    \]
+\end{definition}
+
+By way of some intuition building, the idea here is to create a polynomial ring with variables corresponding to the proper flats of our matroid, then encode the combinatorial relations of the matroid using a quotient.
+We could think of the ideal \( I_{\cM} \) as telling us that any monomial involving flats that don't form a flag are removed.
+The ideal \( J_{\cM} \) has a less obvious intuition, but the linear forms that generate it give us useful relations that we will use later.
+As always, working a small example will help.
+
+\subsubsection{A Small Chow Ring Example}
+Recall our ongoing example matroid \( \cM \), whose ground set is \( E = \{ a,b,c,d \} \) and with proper flats
+\[
+    \cL^\ast = \{ a, b, c, d, abd, ac, bc, cd \}.
+\]
+
+Then we have the polynomial ring
+\[
+    P_{\cM} = \R[x_{a}, x_{b}, x_{c}, x_{d}, x_{abd}, x_{ac}, x_{bc}, x_{cd}];
+\]
+i.e.\ a real polynomial ring in 8 variables.
+Elements of the ideal \( I_{\cM} \) will be any multiple of a monomial containing variables corresponding to non-comparable flats, such as
+\[
+    x_a x_d \in I_{\cM} \quad \text{and} \quad x_c x_{abd} \in I_{\cM}.
+\]
+The ideal \( J_{\cM} \) in turn is generated from differences of sums of all variables that contain a particular ground element. For example,
+\begin{align*}
+    \sum_{a \in F}x_F - \sum_{c \in F}x_F & = x_a + x_{abd} + x_{ac} - x_c - x_{ac} - x_{cd} \\
+                                          & = x_a + x_{abd} - x_c - x_{cd} \in J_{\cM}.
+\end{align*}
+
+Now, elements in our Chow ring \( A^\bullet(\cM) \) are equivalence classes, as expected for a quotient ring.
+We see that \( J_\cM \) gives us relations like
+\[
+    [x_a + x_{abd}] = [x_c + x_{cd}],
+\]
+or, equivalently,
+\[
+    [x_a] = [x_c + x_{cd} - x_{abd}].
+\]
+
+In continuing to strive for succinct notation, we will drop the square brackets on elements of the Chow ring going forward.
+
+\section{The Degree Map}
+
+Now that we have an idea of what the Chow ring is, we can introduce the next key idea, the degree map.
+However, to get to the degree map we will need the property that Chow rings are graded.
+
+\subsection{This Will Be Graded}
+Our goal here to show that the Chow ring is a graded ring.
+Those that feel that this property is obvious can skip to the next section; for everyone else we'll provide a quick summary.
+\begin{definition}[Graded Ring]
+    A ring \( R \) is \emph{graded} if the underlying additive group of \( R \) can be decomposed into a direct sum
+    \[
+        R = \bigoplus_{i=0}^\infty R_i
+    \]
+    where each \( R_i \) is an abelian group such that \( R_i R_j \subseteq R_{i+j} \) for all \( i, j \in \Z_{\geq 0}\).
+    Elements of \( R_i \) are called \emph{homogeneous of degree \( i \)}.
+\end{definition}
+From this definition we can see that any polynomial ring, \( P \) is a graded ring
+\[
+    P =  \bigoplus_{i=0}^\infty P_i
+\]
+where each \( P_i \) is, naturally, all homogeneous polynomials of degree \( i \).
+
+Additionally, we can define a specific kind of ideal for graded rings, homogeneous ideals.
+\begin{definition}[Homogeneous Ideals]
+    Let \( R \) be a graded ring. An ideal \( I \) of \( R \) is \emph{homogeneous} if
+    \[
+        I = \langle a_1, a_2, \dots, a_n \rangle
+    \]
+    and each \( a_i \) is homogeneous, i.e., \( a_i \in R_k \) for some \( k \in \Z_{\geq 0} \).
+\end{definition}
+Looking back at our definition, we see that the ideal \( I_\cM \) is generated by quadratic monomials, while the generators of \( J_\cM \) are all linear.
+Thus, \( I_\cM \) and \( J_\cM \) are homogeneous ideals.
+
+Definitions in place, we can state a small proposition.
+\begin{proposition}
+    Let \( R \) be a graded ring and \( I \) a homogeneous ideal.
+    Then the quotient \( R/I \) is itself a graded ring.
+    Specifically,
+    \[
+        R/I = \bigoplus_{n=0}^\infty R_n/I_n
+    \]
+    where \( I_n = I \cap R_n \).
+\end{proposition}
+We would say a proof for this could be found in any algebra textbook, but it appears to always be left as an exercise for the reader; a tradition we see no reason to break.
+
+Since the Chow ring is the quotient of a polynomial ring and homogeneous ideals, we have that \( A^\bullet(\cM) \) is a graded ring.
+Even better, from proposition 5.5 in \cite{adiprasitoHodgeTheoryCombinatorial2018}, if \( rk(\cM) = r + 1 \) then
+\[
+    A^\bullet = \bigoplus_{i=0}^r A^i(\cM),
+\]
+as \( A^k = \{ 0 \} \) for all \( k > r \).
+All the components of \( A^\bullet(\cM) \) correspond to ranks of flats of \( \cM \) and are empty otherwise.
+
 
 \subsection{The Degree Map}
-\todo{How do I explain this?
-    I guess I can at least say it's linear and sends terms of full degree to 1.
-    Maybe I'll understand it this time around}
 
+We needed that the Chow ring is a graded ring as the degree map is defined only on the top degree components of the ring.
+\begin{definition}[Degree Map]\label{def:degMap}
+    Let \( \cM \) be a matroid of rank \( r + 1 \).
+    The \emph{degree map} of \( \cM \) is a linear map
+    \[
+        \deg:\; A^r(\cM) \to \Z
+    \]
+    such that for any complete flag \( \scrF \subseteq \cL \) of \( \cM \),
+    \[
+        \deg \left( \prod_{F \in \scrF}x_F \right) = 1.
+    \]
+\end{definition}
+
+At first glance, it is not obvious that such a map must exist or that if it does that it would be unique.
+However, Adiprasito, Huh, and Katz showed in \cite{adiprasitoHodgeTheoryCombinatorial2018} that this map exists for every matroid and is uniquely characterized by this definition.
+\todo{Work out a couple short examples of degree map computations?}
 
 \section{Relationship with the Characteristic Polynomial}
 
-\todo{Come up with a nice way of relating the reduced characteristic polynomial with our ring (and therefore fan)}
-\todo{Define \(\alpha\) and \(\beta\). Here or in a subsection? Or should it be up when we introduce the ring itself?}
+Right away we are going to have to confess that all of this Chow ring business doesn't actually relate to the characteristic polynomial directly.
+This section title is a lie.
+Instead, we have to introduce the actual target of our machinations, the reduced characteristic polynomial.
+The definition is quite straightforward, but requires a fact about the characteristic polynomial.
+While this is usually just stated as fact, we wish to take a small tangent for those interested.
 
+\subsection{Digression: The M\"obius Function and the Characteristic Polynomial}
+Recall we mentioned that Rota defined the characteristic polynomial using the M\"obius function, but avoided it for ease of understanding.
+However, using this alternative definition makes our work in this section quite straightforward.
+Forgive us for trading clarity for elegance.
 
+\begin{definition}[M\"obius Function]\label{def:mobiusFunc}
+    Let \( \cM \) be a matroid and \( \cL \) be its lattice of flats.
+    Then the \emph{M\"obius function} on \( \cM \) is the map
+    \[
+        \mu_\cM \,:\; \cL \times \cL \to \Z
+    \]
+    defined recursively for any \( F, F' \in \cL \) by
+    \[
+        \mu_\cM(F, F') =
+        \begin{dcases}
+            \quad\; 1 \vphantom{\sum}                                    & \text{if}\; F = F'            \\
+            - \sum_{\mathclap{F \subseteq X \subsetneq F'}}\mu_\cM(F, X) & \text{when}\; F \subsetneq F' \\
+            \quad\; 0                                                    & \text{otherwise}.
+        \end{dcases}
+    \]
+\end{definition}
+Truly, of all the definitions we've presented so far, the M\"obius function most deserves some serious contemplation over a cup of coffee.
+We won't go that far afield here, but we can now use it in an equivalent definition of the characteristic polynomial.
+\begin{definition}[Characteristic Polynomial -- via M\"obius functions]
+    Let \( \cM = (E, \cL) \) be a matroid.
+    Then we may write the characteristic polynomial of \( \cM \) as
+    \[
+        \chi_\cM(z) = \sum_{F \in \cL} \mu_\cM(\emptyset, F) z^{\rk(\cM) - \rk(F)}.
+    \]
+\end{definition}
+This definition does make the importance of the lattice structure of the flats much more clear.
+With this we can present, and prove, our fact about the characteristic polynomial.
+\begin{proposition}\th\label{prop:charOfOneIsZero}
+    Let \( \cM = (E, \cL) \) be any matroid, then
+    \[
+        \chi_\cM(1) = 0.
+    \]
+\end{proposition}
+\begin{proof}
+    This follows directly from the definition of the M\"obius function, and a little reindexing.
+    We see that
+    \begin{align*}
+        \chi_\cM(1) & = \sum_{F \in \cL} \mu_\cM(\emptyset, F) 1^{\rk(\cM) - \rk(F)}                                                                                             \\
+                    & =  \sum_{F \in \cL} \mu_\cM(\emptyset, F)                                                                                                                  \\
+                    & = \mu_\cM(\emptyset, E) +  \sum_{\mathclap{\emptyset \subseteq F \subsetneq E}} \mu_\cM(\emptyset, F)                                                      \\
+                    & = -\sum_{\mathclap{\emptyset \subseteq F \subsetneq E}} \mu_\cM(\emptyset, F) + \sum_{\mathclap{\emptyset \subseteq F \subsetneq E}} \mu_\cM(\emptyset, F) \\
+                    & = 0,
+    \end{align*}
+    with the second to last equality coming from the application of the definition.
+\end{proof}
+From this we have the following corollary and main goal of this section.
+\begin{corollary}\th\label{thm:charPolyFactor}
+    For any matroid \( \cM \), the characteristic polynomial \( \chi_\cM(z) \) has a factor of \( (z - 1) \).
+\end{corollary}
+Digression aside, we can get back to defining the reduced characteristic polynomial.
 
+\subsection{The Reduced Characteristic Polynomial}
+As we said, the reduced characteristic polynomial is easy to define in terms of the characteristic polynomial.
+\begin{definition}[Reduced Characteristic Polynomial]\label{def:reducedCharPoly}
+    Let \( \cM \) be a matroid of rank \( r + 1 \).
+    The \emph{reduced characteristic polynomial} of \( \cM \) is
+    \[
+        \ochi_\cM(z) = \frac{\chi_\cM(z)}{(z-1)}.
+    \]
+
+    Further, we may collect the powers of \( z \) and write the reduced characteristic polynomial as
+    \[
+        \ochi_\cM(z) = \sum_{k=0}^r \ow_k z^{r-k},
+    \]
+    where the \( \ow_0, \ow_1, \dots, \ow_k \) are the reduced coefficients of \( \ochi_\cM(z) \).
+\end{definition}
+That this is well-defined for any matroid follows from \th\ref{thm:charPolyFactor}.
+It is actually this sequence, \(\{\ow_k\}_1^r \), that Adiprasito, Huh, and Katz spent most of \cite{adiprasitoHodgeTheoryCombinatorial2018} proving is log-concave.
+Once we have that, it follows that our original sequence of Whitney numbers are log-concave.
+\todo{Dusty, this is embarassing, but I forget why it follows easily...}
+This too is our strategy, so these reduced coefficients really are key players in this story.
+But we have still yet to link the characteristic polynomial, reduced or not, to the Chow ring.
+
+\subsection{The Divisors \texorpdfstring{\( \alpha \)}{alpha} and \texorpdfstring{\( \beta \)}{beta}}
+Right off the bat, let's learn a little jargon.
+\begin{definition}[Divisor]
+    A \emph{divisor} of a Chow ring \( A^\bullet(\cM) \) is any linear term, i.e., an element of \( A^1(\cM) \).
+\end{definition}
+We are working towards introducing a proposition from \cite{adiprasitoHodgeTheoryCombinatorial2018} that links certain divisors to the reduced coefficients, via the degree map.
+We'll start by introducing these special divisors.
+\begin{definition}[\texorpdfstring{\( \alpha \)}{alpha} and \texorpdfstring{\( \beta \)}{beta}]\label{def:alphaBeta}
+    Let \( \cM \) be a matroid with ground set \( E \).
+    For every element \( e \in E \) we define the divisors
+    \[
+        \alpha_e = \sum_{e \in F} x_F \quad \text{and} \quad \beta_e = \sum_{e \notin F}x_F.
+    \]
+
+    Further, as elements of \( A^\bullet(\cM) \), \([\alpha_{e}] = [\alpha_{e'}] \) and \([\beta_{e}] = [\beta_{e'}] \) for any \( e, e' \in E \).
+    Going forward we may refer simply to \( \alpha \) and \( \beta \), since the class is independent of a choice of ground element.
+\end{definition}
+
+With this, we may state the main takeaway from this chapter.
+Proposition 9.5 of \cite{adiprasitoHodgeTheoryCombinatorial2018} provides the link between \( \alpha \) and \( \beta \) and the reduced coefficients.
+\begin{proposition}\th\label{thm:coeffIsDeg}
+    Given any matroid \( \cM \) with reduced coefficients \( \ow_0, \dots, \ow_r \), we have the relationship
+    \[
+        \ow_k = \deg(\alpha^{r-k}\beta^k).
+    \]
+    for all \( 0 \leq k \leq r \).
+\end{proposition}
+Just to confirm our understanding of the degree map, recall it is defined on elements of \( A^r(\cM) \).
+Since \( \alpha, \beta \in A^1(\cM)\), we'll have \( \alpha^{r-k}\beta^k \in A^r(\cM) \) and so this makes sense as input to the degree map.
+
+This proposition means that if we can prove
+\[
+    \deg(\alpha^{r-k}\beta^k)^2 \geq \deg(\alpha^{r-k-1}\beta^{k-1}) \deg(\alpha^{r-k+1}\beta^{k+1})
+\]
+for \( 0 < k < r \) we'll have shown that the reduced coefficients are log-concave and thus so too are the original coefficients.
+Here now is where we diverge from the strategy put forth in \cite{adiprasitoHodgeTheoryCombinatorial2018}.
+They go on to show this relationship in a very algebraic manner, proving that the Chow ring of a matroid has many desirable properties that eventually yield the desired result.
+We, on the other hand, will now move into the world of geometry and find a different way to generate our log-concave sequence.
 \end{document}

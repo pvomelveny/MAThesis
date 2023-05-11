@@ -7,3 +7,6 @@ polytope
 axiomatizations
 meet-semilattice
 matriod
+subvarieties
+polytopes
+topologist

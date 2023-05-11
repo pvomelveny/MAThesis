@@ -500,7 +500,7 @@ It is this second definition that will be of key importance for the following ch
 The first definition of matroids should, again, look very familiar.
 
 \begin{definition}[Matroid --- Independent Set Axioms]\th\label{def:MatroidIndpendentAxioms}
-    A \emph{matroid} is a 2-tuple  \( \sM = (E, \I) \), where \( E \) is a finite set, called the \emph{ground set}, and \( \I \subseteq 2^E \) is a collection of subsets of \( E \), called the \emph{independent sets}, with the following properties:
+    A \emph{matroid} is a 2-tuple  \( \cM = (E, \I) \), where \( E \) is a finite set, called the \emph{ground set}, and \( \I \subseteq 2^E \) is a collection of subsets of \( E \), called the \emph{independent sets}, with the following properties:
     \begin{enumerate}[label=(I\arabic*)]
         \item \( \emptyset \in \I \).
         \item If \( I \in \I \) and \( I' \subseteq I \), then \( I' \in \I \).
@@ -572,7 +572,7 @@ It's actually quite a fun exercise to develop parallel definitions from differen
 First, we will finally address a pattern we've noted earlier, that the largest independent sets all seem to have the same number of elements, or, as we like to say in the business, the same \emph{cardinality}.
 To do so we'll introduce the notion of a basis of a matroid.
 \begin{definition}[Basis]\th\label{def:basis}
-    Given a matroid \( \cM = (E, \I) \), an independent set \( B \in \I \) is a \emph{basis} of \( \sM \) if
+    Given a matroid \( \cM = (E, \I) \), an independent set \( B \in \I \) is a \emph{basis} of \( \cM \) if
     \[
         B \cup e \notin \I
     \]
@@ -1155,7 +1155,7 @@ First though, we must establish that the set of flats does indeed form a lattice
     A meet-semilattice with a maximal element is a lattice, and so \( \cF \) forms a lattice.
 \end{proof}
 
-Now, finally we can talk about a lattice of flats.
+Now we can talk about a lattice of flats.
 To motivate this, let's look at the lattice of our example matroid, \( \sM \).
 It is, if not traditional, convenient to structure a lattice graphically in a \emph{Hasse diagram}.
 
@@ -1205,19 +1205,19 @@ Since \textit{every} lattice of flats always has 1 element of rank~0 as a minima
 \end{definition}
 
 Flags are, then, just collections of flats where you can nest all the flats; a little set theoretic \textit{matryoshka}.
-On the Hasse diagram, a flag is any collection of entries connected by lines (with the option to skip intermediate flags).
+On the Hasse diagram, a flag is any collection of entries connected by lines (with the option to skip intermediate flats).
 Maximal flats will be those that take you along a path on the Hasse diagram from rank 1 all the way up to the rank right below that of the matroid itself, including something from every rank in between.
-One thing to remember, for every flat \( F \), the single element flag \( \scrF = \{ F \} \) is, indeed, a flag.
+One thing to remember, for every flat \( F \) the single element flag \( \scrF = \{ F \} \) is, indeed, a flag.
 
 \todo{Should i list flags of \( \sM \)?}
 
 \subsubsection{`Tis the Gift to Be Simple}
 
-If a serious matroid theorist is, for some inexplicable reason, subjecting themselves to this section, we feel the need to admit one simplifying assumption, pun unintended, we intend to make (and have implicitly made with our example).
+If a serious matroid theorist is, for some inexplicable reason, subjecting themselves to this section, we feel the need to admit one simplifying assumption we intend to make (and have implicitly made with our example).
 Since we care primarily about the lattice structure of our matroid, we assume all of our matroids are \emph{simple}.
 
 For the rest of us, the non-serious, a brief explanation.
-A matroid is simple if it does not have any \emph{loops}, elements in the ground set that have rank 0, or \emph{parallel edges}, sets of elements that share identical (in)dependence relations.
+A matroid is simple if it does not have any \emph{loops}, elements in the ground set that have rank 0, or \emph{parallel edges}, sets of elements that share identical independence relations.
 If this feels overly restrictive, worry not, for Oxley\cite[p.~49]{oxleyMatroidTheory2011} comes to our rescue.
 \todo{get the right page number for oxley}
 \begin{proposition}[Simplification Preserves Lattice Structure]\th\label{thm:simplificationLattice}
