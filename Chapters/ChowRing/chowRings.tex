@@ -96,7 +96,7 @@ Now that we have an idea of what the Chow ring is, we can introduce the next key
 However, to get to the degree map we will need the property that Chow rings are graded.
 
 \subsection{This Will Be Graded}
-Our goal here to show that the Chow ring is a graded ring.
+Our goal here is to show that the Chow ring is a graded ring.
 Those that feel that this property is obvious can skip to the next section; for everyone else we'll provide a quick summary.
 \begin{definition}[Graded Ring]
     A ring \( R \) is \emph{graded} if the underlying additive group of \( R \) can be decomposed into a direct sum
@@ -116,7 +116,7 @@ Additionally, we can define a specific kind of ideal for graded rings, homogeneo
 \begin{definition}[Homogeneous Ideals]
     Let \( R \) be a graded ring. An ideal \( I \) of \( R \) is \emph{homogeneous} if
     \[
-        I = \langle a_1, a_2, \dots, a_n \rangle
+        I = \langle a_1, a_2, \dots \rangle
     \]
     and each \( a_i \) is homogeneous, i.e., \( a_i \in R_k \) for some \( k \in \Z_{\geq 0} \).
 \end{definition}
@@ -149,7 +149,7 @@ All the components of \( A^\bullet(\cM) \) correspond to ranks of flats of \( \c
 We needed that the Chow ring is a graded ring as the degree map is defined only on the top degree components of the ring.
 \begin{definition}[Degree Map]\label{def:degMap}
     Let \( \cM \) be a matroid of rank \( r + 1 \).
-    The \emph{degree map} of \( \cM \) is a linear map
+    The \emph{degree map} of \( \cM \) is the linear map
     \[
         \deg:\; A^r(\cM) \to \Z
     \]
@@ -161,7 +161,6 @@ We needed that the Chow ring is a graded ring as the degree map is defined only 
 
 At first glance, it is not obvious that such a map must exist or that if it does that it would be unique.
 However, Adiprasito, Huh, and Katz showed in \cite{adiprasitoHodgeTheoryCombinatorial2018} that this map exists for every matroid and is uniquely characterized by this definition.
-\todo{Work out a couple short examples of degree map computations?}
 
 \section{Relationship with the Characteristic Polynomial}
 
@@ -238,14 +237,106 @@ As we said, the reduced characteristic polynomial is easy to define in terms of 
 
     Further, we may collect the powers of \( z \) and write the reduced characteristic polynomial as
     \[
-        \ochi_\cM(z) = \sum_{k=0}^r \ow_k z^{r-k},
+        \ochi_\cM(z) = \sum_{k=0}^r (-1)^k\ow_k z^{r-k},
     \]
-    where the \( \ow_0, \ow_1, \dots, \ow_k \) are the reduced coefficients of \( \ochi_\cM(z) \).
+    where the \( \ow_0, \ow_1, \dots, \ow_r \) are the reduced coefficients of \( \ochi_\cM(z) \).
 \end{definition}
 That this is well-defined for any matroid follows from \th\ref{thm:charPolyFactor}.
-It is actually this sequence, \(\{\ow_k\}_1^r \), that Adiprasito, Huh, and Katz spent most of \cite{adiprasitoHodgeTheoryCombinatorial2018} proving is log-concave.
-Once we have that, it follows that our original sequence of Whitney numbers are log-concave.
-\todo{Dusty, this is embarassing, but I forget why it follows easily...}
+The following proposition tells us why these coefficients are going to be important.
+\begin{lemma}\th\label{reducedImpliesOriginal}
+    Let  \( \ow_0, \ow_1, \dots, \ow_r \) be the reduced coefficients of the reduced characteristic polynomial \( \ochi_\cM(z) \) of some matroid \( \cM \).
+    If
+    \[
+        \{\ow_0, \ow_1, \dots, \ow_r \}
+    \]
+    is a log-concave sequence, then the Whitney numbers of the first kind of \( \cM \),
+    \[
+        w_0, w_1, \dots, w_{r+1},
+    \]
+    also form a log-concave sequence.
+\end{lemma}
+\begin{proof}
+    % First, we would like to recall a readily varifiable fact about log-concave sequences of strictly positive numbers.
+    % If \( \{ \alpha_0, \alpha_1, \dots, \alpha_k \} \) is a log-concave sequence if and only if
+    % \[
+    %     \frac{\alpha_1}{\alpha_0} \geq \frac{\alpha_2}{\alpha_1} \geq \cdots \geq \frac{\alpha_k}{\alpha_{k-1}}.
+    % \]
+    % This follows immediately from the property that \( \alpha_k^2 \geq \alpha_{k-1}\alpha_{k+1} \).
+
+    % Now on to the main part of our proof.
+    Let \( \cM \) be a matroid of rank \( r + 1 \) and
+    \[
+        \{\ow_0, \ow_1, \dots, \ow_r \}
+    \]
+    be the reduced coefficients of the reduced characteristic polynomial \( \ochi_\cM(z) \).
+    Assume that \( \{\ow_0, \ow_1, \dots, \ow_r \} \) is a log-concave sequence.
+
+    To recover the characteristic polynomial of \( \cM \) we can multiply our polynomial by a factor of \( (z-1) \).
+    This gives us
+    \begin{align*}
+        (z - 1)\sum_{k=0}^r(-1)^k \ow_k z^{r-k} & = z\sum_{k=0}^r(-1)^k \ow_k z^{r-k} - \sum_{k=0}^r(-1)^k \ow_k z^{r-k}              \\
+                                                & = \sum_{k=0}^r(-1)^k \ow_k z^{r-k+1} + \sum_{k=0}^r(-1)^{k+1} \ow_k z^{r-k}         \\
+                                                & = \sum_{k=0}^r(-1)^k \ow_k z^{r-k+1} + \sum_{k=1}^{r+1}(-1)^{k} \ow_{k-1} z^{r-k+1} \\
+                                                & = \ow_0 z^{r+1} + \sum_{k=1}^r (-1)^k (\ow_k + \ow_{k-1})z^{r-k} + (-1)^{r+1}\ow_r,
+    \end{align*}
+    where the last two equalies are just a result of some clever reindexing.
+    For convenience, we'll define \( \ow_{-1} = \ow_{r+1} = 0 \).
+    We note that \( \{ \ow_{-1}, \ow_0, \ow_1, \dots, \ow_r, \ow_{r+1} \} \) remains a log-concave sequence.
+    This lets us write
+    \[
+        \ow_0 z^{r+1} + \sum_{k=1}^r (-1)^k (\ow_k + \ow_{k-1})z^{r-k+1} + (-1)^{r+1}\ow_r = \sum_{k=0}^{r+1}(-1)^k(\ow_k + \ow_{k-1})z^{r-k}.
+    \]
+    Recalling the definition of the characteristic polynomial and its coefficients, we see that have shown that
+    \[
+        w_k = \ow_k + \ow_{k-1},
+    \]
+    for \( 0 \leq k \leq r+1 \).
+
+    Now, we wish to show the log-concavity of the coefficients, so consider the expression \( w_k^2 - w_{k-1}w_{k+1} \).
+    If we can show this must be non-negative for any \( 0 < k < r+1 \), we'll have that the sequence is log-concave.
+    First let's manipulate the expression a bit to get
+    \begin{align*}
+        w_k^2 - w_{k-1}w_{k+1} & = (\ow_k + \ow_{k-1})^2 - (\ow_{k-1} + \ow_{k-2})(\ow_{k+1} + \ow_{k})                                                                               \\
+                               & = (\ow_k^2 + 2\ow_k \ow_{k-1} + \ow_{k-1}^2 \big) - \big( \ow_{k-1} \ow_{k+1} + \ow_{k-1}\ow_{k} + \ow_{k+1}\ow_{k-2} + \ow_{k} \ow_{k-2})           \\
+                               & = (\ow_k^2 - \ow_{k-1}\ow_{k+1}) + (\ow_{k-1}^2 - \ow_{k-2}\ow_{k}) + (\ow_k \ow_{k-1} - \ow_k \ow_{k-1}) + (\ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} ) \\
+                               & = (\ow_k^2 - \ow_{k-1}\ow_{k+1}) + (\ow_{k-1}^2 - \ow_{k-2}\ow_{k}) + (\ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} ).
+    \end{align*}
+    We wish to conclude that this is non-negative.
+    Immediately we have that
+    \begin{align*}
+        \ow_k^2 - \ow_{k-1}\ow_{k+1} \geq 0, \\
+        \ow_{k-1}^2 - \ow_{k-2}\ow_{k} \geq 0
+    \end{align*}
+    from the log-concavity of the reduced coefficients.
+    All that's left then is to show that the term
+    \[
+        \ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} \geq 0.
+    \]
+    If \( k = 1 \) or \( k = r \) then this is immediately true, as \(\ow_k \ow_{k-1}\) is certainly non-negative.
+    We'll asuume otherwise, which means \( \ow_{k-2}, \ow_{k-1}, \ow_k, \) and \( \ow_{k+1} \) are all non-negative.
+    Now, consider that it must be that
+    \[
+        \frac{\ow_{k-1}}{\ow_{k-2}} \geq \frac{\ow_k}{\ow_{k-1}} \geq \frac{\ow_{k+1}}{\ow_k}.
+    \]
+    This follows directly from the definition of log-concavity and that they're all non-zero.
+    This means
+    \[
+        \frac{k-1}{\ow_{k-2}} \geq \frac{\ow_{k+1}}{\ow_k}
+    \]
+    and so
+    \[
+        \ow_k \ow_{k-1} \geq \ow_{k+1} \ow_{k-2}
+    \]
+    giving us
+    \[
+        \ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} \geq 0
+    \]
+    as desired.
+
+    Having shown that \( w_k^2 - w_{k-1}w_{k+1} \) for all \( 1 \leq k \leq r \) must be non-negative, we conclude that the sequence \( \{ w_k \}_{k=0}^{r+1} \) is log-concave.
+
+\end{proof}
+It is actually this sequence, \(\{\ow_k\}_{k=0}^r \), that Adiprasito, Huh, and Katz spent most of \cite{adiprasitoHodgeTheoryCombinatorial2018} proving is log-concave.
 This too is our strategy, so these reduced coefficients really are key players in this story.
 But we have still yet to link the characteristic polynomial, reduced or not, to the Chow ring.
 
@@ -267,7 +358,7 @@ We'll start by introducing these special divisors.
     Going forward we may refer simply to \( \alpha \) and \( \beta \), since the class is independent of a choice of ground element.
 \end{definition}
 
-With this, we may state the main takeaway from this chapter.
+With this, we may state the key takeaway from this chapter.
 Proposition 9.5 of \cite{adiprasitoHodgeTheoryCombinatorial2018} provides the link between \( \alpha \) and \( \beta \) and the reduced coefficients.
 \begin{proposition}\th\label{thm:coeffIsDeg}
     Given any matroid \( \cM \) with reduced coefficients \( \ow_0, \dots, \ow_r \), we have the relationship

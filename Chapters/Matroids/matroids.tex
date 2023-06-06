@@ -176,8 +176,7 @@ For the impatient \emph{and} untrusting, we suggest that the only thing really n
 
 As a point of pure notation, the above list is ugly.
 We are going to be working with sets of this form so much in this paper that, in order to avoid a shortage of curly brackets, we will introduce a more tidy notation.
-Going forward, we will write the elements of the internal sets adjacent to each other to represent the set containing them;
-e.x.\ we will write the set \( \big\{ \{ a, b \}, \{ a, b, d \} \big\} \) as \( \{ ab, abd \} \).
+Going forward, we will write the elements of the internal sets adjacent to each other to represent the set containing them; for example we will write the set \( \big\{ \{ a, b \}, \{ a, b, d \} \big\} \) as \( \{ ab, abd \} \).
 Thus, we will more compactly identify the linearly independent subsets of \( E_V \) as
 \[
     \{
@@ -242,7 +241,7 @@ Then \( c \in acd \) is such an element, and we confirm that \( ab \cup c = abc 
 This property is not immediately obvious, though may be believable to those who have done a proof based linear algebra class.
 
 These are the three properties of linearly independent sets we wish to highlight here.
-We could use these properties alone motivate the first definition of a matroid.
+We could use these properties alone to motivate the first definition of a matroid.
 However, we have one more detour before we get to matroids proper.
 There is another area where independence arises quite naturally, and it will be useful to know going forward.
 
@@ -260,14 +259,14 @@ Not to be confused with the graph of a function or whatever it is business analy
 There are quite a few definitions of graphs, each allowing for slightly different properties, but for our purposes, we can use a rather basic definition.
 \begin{definition}[Graph]\label{def:graph}
 
-    A \emph{graph} is a tuple of sets \( G = (V, E) \), where \( V \) is a set of objects known as vertices and
+    A \emph{graph} is a pair of sets \( G = (V, E) \), where \( V \) is a set of objects known as vertices and
     \[
         E \subseteq \big\{ \{x, y\} \; | \; x, y \in V \big\}
     \]
     is a set of edges.
 \end{definition}
 A brief aside for our friends who actually care about graphs;
-The definition here is for an \emph{undirected simple graph permitting loops}.
+the definition here is for an \emph{undirected simple graph permitting loops}.
 The treatment of graphs and their relation to matroids in this paper extends easily enough for most other graphs because, as far as matroids are concerned, this kind of graph carries pretty much all the information necessary.
 Indeed, we will see soon enough that even allowing loops is an unnecessary flourish.
 We again recommend Oxley~\cite{oxleyMatroidTheory2011} for the serious graph theorist's entry into matroids.
@@ -277,7 +276,7 @@ Here, an example and corresponding picture should help immensely.
 Let \( V = \{ v_1, v_2, v_3, v_4 \} \) be a vertex set.
 Now we must define edges between vertices.
 For later convenience, we will name these edges.
-Let \( a = \{ v_1, v_2 \}, \; b = \{v_2,v_3\},\; c = \{ v_3, v_4 \},\; d = \{ v_1, v_3 \}, \) and \( e = \{ v_4, v_4 \} \);
+Let \( a = \{ v_1, v_2 \}, \; b = \{v_2,v_3\},\; c = \{ v_3, v_4 \},\) and \( d = \{ v_1, v_3 \}, \);
 then let \( E = \{ a, b, c, d, e \} \) be our edge set.
 Recall that, for example,  \( c \) represents an edge, or connection, between the vertex \( v_3 \) and the vertex \( v_4 \).
 With both those pieces, we have the graph \( G = (E, V) \).
@@ -347,7 +346,7 @@ Now that we have a walk, we may define a cycle.
     \]
     where \( v_1 = v_k \) and \( v_i \neq v_j \) when \( i \neq j \) otherwise.
 
-    Further, we say a set of edges \emph{contains a cycle} if any subset of those edges, with the corresponding vertices, is a cycle.
+    Further, we say a set of edges \emph{contains a cycle} if there is a cycle whose edges are contained in the set.
 \end{definition}
 That is, a cycle is a walk that starts and ends at the same place and otherwise passes through unique vertices.
 Given the notion of independence we began to motivate above, hopefully the utility of defining a cycle is apparent.
@@ -460,7 +459,7 @@ Let us immediately take to our example for this section to consider some possibl
 
 Now that we've got some practice under our belt, it's time to play our favorite game again.
 Given our example graph, \( G = (V, E) \), we want to identify the set of all possible independent vectors.
-A few moments of tracing paths along the graph, hunting for cycles, will reveal that from our set of edges \( E = \{ a, b, c, d, e \} \), the independent subsets are precisely
+A few moments of tracing paths along the graph, hunting for cycles, will reveal that from our set of edges \( E = \{ a, b, c, d \} \), the independent subsets are precisely
 \[
     \{
     \emptyset,
@@ -500,7 +499,7 @@ It is this second definition that will be of key importance for the following ch
 The first definition of matroids should, again, look very familiar.
 
 \begin{definition}[Matroid --- Independent Set Axioms]\th\label{def:MatroidIndpendentAxioms}
-    A \emph{matroid} is a 2-tuple  \( \cM = (E, \I) \), where \( E \) is a finite set, called the \emph{ground set}, and \( \I \subseteq 2^E \) is a collection of subsets of \( E \), called the \emph{independent sets}, with the following properties:
+    A \emph{matroid} is a pair  \( \cM = (E, \I) \), where \( E \) is a finite set, called the \emph{ground set}, and \( \I \subseteq 2^E \) is a collection of subsets of \( E \), called the \emph{independent sets}, with the following properties:
     \begin{enumerate}[label=(I\arabic*)]
         \item \( \emptyset \in \I \).
         \item If \( I \in \I \) and \( I' \subseteq I \), then \( I' \in \I \).
@@ -513,7 +512,7 @@ They correspond precisely to the properties we identified in linearly independen
 We can take this opportunity to define our now familiar examples as a matroid.
 \begin{example}
 
-    We let the ground set \( E = \{ a, b, c, d, e \} \), and the pick the independent sets to be
+    We let the ground set \( E = \{ a, b, c, d \} \), and pick the independent sets to be
     \[
         \I = \{
         \emptyset,
@@ -525,10 +524,6 @@ We can take this opportunity to define our now familiar examples as a matroid.
 
     Coming as probably no surprise, this has the same independence relations as both our vector example and our graph example.
     We should confirm that \( \I \) obeys the properties (I1)-(I3), but we already know that particular set must.
-    We will name this example matroid
-    \[
-        \sM = (E, \I).
-    \]
 
 \end{example}
 
@@ -536,7 +531,7 @@ We can take this opportunity to define our now familiar examples as a matroid.
 
 \subsubsection{Aside: Representable Matroids}
 Given that we've already seen the example ``matroid'' arise twice in other contexts, it is natural to ask if we've gained anything new with matroids.
-If every matroid could just be studied as a finite collection of vectors and its independent subsets, we don't really have to go thorough the trouble defining a whole new object.
+If every matroid could just be studied as a finite collection of vectors and its independent subsets, we don't really have to go through the trouble defining a whole new object.
 
 It turns out that this is not the case.
 A matroid that can arise from a finite set of vectors, like our example, is called \emph{representable}.
@@ -567,7 +562,6 @@ We use the independent set axioms to these terms and state properties, but we co
 It's actually quite a fun exercise to develop parallel definitions from different starting axioms.
 
 \subsubsection{All Your Bases Belong to Matroid}
-\todo{change this title}
 
 First, we will finally address a pattern we've noted earlier, that the largest independent sets all seem to have the same number of elements, or, as we like to say in the business, the same \emph{cardinality}.
 To do so we'll introduce the notion of a basis of a matroid.
@@ -684,122 +678,11 @@ As we see in the examples in figure~\ref{fig:basisExamples}, a basis has a very 
 If pressed for an intuition of a basis in the more general matroid setting, we'd say that they give us an idea of ``how much'' (in)dependence is going on amongst the elements ground set; likely accompanied by us literally waving our hands through the air.
 If our matroid has 1000 elements in its ground set, but its bases only have size 3, then there must be a lot of dependence amongst all those elements of the ground set.
 However vague the idea, it would be very useful to be able to quantify ``how much'' independence is going on in any subset \( X \subseteq E \) of a matroids ground set.
-To get there we'll first need to learn how to make some new matroids.
-
-\subsubsection{New Matroids From Old}
-Let's say we already have some matroid \( \cM = (E, \I) \).
-Then \( \I \) already has a notion about which of all possible subsets of \( E \) are independent.
-So if we consider some subset \( X \subseteq E \) of the ground set, we should be able to use \( \cM \)'s independent sets to construct independent sets for \( X \) as a ground set.
-This is in fact very easy to do, and we call the resulting matroid a restriction matroid.
-
-\begin{definition}[Restriction Matroid]\th\label{def:restrictionMatroid}
-    Let \( \cM = (E, \I) \) be a matroid.
-    Then for any subset \( X \subseteq E \), we may define the \emph{restriction matroid}, \( \cM|X \), as
-    \[
-        \cM|X = ( X, \I|X )
-    \]
-    where \( \I|X = \{I \in \I \; | \; I \subseteq X\} \).
-\end{definition}
-
-Essentially we just declare \( X \) to be the new ground set and just forget about any independent sets of \( \cM \) that contain any elements not in \( X \).
-
-We will need restriction matroids to get to our definition of flats, we would also like to introduce one other way we could make a new matroid from an extant one.
-These are called contraction matroids, and they are \emph{dual} to restriction matroids.
-The fact they're dual to restriction matroids isn't really that important here, but as mathematicians we feel compelled to point out duality anytime we see it.
-While these aren't strictly necessary for flats, it's a surprise tool that will help us later.
-\todo{Should I introduce contraction matroids here? They aren't immediately necessary, but where else would I?}
-\todo{I think i need contraction matroids? but if i don't i'll just come back and delete this section}
-
-\begin{definition}[Contraction Matroids]\th\label{def:contractionMatroid}
-
-    Let \( \cM = (E, \I) \) be a matroid.
-    For any subset \( T \subseteq E \) of the ground set, construct the restriction matroid \( M|T \).
-    Then let \( B_T \) be a basis of \( M|T \).
-    The \emph{contraction matroid}, \( \cM/T \), is defined as
-    \[
-        \cM/T = ( E \setminus T, \I/T ),
-    \]
-    where \( \I/T = \{ I \subseteq (E \setminus T) \; | \; I \cup B_T \in \I \} \).
-
-\end{definition}
-
-This definition is more difficult to explain succinctly, but we can compare it with the restriction matroid to try to get some sense of what this does.
-The restriction matroid imparts independence on a subset \( X \subseteq E \) by saying subsets are independent if they would be independent in the original matroid.
-The contraction matroid assigns independence on everything \emph{not} in the subset \( T \subseteq E \),  based on if they'd still be independent if we were to add (a basis of) T back in.
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{.54\textwidth}
-        \centering
-        \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
-                none/.style={},
-                graphEdge/.style={thin},
-                Edge/.style={black, very thick}]
-
-            \node [style=graphVertex] (0) at (-3.5, 3.5) {};
-            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
-            \node [style=graphVertex] (2) at (3.5, -3.5) {};
-            \node [style=graphVertex] (3) at (3.5, 3.5) {};
-            \node [style=none] (4) at (3.5, 4.75) {};
-            \node [style=none] (5) at (-4, 0) {};
-            \node [style=none] (6) at (-4, 0) {\( a \)};
-            \node [style=none] (7) at (0, -4) {\( b \)};
-            \node [style=none] (8) at (4, 0) {\( c \)};
-            % \node [style=none] (9) at (3.5, 5) {\( e \)};
-            \node [style=none] (10) at (0.25, 0.4) {\( d \)};
-
-            \draw [style=Edge] (0) to (1);
-            \draw [style=Edge] (1) to (2);
-            \draw [style=Edge] (2) to (3);
-            \draw [style=Edge] (0) to (2);
-            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
-            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
-        \end{tikzpicture}
-        \subcaption*{A graph representing a matroid \( \sM \)}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{.45\textwidth}
-        \centering
-        \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
-                none/.style={},
-                graphEdge/.style={thin},
-                Edge/.style={black, very thick}]
-
-            %\node [style=graphVertex] (0) at (-3.5, 3.5) {};
-            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
-            \node [style=graphVertex] (2) at (3.5, -3.5) {};
-            \node [style=graphVertex] (3) at (3.5, 3.5) {};
-            \node [style=none] (4) at (3.5, 4.75) {};
-            \node [style=none] (5) at (-4, 0) {};
-            % \node [style=none] (6) at (-4, 0) {\( a \)};
-            \node [style=none] (7) at (0, -4.6) {\( b \)};
-            \node [style=none] (8) at (4, 0) {\( c \)};
-            % \node [style=none] (9) at (3.5, 5) {\( e \)};
-            \node [style=none] (10) at (0, -2.4) {\( d \)};
-
-            %\draw [style=Edge] (0) to (1);
-            \draw [style=Edge, bend left=15] (1) to (2);
-            \draw [style=Edge] (2) to (3);
-            \draw [style=Edge, bend left=15] (2) to (1);
-            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
-            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
-        \end{tikzpicture}
-        \subcaption*{A graph representing a matroid \( \sM' \)}
-    \end{subfigure}
-    \caption{To provide a modicum of explanation as to why these are called \emph{contractions}, we note that \( \sM/a \) and \( \sM' \) are isomorphic}
-    \label{fig:contractionMatroid}
-
-\end{figure}
-
-%With restriction matroids in hand, we can now turn any subset of a matroid into a matroid itself.
 
 \subsubsection{Rank and Closure}
 
-Before we got sidetracked making new matroids, we were noting that somehow the size of a basis tells us something important about a matroid.
-Indeed, this is an important enough property to get its own name, the \emph{rank} of a matroid.
-Better, we can extend the notion of rank to any subset of the ground set of a matroid.
+Indeed, this is an important enough property to get its own name, the \emph{rank}.
+The rank of any subset of ground elements is simply the size of the largest independent subset.
 
 \begin{definition}[Rank]\th\label{def:rank}
 
@@ -807,18 +690,18 @@ Better, we can extend the notion of rank to any subset of the ground set of a ma
     The \emph{rank function} is the map
     \begin{align*}
         \rk_\cM \, : \; 2^E & \to \Z_{\geq 0} \\
-        X                   & \mapsto |B_X|
+        X                   & \mapsto |Y|
     \end{align*}
-    where \( B_X \) is any basis of the restriction matroid \( \cM|X \).
-    That is to say the rank of any subset \( X \) is the size of the largest independent set contained in \( X \).
+    where \( Y \subseteq X \), \( Y \in \I \), and there is no \( Y \subsetneq Y' \subseteq X \) such that \( Y' \in \I \).
+    That is to say, the rank of any subset \( X \) is the size of the largest independent set contained in \( X \).
 
-    Since \( \cM|E = \cM \), we write \( \rk_\cM(E) \) as \( \rk_\cM(\cM) \), and it is called the \emph{rank} of \( \cM \).
+    We write \( \rk_\cM(E) \) as \( \rk_\cM(\cM) \), and is called the \emph{rank} of \( \cM \).
 \end{definition}
 Unless we are in imminent danger of confusion, we will notate \( \rk_\cM(X) \) as just \( \rk(X) \).
 In the land of linear algebra, the rank corresponds to the dimension spanned by the vectors.
 Just as adding more vectors into a linear span won't necessarily increase the dimension spanned, increasing the number of your elements in your subset will not necessarily increase the rank.
-For instance, in our running example we see that \( \rk(ab) = \rk(abd) = 2 \),
-and naturally no subset of elements of the matroid will have a rank larger than the basis of the matroid itself.
+For instance, in our running example we see that \( \rk(ab) = \rk(abd) = 2 \).
+The rank of the matroid itself will be, as we showed above, the size of any basis of the matroid.
 
 This notion that we can add more elements to a subset without changing its rank leads, at last, to the final preliminary definition.
 
@@ -830,6 +713,8 @@ This notion that we can add more elements to a subset without changing its rank 
     \end{gather*}
 
     For any \( X \subseteq E \), we call \( \cl(X) \) the closure of \( X \).
+    Adittionally, taking closures is idempotent, so \( \cl(X) = \cl\big(\cl(X)\big) \).
+
 \end{definition}
 
 Again we will write the closure operator as \( \cl(X) \) almost exclusively.
@@ -838,7 +723,6 @@ One might ask if there is anything special about these sets that are as big as t
 A very insightful question, if we do say so ourselves.
 
 \subsection{Our Flag Means Totally-Ordered Subsets of the Lattice of Flats}
-\todo{This title is too pop culture specific, change it}
 
 If you didn't notice our subtle hint above, it may come as a surprise that sets that are as ``big'' or ``dependent'' as possible for a given rank are precisely flats.
 
@@ -851,7 +735,7 @@ If you didn't notice our subtle hint above, it may come as a surprise that sets 
 \end{definition}
 
 What if instead of independent sets, we collect all the flats of a matroid.
-For example, in \( \sM \), we could start applying the closure opreator left and right until we collect the set
+In our running example, we could start applying the closure opreator left and right until we collect the set
 \[
     \cF = \{ \emptyset, a, b, c, d, abd, ac, bc, cd, abcd \}.
 \]
@@ -1052,37 +936,27 @@ Indeed, just like independent sets have some useful properties, so do the set of
               then the sets \( F_1 \setminus F,\, F_2 \setminus F,\, \dots,\, F_k \setminus F \) partition \( E \setminus F \).\label{def:F3}
     \end{enumerate}
 
-    Further, if \( E' \) is any ground set and \( \cF' \subseteq 2^{E'} \) is a collection of subsets of the ground set such that properties (F1)--(F3) hold,
-    then \( \cM' = (E', \cF') \) is a matroid.
+    Further, let \( E \) be any ground set and \( \cF \subseteq 2^{E} \) be a collection of subsets of the ground set such that properties (F1)--(F3) hold.
+    Define
+    \[
+        \cl^\ast \, : \; 2^E \to 2^E
+    \]
+    such that \( \cl^\ast(X) = F \) for some flat \( F \in \cF \) where \( X \subseteq F \) and there is no \( F' \in \cF \) such that \( X \subseteq F' \subsetneq F' \).
+    Then \( \cM = (E, \cF) \) is a matroid with independent set
+    \[
+        \I = \left\{ I \subseteq E \; \middle| \; I_1 \subsetneq I_2 \subseteq I, \, \cl^\ast(I_1) \neq \cl^\ast(I_2)\right\}.
+    \]
+
+
 \end{proposition}
 
 Let's unpack this proposition, as flats are a bit more difficult than independent sets as a foundation of matroids.
 Property (F1) says that the ground set, \( E \), is a flat.
 This follows directly from the fact that the closure of a basis has to be every element of the ground set, since you can't ever get a higher rank than a basis.
 
-The second property (F2) says that the set of flats in closed under intersection;
+The second property (F2) says that the set of flats is closed under intersection;
 i.e.\ the elements shared between any two flats is a flat itself.
 This follows from the properties of closure and a bit of set theory; it's a fun little exercise to prove.
-% \begin{proof}
-%     The closure operator has the following properties:
-%     \begin{enumerate}[label=\roman*.]
-%         \item \(X \subseteq \cl(X)\), for all \( X \subseteq E \),
-%         \item if \( X \subseteq Y \subseteq E \), then \( \cl(X) \subseteq \cl(Y) \),
-%         \item \( \cl\big(\cl(X)\big) = \cl(X) \).
-%     \end{enumerate}
-
-%     Then since \( F_1 \cap F_2 \subseteq F_1 \), we have \( \cl(F_1 \cap F_2) \subseteq \cl(F_1) \), by property~ii.
-%     But since \( F_1 \) is a flat, \( \cl(F_1) = F_1 \), so \( \cl(F_1 \cap F_2) \subseteq \cl(F_1) \).
-%     By the same argument we have \( \cl(F_1 \cap F_2) \subseteq F_2 \).
-%     Together that means \( \cl(F_1 \cap F_2) \subseteq F_1 \cap F_2 \).
-
-%     But by property~i, \( F_1 \cap F_2  \subseteq \cl(F_1 \cap F_2) \).
-%     Thus, we have
-%     \[
-%         F_1 \cap F_2  \subseteq \cl(F_1 \cap F_2) \subseteq F_1 \cap F_2,
-%     \]
-%     and so we conclude \( \cl(F_1 \cap F_2) = F_1 \cap F_2\); i.e./ \( F_1 \cap F_2 \) is a flat.
-% \end{proof}
 
 The last property, (F3), looks more intimidating than it is.
 In essence, if you take a flat, \( F \) (with \( F \neq E \), since no flats have higher rank than \( E \)), then for every element \emph{not} in \( F \) you're going to find it in a flat that is one rank higher.
@@ -1090,7 +964,7 @@ This shouldn't be too surprising, since if an element, let's call it \( x \), is
 That this \emph{partitions} \( E \setminus F \) just means that each \( e \in E \) that's not in \( F \) is going to appear in exactly one flat one rank higher (specifically the flat \( \cl(F \cup e) \)).
 
 Finally, the proposition asserts that if we start with a ground set and then a collection of subsets of that ground set that meet all three properties (F1)--(F3), then that is sufficient to characterize a matroid.
-That is (F1)--(F3) is another axiomatization of a matroid.
+That is, we could take (F1)--(F3) as another axiomatization of a matroid.
 A recommended exercise would be to reconstruct all the definitions in the preceding section starting with just these axioms, with a goal to reconstruct a notion of an independent set.
 
 These properties actually impart a very interesting structure on the set of flats that we will now explore.
@@ -1099,14 +973,14 @@ These properties actually impart a very interesting structure on the set of flat
 
 First, we recall, or learn here and now, that any collection of subsets of a set form a partially ordered set.
 
-\begin{definition}{Partially Ordered Set}\th\label{def:poset}
-    A \emph{partially ordered set}, often called a poset, is a 2-tuple \( (P, \preceq) \), where \( P \) is a set of elements, and \( \preceq \), is a relation between some, but not necessarily all, of the elements of \( P \) with the following properties:
+\begin{definition}[Partially Ordered Set]\th\label{def:poset}
+    A \emph{partially ordered set}, often called a poset, is a pair \( (P, \preceq) \), where \( P \) is a set of elements, and \( \preceq \), is a relation between some, but not necessarily all, of the elements of \( P \) with the following properties:
     \begin{enumerate}[label=\roman*.]
         \item\(a \preceq a\),
         \item if \( a \preceq b \) and \( b \preceq a \), then \( a = b \),
         \item if \( a \preceq b \) and \( b \preceq c \), then \( a \preceq c \),
     \end{enumerate}
-    for all \( a, b, c \in P \)
+    for all \( a, b, c \in P \).
 \end{definition}
 
 With the definition in hand, we can verify that \( (\cF, \subseteq) \) is a partially ordered set, where \( \cF \) is the set of all flats of a matroid.
@@ -1122,10 +996,12 @@ Some posets have an even stronger structure, called a lattice.
     \[
         \wedge \, : \; L \times L \to L,
     \]
-    called a \emph{meet}, such that the following properties hold for all \( a, b \in L \):
+    called a \emph{meet}, such that for any two elements \( a, b \in L \),
     \begin{enumerate}[label=\roman*.]
-        \item \(a \vee b \in L\); \( a \preceq a \vee b \) and \( b \preceq a \vee b \); for any \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) then \( a \vee b \preceq c \),
-        \item \(a \wedge b \in L\); \( a \wedge b \preceq a \) and \( a \wedge b \preceq b \); for any \( c \in L \) such that \( c \preceq a \) and \( c \preceq b \) then \( c \preceq a \wedge b \),
+        \item the join \(a \vee b \) is an element of the lattice such that \( a \preceq a \vee b \) and \( b \preceq a \vee b \), and for any element \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) it's the case that \( a \vee b \preceq c \),
+        \item the meet \(a \wedge b \) is an element of the lattice such that  \( a \wedge b \preceq a \) and \( a \wedge b \preceq b \), and for any \( c \in L \) such that \( c \preceq a \) and \( c \preceq b \) then we have \( c \preceq a \wedge b \).
+              % \item \(a \vee b \in L\); \( a \preceq a \vee b \) and \( b \preceq a \vee b \); for any \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) then \( a \vee b \preceq c \),
+              % \item \(a \wedge b \in L\); \( a \wedge b \preceq a \) and \( a \wedge b \preceq b \); for any \( c \in L \) such that \( c \preceq a \) and \( c \preceq b \) then \( c \preceq a \wedge b \),
     \end{enumerate}
 
 \end{definition}
@@ -1140,7 +1016,7 @@ First though, we must establish that the set of flats does indeed form a lattice
         F_1 \wedge F_2 & = F_1 \cap F_2      \\
         F_1 \vee F_2   & = \cl(F_1 \cup F_2)
     \end{align*}
-    for any \( F_1, F_2 \in \cF \)
+    for any \( F_1, F_2 \in \cF \).
 \end{lemma}
 \begin{proof}
     It is sufficient to show that \( \cF \) is a meet-semilattice and that \( \cF \) has a maximal element.
@@ -1156,7 +1032,7 @@ First though, we must establish that the set of flats does indeed form a lattice
 \end{proof}
 
 Now we can talk about a lattice of flats.
-To motivate this, let's look at the lattice of our example matroid, \( \sM \).
+To motivate this, let us once again consider our example matroid.
 It is, if not traditional, convenient to structure a lattice graphically in a \emph{Hasse diagram}.
 
 \begin{figure}[H]
@@ -1205,11 +1081,9 @@ Since \textit{every} lattice of flats always has 1 element of rank~0 as a minima
 \end{definition}
 
 Flags are, then, just collections of flats where you can nest all the flats; a little set theoretic \textit{matryoshka}.
-On the Hasse diagram, a flag is any collection of entries connected by lines (with the option to skip intermediate flats).
+On the Hasse diagram, a flag will have at most one element from each rank and there will be a strictly increasing path of lines between all elements of the flag.
 Maximal flats will be those that take you along a path on the Hasse diagram from rank 1 all the way up to the rank right below that of the matroid itself, including something from every rank in between.
-One thing to remember, for every flat \( F \) the single element flag \( \scrF = \{ F \} \) is, indeed, a flag.
-
-\todo{Should i list flags of \( \sM \)?}
+One thing to remember is that for every flat \( F \), \( \scrF = \{ F \} \) is, indeed, a flag.
 
 \subsubsection{`Tis the Gift to Be Simple}
 
@@ -1219,7 +1093,6 @@ Since we care primarily about the lattice structure of our matroid, we assume al
 For the rest of us, the non-serious, a brief explanation.
 A matroid is simple if it does not have any \emph{loops}, elements in the ground set that have rank 0, or \emph{parallel edges}, sets of elements that share identical independence relations.
 If this feels overly restrictive, worry not, for Oxley\cite[p.~49]{oxleyMatroidTheory2011} comes to our rescue.
-\todo{get the right page number for oxley}
 \begin{proposition}[Simplification Preserves Lattice Structure]\th\label{thm:simplificationLattice}
     For any matroid \( \cM \), there exists a unique, up to labeling, matroid \( \si(\cM) \), called the \emph{simplification of \( \cM \)}
     such that
@@ -1243,9 +1116,8 @@ If we take our matroid to be simple, then our lattice structure has the followin
     \begin{enumerate}[label=\roman*.]
         \item the empty set is the minimal, rank 0, element of \( \cL \),
         \item for every \( e \in E \), there is unique rank 1 flat, \( F_e \), such that \( F_e = e \),
-        \item for any flat \( F \in \cL \), if \( e \in F \), then \( F_e \in F \),
-        \item for any flat \( F \in \cL \), \( F = \biguplus_{e \in F}F_e \).
-              \todo{Do we need the last two properties? If not, maybe don't present them if i'm not going to prove them}
+        \item for any flat \( F \in \cL \), if \( e \in F \), then \( F_e \subseteq F \),
+        \item we can write any flat \( F \in \cL \) as a disjoint union of rank 1 flats; \( F = \biguplus_{e \in F}F_e \).
     \end{enumerate}
 \end{proposition}
 
@@ -1261,7 +1133,7 @@ It's time to learn about some polynomials.
 The conjecture by Heron, Rota, and Welsh, that we promise we are getting to, has to deal with the characteristic polynomial of a matriod.
 This is some polynomial we can cook up using the structure of a matroid, which is fair enough.
 But when presented on its own, it feels, at least to us, that it comes out of nowhere.
-Why anyone would make up this polynomial or why we'd start conjecturing about it can is not at all clear.
+Why anyone would make up this polynomial or why we'd start conjecturing about it is not at all clear.
 
 So first, a little history back in the realm of graphs.
 
@@ -1319,7 +1191,7 @@ We could just get out our markers and start coloring lots of graphs.
 Honestly, it sounds relaxing.
 
 But now let's suppose we want to know how many ways we can use 1000 colors to color our little graph, or 10,000, or a billion.
-Since our set of markers only has 12 distinct colors, we will have to turn to math to solve this one, sadly.
+Since our set of markers only has 12 distinct colors, we will have to turn to math to solve this one.
 
 The strategy is not too complicated, just pick a vertex and say how many colors we have to choose from, then find a connected vertex that hasn't been assigned a color yet, and say how many colors it is allowed to choose from.
 Repeat until we're out of vertices to label.
@@ -1424,7 +1296,7 @@ Instead of picking a specific number, let's say we have \( n \) colors to choose
 We then just have to multiply the number of possibilities together.
 For \( G \), if we have \( n \) colors to choose from, there are \( n {(n-1)}^2 (n - 2) \) different ways to arrange those colors on the graph.
 We've just discovered the \emph{chromatic polynomial} of \( G \).
-But there's nothing particularly special about our choice of graph, we will get some, we will get something like this for any graph we come up with.
+But there's nothing particularly special about our choice of graph, we will get something like this for any graph we come up with.
 
 \begin{proposition}[Chromatic Polynomial of a Graph]\th\label{def:chromaticPoly}
 
@@ -1462,13 +1334,13 @@ We present an equivalent definition that's easier to state, but with the downsid
 You may notice that each term of the polynomial will have a power of \( z \) between 0 and \( \rk(\cM) \).
 The Heron-Rota-Welsh conjecture is about the coefficients of this polynomial, specifically once we collect the terms.
 
-\begin{definition}[Whitney Numbers of the Fisrt Kind]\label{def:whitneyNumber}
+\begin{definition}[Whitney Numbers of the First Kind]\label{def:whitneyNumber}
     Let \( \cM \) be a matroid with characteristic polynomial
     \begin{align*}
         \chi_\cM(z) & = \sum_{X \subseteq E} {(-1)}^{|X|}z^{\rk(\cM) - \rk(X)} \\
-                    & = \sum_{k=0}^{\rk(\cM)} w_k z^{\rk(\cM) - k}.
+                    & = \sum_{k=0}^{\rk(\cM)} (-1)^k w_k z^{\rk(\cM) - k}.
     \end{align*}
-    The coefficients \( w_0, w_1, \dots, w_{\rk(\cM)} \) are the \emph{Whitney numbers of the first kind}.
+    The unsigned portion of the coefficients \( w_0, w_1, \dots, w_{\rk(\cM)} \) are the \emph{Whitney numbers of the first kind}.
 
 \end{definition}
 
@@ -1540,7 +1412,7 @@ This is the last piece of the puzzle.
     Assume we have a matroid \( \cM = (E, \cL) \) of rank \( r + 1 \).
     If
     \[
-        \chi_\cM(z) = \sum_{k=0}^{\rk(\cM)} w_k z^{\rk(\cM) - k}
+        \chi_\cM(z) = \sum_{k=0}^{\rk(\cM)} (-1)^k w_k z^{\rk(\cM) - k}
     \]
     is the characteristic polynomial of \( \cM \), where \( w_0, w_1, \dots, w_r \) are the Whitney numbers of the first kind, then
     \[
@@ -1548,7 +1420,7 @@ This is the last piece of the puzzle.
     \]
     for \( 0 < i < \rk(M) \).
 
-    That is, the coefficients of the characteristic polynomial of the matroid \( \cM \) are log-concave.
+    That is, the absolute values of the coefficients of the characteristic polynomial of the matroid \( \cM \) are log-concave.
 \end{theorem}
 
 Since we want to show something about the characteristic polynomials of the matroid, we need a way to study it.
