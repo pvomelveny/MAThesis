@@ -965,7 +965,7 @@ That this \emph{partitions} \( E \setminus F \) just means that each \( e \in E 
 
 Finally, the proposition asserts that if we start with a ground set and then a collection of subsets of that ground set that meet all three properties (F1)--(F3), then that is sufficient to characterize a matroid.
 That is, we could take (F1)--(F3) as another axiomatization of a matroid.
-A recommended exercise would be to reconstruct all the definitions in the preceding section starting with just these axioms, with a goal to reconstruct a notion of an independent set.
+A recommended exercise would be to reconstruct all the definitions in the preceding section starting with just these axioms.
 
 These properties actually impart a very interesting structure on the set of flats that we will now explore.
 
@@ -1009,7 +1009,7 @@ Some posets have an even stronger structure, called a lattice.
 If you've never seen this definition before, it can be a bit heavy on symbols, but once we ground it in our set of flats it won't be too bad.
 First though, we must establish that the set of flats does indeed form a lattice.
 
-\begin{lemma}[The Collection of Flats Form a Lattice]\th\label{thm:flatLattice}
+\begin{proposition}[The Collection of Flats Form a Lattice]\th\label{thm:flatLattice}
     Let \( \cM \) be a matroid and \( \cF \) be the set of all flats of \( \cM \).
     Then \( ( \cF, \subseteq) \) is a lattice, with the operations
     \begin{align*}
@@ -1017,7 +1017,7 @@ First though, we must establish that the set of flats does indeed form a lattice
         F_1 \vee F_2   & = \cl(F_1 \cup F_2)
     \end{align*}
     for any \( F_1, F_2 \in \cF \).
-\end{lemma}
+\end{proposition}
 \begin{proof}
     It is sufficient to show that \( \cF \) is a meet-semilattice and that \( \cF \) has a maximal element.
 

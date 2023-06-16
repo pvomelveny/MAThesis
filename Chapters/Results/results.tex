@@ -13,34 +13,12 @@
 \todo{I'm not sure what context we'll already have from the last chapter. probably most basic things will be covered.
     I'm just going to put weird filler text between theorems for now}
 
-\section{An Important Theorem}
-
-The authors work with Lauren Nowak and Dustin Ross has lead to the following theorem:
-
-\begin{theorem}[Nowak-O-Ross]\th\label{thm:suffAF}
-    \todo{restate this theorem better}
-    \todo{I should add the weight function if i'm going to state this for a general fan}
-    Let \( \bSigma \) be a simplicial \todo{tropical?} fan, pure of dimension \( r \), and \( \ast \in \Inn(N_\R) \) an inner product.
-    Then \( (\bSigma_\cM, \ast) \) is AF if
-    \begin{enumerate}[label=\roman*.]
-        \item for every cone \( \sigma \in \bSigma(k) \), with \( k \leq r - 2 \),
-              \[
-                  \Star(\tau, \bSigma_\cM) \setminus \{ 0 \}
-              \]
-              is connected,
-        \item for each 2-dimensional face of the associated normal complex, \( C(\bSigma, z) \), for some cubical \( z \in \Cub(\bSigma, \ast) \), the quadratic form associated to the volume polynomial has exactly one positive eigenvalue.
-    \end{enumerate}
-\end{theorem}
-
-This is the key theorem that will allow us to pull everything together to prove log-concavity of characteristic polynomials.
-
 \section{Assorted Lemmas}
 
-To prove the above theorem holds the Bergman fan of \textit{any} matroid, we will need a few helping facts.
-Some of these are classic results and some are classic-ish, with a short proof provided.
-First a classical result from linear algebra.
-\todo{actually, maybe i should introduce this just before I try to prove property ii? This feels a little shoehorned in here.}
-
+To help us in proving the above theorem holds the Bergman fan of any matroid, we will develop some useful lemmas.
+The first few of these are just collecting some classic results in linear algebra and matroid theroy.
+We'll then develop a few lemmas of our own.
+We'll start with theorem from linear algebra.
 \begin{lemma}[Sylvester's Law of Inertia]\th\label{thm:sylvester}
     Two symmetric square matrices, \( A \) and \( B \), of the same size have the same number of positive, negative and zero eigenvalues if and only if they are congruent;
     that is if
@@ -140,7 +118,7 @@ The contraction matroid, then, assigns independence on everything \emph{not} in 
             % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
             % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
         \end{tikzpicture}
-        \subcaption*{A graph representing a matroid \( \sM \)}
+        \subcaption*{A graph representing a matroid \( \cM \)}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{.45\textwidth}
@@ -170,9 +148,9 @@ The contraction matroid, then, assigns independence on everything \emph{not} in 
             % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
             % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
         \end{tikzpicture}
-        \subcaption*{A graph representing a matroid \( \sM' \)}
+        \subcaption*{A graph representing a matroid \( \cM' \)}
     \end{subfigure}
-    \caption{To provide a modicum of explanation as to why these are called \emph{contractions}, we note that \( \sM/a \) and \( \sM' \) are isomorphic}\label{fig:contractionMatroid}
+    \caption{To provide a modicum of explanation as to why these are called \emph{contractions}, we note that \( \cM/a \) and \( \cM' \) are isomorphic}\label{fig:contractionMatroid}
 
 \end{figure}
 
@@ -209,8 +187,7 @@ For any two flats \( F_1 \) and \( F_2 \) of \( \cM \), we write
     \cM_{[F_1, F_2]} = \cM / F_1 \backslash (E \setminus F_2)
 \]
 to be the minor that results from contracting by \( F_1 \) and restricting to \( F_2 \).
-Notation in hand, we can now state a classic result of matroid theory~\cite[p.~116]{oxleyMatroidTheory2011}.
-\todo{ahh how do i cite things well?}
+Notation in hand, we can now state a classic result of matroid theory, which can be found, unsurprisingly, in Oxley~\cite[p.~116]{oxleyMatroidTheory2011}.
 
 \begin{proposition}\th\label{thm:minorLattice}
     Let \( F_1 \) and \( F_2 \) be flats of a matroid \( \cM = (E, \cL)\).
@@ -309,11 +286,10 @@ With our isomorphism in hand, we may use it to show that the stars of a matroid'
     \todo{Words for this proof. Words bad}
 \end{proof}
 
-\section{The Bergman Fan of Matroids are AF}
+\section{The Bergman Fans of Matroids are AF}
 
 
 \begin{theorem}
-    \todo{is this more a corollary? maybe?}
     For any matroid, \( \cM \), inner product, \( \ast \in \Inn(\bN_E) \), and cubical value \( z \in \Cub(\bSigma_\cM, \ast) \),
     \( (\bSigma_\cM, z) \) is AF.
 \end{theorem}
@@ -475,12 +451,12 @@ Next we may turn to the other requirement, that the quadratic form that determin
     Finding the eigenvalues of this matrix, however, is not so easy.
 
     To get around this, we would like to note another way to write our volume polynomial.
-    We with some thought, we see that
+    We offer,
     \[
         \sum_{\mathclap{\substack{1 \leq i \leq k \\ 1 \leq j \leq \ell}}} x_i y_j
-        = \frac{1}{4} \big((x_1 + \cdots + x_k + y_1 + \cdots y_\ell)^2 - (x_1 + \cdots + x_k - y_1 - \cdots - y_\ell)^2\big),
+        = \frac{1}{4} \big((x_1 + \cdots + x_k + y_1 + \cdots y_\ell)^2 - (x_1 + \cdots + x_k - y_1 - \cdots - y_\ell)^2\big).
     \]
-    since in \( -(x_1 + \cdots + x_k - y_1 - \cdots - y_\ell)^2 \), only terms of the form \( 2x_i y_j \) are positive, with the rest going to cancel out the unwanted terms in the first expression.
+    This works since in the expression \( -(x_1 + \cdots + x_k - y_1 - \cdots - y_\ell)^2 \) only terms of the form \( 2x_i y_j \) are positive, with the rest going to cancel out the unwanted terms in the first expression, ultimitly yielding the same volume as above.
     Our goal now is to find an invertible change of basis, \( S \), that gives us \( \frac{1}{4}(x_1 + \cdots + x_k + y_1 + \cdots y_\ell) \) and \( \frac{1}{4}(-x_1 - \cdots - x_k + y_1 + \cdots + y_\ell) \) as the first two basis elements.
     Then the matrix associated with this quadratic form, in this basis, would trivially have eigenvalues \( 1, -1, 0, \dots, 0 \).
     Then we could use \th\ref{thm:sylvester}, Sylvester's Law of Inertia, to get that there is exactly one positive eigenvalue of \( A \) as well.
@@ -521,11 +497,11 @@ Next we may turn to the other requirement, that the quadratic form that determin
     % We will again break up the \( z \) values associated to the normal complex of this face.
     % This time however we will consider \( \vec{x} = (x_1, \dots, x_k) \subseteq z \) to be the \( z \) values of rays associated to rank 1 flats and \( \vec{y} = (y_1, \dots, y_k) \subseteq z \) to be the \( z \) values of rays of rank 2 flats.
     For convenience, let \( F \subseteq \cL \) be all rank 1 flats of \( \bSigma \) and let \( G \subseteq \) be all rank 2 flats of \( \bSigma \).
-    The work of Nathanson and Ross in \cite{nathansonTropicalFansNormal2021} \todo{should I actually cite her thesis?} tells us that the volume of the normal complex our (or any) rank 3 matroid is given by
+    The work of Nathanson and Ross in \cite{nathansonTropicalFansNormal2021} tells us that the volume of the normal complex of any rank 3 matroid is given by
     \[
         \Vol\big(C_{\bSigma, \ast}(z)\big) = 2\sum_{F \subsetneq G} z_F z_G - \sum_{G} z_G^2 - \sum_{F}(\cL^\sharp(F) - 1)z_F^2,
     \]
-    where \( \cL^\sharp(F) \) is the number of flats one rank above \( F \) that contain \( F \) \todo{sorry i'm in a hurry, I panic picked notation. i'll think of something better}.
+    where \( \cL^\sharp(F) \) is the number of flats one rank above \( F \) that contain \( F \).
 
     Considering this a polynomial in \( z_{F_1}, \dots, z_{F_k}, z_{G_1}, \dots, z_{G_\ell} \), it is not immediately obvious that this would have only 1 positive eigenvalue.
     Again, we propose a different way to write this that has obvious eigenvalues.
@@ -544,7 +520,7 @@ Next we may turn to the other requirement, that the quadratic form that determin
         \left( z_{\hat{G}} - \sum_{F \subsetneq {\hat{G}}} z_F \right)^2 = z_{\hat{G}}^2 - \sum_{F \subseteq \hat{G}}2 z_F z_{\hat{G}} + \sum_{\substack{F_1,F_2 \subseteq \hat{G}}}2z_{F_1} z_{F_2} + \sum_{F \in \hat{G}} z_F^2.
     \end{equation}
     What's important to note here is that if \( F_1, F_2 \subseteq G \), then there cannot be another rank 2 flat \( G' \) that contains both.
-    This is a direct consequence each property~\ref{def:F3} of lattice matroids.
+    This is a direct consequence of property~\ref{def:F3} of lattice matroids.
     But when we let the outer sum range over all possible rank 2 flats, we will get \( \cL^\sharp(F) \) copies of each \( z_F^2 \), and so we have
     \begin{equation}
         \sum_G \left( z_G - \sum_{F \subsetneq G} z_F\right)^2 =

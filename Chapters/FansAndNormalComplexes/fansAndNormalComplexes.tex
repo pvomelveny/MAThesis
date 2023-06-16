@@ -12,7 +12,7 @@
 As we continue our tour of various branches of mathematics, we arrive at geometry.
 The primary goal of this chapter is to develop the final segment of our bridge connecting some geometric object back to the Chow ring, and then showing how we can generate log-concave sequences with these objects.
 To get there we will provide a quick primer on polyhedral geometry and a classic theorem of convex geometry that generates log-concave sequences.
-Then we'll introduce a geometric object associated to a matroid, the Bergman fan, and show how we can use them to make some new object called a normal complex.
+Then we'll introduce a geometric object associated to a matroid, the Bergman fan, and show how we can use them to make some new objects called a normal complexes.
 
 \section{A Little Polyhedral Geometry, as a Treat}
 Really, the basic building blocks we'll be using are not that weird.
@@ -21,7 +21,6 @@ We must admit, however, that we personally struggle visualizing the higher dimen
 
 This section is a short crash course on basic elements of polyhedral geometry.
 Our treatment of this topic will often parallel that in Ziegler's ``Lectures on Polytopes'' \cite{zieglerLecturesPolytopes1995}, which we recommend for those who'd like a little more depth than presented here.
-We'll end this section by stating a classic theorem of convex geometry related to log-concavity.
 
 \subsection{The Cone Zone}
 We are going to be using two fundamental kinds of convex shapes, polytopes and cones.
@@ -40,18 +39,18 @@ We can, and will, state this formally.
 
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
-        \begin{tikzpicture}
-            \draw[thick, fill=SeaGreen, opacity=0.5] (0,0) circle[radius=2.6];
+        \begin{tikzpicture}[scale=0.7]
+            \draw[thick, fill=SeaGreen, opacity=0.5] (-2,-2) -- (-2,2) -- (2,2) -- (2,-2) -- cycle;
 
-            \node[circle, fill=MidnightBlue, scale=0.7] (A) at (1.2, -1.55) {};
-            \node[circle, fill=MidnightBlue, scale=0.7] (B) at (-1.8, 0.2) {};
-            \draw[ultra thick, MidnightBlue] (A) -- (B);
+            \node[circle, fill=MidnightBlue, scale=0.5] (A) at (1.2, -1.55) {};
+            \node[circle, fill=MidnightBlue, scale=0.5] (B) at (-1.8, 0.2) {};
+            \draw[thick, MidnightBlue] (A) -- (B);
         \end{tikzpicture}
 
     \end{subfigure}
     \begin{subfigure}[t]{0.5\textwidth}
         \centering
-        \begin{tikzpicture}
+        \begin{tikzpicture}[scale=0.7]
             \pgfmathsetmacro{\ct}{3} % distance center to tip
             \pgfmathsetmacro{\cc}{\ct*sin(18)/sin(126)} % distance center to corner (sine rule)
             % star
@@ -77,9 +76,9 @@ We can, and will, state this formally.
             % \draw[ultra thick,fill=green] (C4) -- (C1) -- (T2) -- (C2) -- (C4);
 
             % \node[above=1cm] at (T1) {complete};
-            \node[circle, fill=red, scale=0.7] (A) at (-1.2, -1.55) {};
-            \node[circle, fill=red, scale=0.7] (B) at (-1.6, 0.5) {};
-            \draw[ultra thick, red] (A) -- (B);
+            \node[circle, fill=red, scale=0.5] (A) at (-1.2, -1.55) {};
+            \node[circle, fill=red, scale=0.5] (B) at (-1.6, 0.5) {};
+            \draw[thick, red] (A) -- (B);
         \end{tikzpicture}
     \end{subfigure}
     \caption{Everyone's first pair of convex and non-convex shapes}
@@ -115,6 +114,7 @@ In 2 dimensions we like to think of this as stretching a rubber band around a bu
             \draw[ultra thick, Black] (A) -- (C);
         \end{tikzpicture}
 
+        \subcaption*{A 1-dimensional polytope}
     \end{subfigure}
     \begin{subfigure}[t]{0.3\textwidth}
         \centering
@@ -135,6 +135,7 @@ In 2 dimensions we like to think of this as stretching a rubber band around a bu
             \node[circle, fill=Black, scale=0.7] (E) at (2, -.3) {};
         \end{tikzpicture}
 
+        \subcaption*{A 2-dimensional polytope}
     \end{subfigure}
     \begin{subfigure}[t]{0.4\textwidth}
         \centering
@@ -157,8 +158,10 @@ In 2 dimensions we like to think of this as stretching a rubber band around a bu
             \draw[fill=black] (\p) circle (2.5pt);
 
         \end{tikzpicture}
+
+        \subcaption*{A 3-dimensional polytope}
     \end{subfigure}
-    \caption{A sampling of polytopes; that }
+    \caption{A sampling of polytopes; note that we only highlighted the minimal generating set of points (the vertices)}
 \end{figure}
 
 Likewise, cones are also built of a finite collection of generating vectors.
@@ -179,25 +182,148 @@ Likewise, cones are also built of a finite collection of generating vectors.
 Unlike the more familiar notion of cones, these are not pointed cylinders.
 \begin{figure}[H]
     \centering
-    \todo{Draw some cones}
-    \caption{Some cones}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=2]
+
+            % Axes 
+            \draw[->, Black] (0,0) -- (1,0);
+            \draw[->, Black] (0,0) -- (-1,0);
+            \draw[->, Black] (0,0) -- (0,1);
+            \draw[->, Black] (0,0) -- (0,-1);
+            \node[circle, fill=Black, inner sep=0.81] at (0,0) {};
+
+            % Cone
+            \draw[fill=CarnationPink, opacity=0.6] (0,0) -- (-0.55, 1.32) -- (-1.26,0.525) -- cycle;
+            \draw[->, Black, ultra thick] (0,0) -- (-.5, 1.2);
+            \draw[->, Black, ultra thick] (0,0) -- (-1.2,.5);
+
+            \node[circle, fill=Black, inner sep=1.2] at (0,0) {};
+        \end{tikzpicture}
+
+        \subcaption*{A 2-dimensional cone}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \tdplotsetmaincoords{68}{55}
+        \begin{tikzpicture}[scale=3,tdplot_main_coords]
+
+            \draw [<->] (-0.5,0,0) -- (1,0,0) node [right] {};
+            \draw [<->] (0,-0.5,0) -- (0,1,0) node [left] {};
+            \draw [<->] (0,0,-0.5) -- (0,0,1) node [left] {};
+
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0.75, 0.75, 0);
+            \coordinate (B) at (0.0, 0.75, 0.8);
+            \coordinate (C) at (0.7, 0.5, 0.2);
+
+            \node[circle, fill=Black, inner sep=0.81] at (O) {};
+
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.3]  (O)-- (A) -- (B) -- cycle;
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.4]  (O)-- (A) -- (C) -- cycle;
+            \draw[draw=blue!20,fill=Gray,fill opacity=0.3]  (O)-- (A) -- (C) -- cycle;
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.4]  (O)-- (B) -- (C) -- cycle;
+            \draw[draw=blue!20,fill=White,fill opacity=0.3]  (O)-- (B) -- (C) -- cycle;
+
+            \draw[ultra thick, ->] (O) -- (A);
+            \draw[ultra thick, ->] (O) -- (B);
+            \draw[ultra thick, ->] (O) -- (C);
+
+            \node[circle, fill=Black, inner sep=1.2] at (0,0) {};
+        \end{tikzpicture}
+
+        \subcaption*{A 3-dimensional cone \\ (generated by 3 vectors)}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \tdplotsetmaincoords{79}{35}
+        \begin{tikzpicture}[scale=3,tdplot_main_coords]
+
+            \draw [<->] (-1,0,0) -- (0.5,0,0) node [right] {};
+            \draw [<->] (0,-1,0) -- (0,0.5,0) node [left] {};
+            \draw [<->] (0,0,-1) -- (0,0,0.5) node [left] {};
+
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (-0.75, -0.75, 0);
+            \coordinate (B) at (0.0, -0.75, -0.8);
+            \coordinate (C) at (-0.7, -0.5, 0.2);
+            \coordinate (D) at (0.3, -1.2, -0.3);
+
+
+            % \node at (A) {A};
+            % \node at (B) {B};
+            % \node at (C) {C};
+            % \node at (D) {D};
+
+            \node[circle, fill=Black, inner sep=0.81] at (O) {};
+
+
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.3]  (O)-- (A) -- (C) -- cycle;
+            \draw[draw=blue!20,fill=White,fill opacity=0.5]  (O)-- (A) -- (C) -- cycle;
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.3]  (O)-- (A) -- (B) -- cycle;
+            \draw[draw=blue!20,fill=Gray,fill opacity=0.3]  (O)-- (A) -- (B) -- cycle;
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.3]  (O)-- (B) -- (D) -- cycle;
+            \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.3]  (O)-- (C) -- (D) -- cycle;
+
+            % \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.4]  (O)-- (A) -- (C) -- cycle;
+            % \draw[draw=blue!20,fill=Gray,fill opacity=0.3]  (O)-- (A) -- (C) -- cycle;
+
+            % \draw[draw=blue!20,fill=CarnationPink,fill opacity=0.4]  (O)-- (B) -- (C) -- cycle;
+            % \draw[draw=blue!20,fill=White,fill opacity=0.3]  (O)-- (B) -- (C) -- cycle;
+
+            \draw[ultra thick, ->,opacity=0.5] (O) -- (D);
+            \draw[ultra thick, ->,opacity=0.5, color=CarnationPink] (O) -- (D);
+            \draw[ultra thick, ->] (O) -- (A);
+            \draw[ultra thick, ->] (O) -- (B);
+            \draw[ultra thick, ->] (O) -- (C);
+
+            \node[circle, fill=Black, inner sep=1.2] at (0,0) {};
+        \end{tikzpicture}
+
+        \subcaption*{A 3-dimensional cone \\ (generated by 4 vectors)}
+    \end{subfigure}
+    \caption{Some examples of cones}
+    \label{fig:cones}
 \end{figure}
 We notice that conic combinations are essentially the span of the generating vectors but taking only non-negative linear combinations.
 Indeed, one can quickly confirm that \( \cone(\{x_1, \dots, x_k\}) \subseteq \Span(\{x_1, \dots, x_k\}) \).
 
-\subsubsection{Aside: Points vs. Vectors}
+\subsection{Points vs. Vectors: An Affine Primer}
 We have been, and will be going forward, using the words ``points'' and ``vectors'' quite interchangeably.
 Is there a difference?
-Annoyingly, the answer is kind of yes and kind of no.
+Strictly speaking, yes there is.
 Points imply elements of an affine space, while vectors, naturally, are elements of a vector space.
-Affine spaces can be thought of a vector space where the \( 0 \)-vector is ``forgotten'' but are otherwise essentially the same collection of ``stuff''.
+Affine spaces can be thought of as vector spaces where the \( 0 \)-vector is ``forgotten'', but are otherwise essentially the same collection of ``stuff''.
 Mathematicians love to make multiple objects out of the same basic thing by giving (or losing) some extra structure.
 
-We justify skimping on formalizing affine geometry because for the more casual reader it would be mostly obfuscating, a fairly na\"ive understanding of things like dimension will serve just fine, and for the more advanced it would be mostly tedious.
-Additionally, for our purposes, the \( 0 \)-vector is always rather conveniently located, and so we won't, for example, ever have to argue the difference between a ``cone'' and a ``affine cone''.
-For those who would like a more formal treatment, we again recommend \cite{zieglerLecturesPolytopes1995}.
-As for word choice, will choose the term point or vector based on their vibe at any given moment.
-\todo{don't use the word vibe, what is wrong with you.}
+This poses a slight problem since we want to refer to the dimension of our polytopes and cones (and already have been in figures), but a notion of dimension usually relies on a vector space.
+To settle a notion of dimension here, we first want to define what an affine span (also called an affine hull) is.
+\begin{definition}[Affine Span]\th\label{def:affineSpan}
+    Let \( S \subseteq \R^d \).
+    The \emph{affine span} of \( S \) is the set
+    \[
+        \aff(S) = \left\{ \sum_{i=1}^k \lambda_k x_k \; \middle| \; k > 0,\,  x_i \in S,\, \sum_{i=1}^k \lambda_i = 1 \right\}.
+    \]
+\end{definition}
+The affine span of some set will be something that looks like a linear subspace, but might not include the origin.
+In fact if \( 0 \in S \), then the affine span and our more traditional linear span coincide exactly.
+The insight here then is that we could always translate our affine span so that it includes the origin.
+Once we have a linear subspace we can just use the linear algebra definition of dimension.
+\begin{definition}[Affine Dimension]\th\label{def:affineDimension}
+    Given any set \( S \subseteq \R^d \), designate some element \( x_0 \in S \).
+    The \emph{dimension} of \( S \) is
+    \[
+        \dim(S) = \dim\bigl( \aff(S)-x_0 \bigr),
+    \]
+    where, on the right-hand side, \( \dim \) is the standard notion of dimension of a subspace in linear algebra.
+\end{definition}
+We're overloading our notation a bit, but we promise this mostly reduces cognitive load.
+This also goes to explain our switching between ``point'' or ``vector''.
+Since our cones are defined to always include \( 0 \), affine and linear terms mostly line up and we are mostly safe to just think in terms of vector spaces.
+Indeed, for cones we will always just write \( \Span(\cC) \) in lieu of \( \aff(\cC) \).
+
+Dimension will mostly align with intuition, but it's good to have the definitions at hand if ever in doubt.
+Early chapters of \cite{zieglerLecturesPolytopes1995} and \cite{grunbaumConvexPolytopes2003} both provide a good treatment of affine spaces.
 
 \subsection{The Minkowski Sum}
 Now that we have the basic shapes down we need be able to make new ones out of existing ones.
@@ -212,18 +338,55 @@ We'll start with learning how we can add shapes together, using what we call the
 \end{definition}
 Sit with this definition for a few moments to confirm the Minkowski sum does have the nice properties of sums we normally expect.
 It is commutative, associative, and has an identity in \( \{ 0 \} \).
-An additional feature of the definition is that the empty set has the property that for any \( P \subseteq \R^n \),
+An additional feature of the definition is that the empty set has the property that for any \( P \subseteq \R^n \)
 \[
     P + \emptyset = \emptyset.
 \]
 
 A way to think about the Minkowski sum is ``smearing'' one shape around the other.
+You pick some point in either shape, then drag it along the boarder of the other shape in the sum.
 This makes more sense with a picture.
 \begin{figure}[H]
     \centering
-    \todo{Minkowski sum smearing example}
-    \caption{A Minkowski sum of a square and a triangle}
+    \def\radius{.5cm}
+    \begin{tikzpicture}[scale=2]
+        \coordinate (a) at (0,0);
+        \coordinate (b) at (3,-1);
+        \coordinate (c) at (2,2);
+
+        \coordinate (a_out) at ($(a)!\radius!-90:(b)$);
+        \coordinate (a_in) at ($(a)!\radius!90:(b)$);
+        \coordinate (b_out) at ($(b)!\radius!-90:(b)$);
+
+        % Draw circles! 
+        \foreach \nd in {a, b, c} {\draw[dashed, thick, color=Emerald, opacity=1] (\nd) circle (\radius);}
+
+        % Fill side rectangles
+        \draw[draw=none, fill=Emerald, opacity=0.3] ($(a)!\radius!-90:(b)$) coordinate (AtB) -- ($(b)!\radius!90:(a)$) coordinate (BtA) -- (b) -- (a) -- cycle;
+        \draw[draw=none, fill=Emerald, opacity=0.3] ($(a)!\radius!90:(c)$) coordinate (AtC) -- ($(c)!\radius!-90:(a)$) coordinate (CtA) -- (c) -- (a) -- cycle;
+        \draw[draw=none, fill=Emerald, opacity=0.3] ($(b)!\radius!-90:(c)$) coordinate (BtC) -- ($(c)!\radius!90:(b)$) coordinate (CtB) -- (c) -- (b) -- cycle;
+
+        % Fill missing angles and outer part of circle
+        \draw pic [draw=none, fill=Emerald, opacity=0.3, angle radius=2*\radius] {angle=AtC--a--AtB};
+        \draw pic [draw, ultra thick, angle radius=2*\radius] {angle=AtC--a--AtB};
+
+        \draw pic [draw=none, fill=Emerald, opacity=0.3, angle radius=2*\radius] {angle=BtA--b--BtC};
+        \draw pic [draw, ultra thick, angle radius=2*\radius] {angle=BtA--b--BtC};
+
+        \draw pic [draw=none, fill=Emerald, opacity=0.3, angle radius=2*\radius] {angle=CtB--c--CtA};
+        \draw pic [draw, ultra thick,  angle radius=2*\radius] {angle=CtB--c--CtA};
+        % Draw lines connecting circles
+        \draw[ultra thick] ($(a)!\radius!-90:(b)$) -- ($(b)!\radius!90:(a)$) ($(b)!\radius!-90:(c)$) -- ($(c)!\radius!90:(b)$) ($(c)!\radius!-90:(a)$) -- ($(a)!\radius!90:(c)$) ($(a)!\radius!-90:(b)$);
+
+        % Fill inner triangle
+        \draw[dashed, thick, fill=RoyalBlue, opacity=0.3] (a) -- (b) -- (c) -- cycle;
+
+        % Put a dot in the center of each circle
+        \foreach \nd in {a, b, c} {\node[circle, fill=Black, opacity=1, scale=0.2] at (\nd) {};}
+    \end{tikzpicture}
+    \caption{A visual representation of a Minkowski sum of a triangle and a circle}
 \end{figure}
+This is a helpful visual intuition, but it may take a moment to be convinced that, up to translation, the resulting shape doesn't depend on either the shape you choose to smear or the choice of point in that shape.
 
 With the Minkowski sum, we can finally define what the polyhedron is our polyhedral geometry.
 \begin{definition}[Polyhedron]\th\label{def:polyhedron}
@@ -237,31 +400,189 @@ A polyhedron is the result of the Minkowski sum of a polytope and a cone.
 Clearly every polytope and cone are polyhedron themselves, as \( \conv(\{0\}) = \cone(\{0\}) = \{ 0 \} \).
 Polyhedron are not necessarily bounded, which may seem a bit unusual to those who have seen the word in other contexts.
 Moreover, all bounded polyhedra are polytopes, which is not necessarily obvious, but useful to keep in mind.
-\begin{figure}[H]
-    \centering
-    \todo{Make a polyhedron or two}
-\end{figure}
 We will mostly be focused on either polytopes or cones at any one time, but having a more general object that includes both makes our definitions going forward a cleaner.
 
 \subsection{About Faces}
-\todo{Actually, do we really need this section?}
 Given a polyhedron \( P \), we also get a whole family of polyhedron, the faces of \( P \).
 Let's first go back to simpler times.
 If we were to think of a cube, we would have faces of the cube as the 2 dimensional squares that make up the sides.
 We'd then call the line segments where any two of those squares meet \textit{edges} and the points those edges meet \textit{vertices}.
 \begin{figure}[H]
     \centering
-    \todo{Cube, squares, lines, points}
-    \caption{Examples of the faces, edges, and vertices of a cube}
+    \begin{subfigure}{0.24\textwidth}
+        \newcommand{\Depth}{2}
+        \newcommand{\Height}{2}
+        \newcommand{\Width}{2}
+        \begin{tikzpicture}
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0,\Width,0);
+            \coordinate (B) at (0,\Width,\Height);
+            \coordinate (C) at (0,0,\Height);
+            \coordinate (D) at (\Depth,0,0);
+            \coordinate (E) at (\Depth,\Width,0);
+            \coordinate (F) at (\Depth,\Width,\Height);
+            \coordinate (G) at (\Depth,0,\Height);
+
+            \draw[Red,fill=Red!80] (O) -- (C) -- (G) -- (D) -- cycle;% Bottom Face
+            \draw[Red,fill=Red!30] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \draw[Red,fill=Red!10] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+            \draw[Red,fill=Red!20,opacity=0.8] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+            \draw[Red,fill=Red!20,opacity=0.6] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+            \draw[Red,fill=Red!20,opacity=0.8] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
+
+            %% Following is for debugging purposes so you can see where the points are
+            %% These are last so that they show up on top
+            %\foreach \xy in {O, A, B, C, D, E, F, G}{
+            %    \node at (\xy) {\xy};
+            %}
+        \end{tikzpicture}
+    \end{subfigure}
+    \begin{subfigure}{0.24\textwidth}
+        \newcommand{\Depth}{2}
+        \newcommand{\Height}{2}
+        \newcommand{\Width}{2}
+        \begin{tikzpicture}
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0,\Width,0);
+            \coordinate (B) at (0,\Width,\Height);
+            \coordinate (C) at (0,0,\Height);
+            \coordinate (D) at (\Depth,0,0);
+            \coordinate (E) at (\Depth,\Width,0);
+            \coordinate (F) at (\Depth,\Width,\Height);
+            \coordinate (G) at (\Depth,0,\Height);
+
+            \fill[Gray,fill=Gray!50, opacity=0.5] (O) -- (C) -- (G) -- (D) -- cycle;% Bottom Face
+            \fill[Gray,fill=Gray!10, opacity=0.5] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \fill[Gray,fill=Gray!5, opacity=0.5] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+            \fill[Gray,fill=Gray!8,opacity=0.4] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+            \fill[Gray,fill=Gray!10,opacity=0.2] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+            \fill[Gray,fill=Gray!10,opacity=0.4] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
+
+            \draw[Red,fill=Red!70,opacity=0.75] ($ (O) + (0,-0.25*\Width, 0) $) -- ($ (C) + (0,-0.25*\Width, 0) $) -- ($ (G) + (0,-0.25*\Width, 0) $) -- ($ (D) + (0,-0.25*\Width, 0) $) -- cycle;% Bottom Face
+            % \draw[Red,fill=Red!30] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \draw[Red,fill=Red!30] ($ (O) + (0.25\Depth,0.25*\Width, 0) $) -- ($ (A) + (0.25\Depth,0.25*\Width, 0) $) -- ($ (E) + (0.25\Depth,0.25*\Width, 0) $) -- ($ (D) + (0.25\Depth,0.25*\Width, 0) $) -- cycle;% Back Face
+            % \draw[Red,fill=Red!10] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+            \draw[Red,fill=Red!30] ($ (O) + (-0.25\Depth,0*\Width, 0) $) -- ($ (A) + (-0.25\Depth,0*\Width, 0) $) -- ($ (B) + (-0.25\Depth,0*\Width, 0) $) -- ($ (C) + (-0.25\Depth,0*\Width, 0) $) -- cycle;% Left Face
+            % \draw[Red,fill=Red!20,opacity=0.8] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+            \draw[Red,fill=Red!30,opacity=0.8] ($ (D) + (0.2\Depth,0*\Width, 0) $) -- ($ (E) + (0.2\Depth,0*\Width, 0) $) -- ($ (F) + (0.2\Depth,0*\Width, 0) $) -- ($ (G) + (0.2\Depth,0*\Width, 0) $) -- cycle;% Right Face
+            \draw[Red,fill=Red!20,opacity=0.6] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+            % \draw[Red,fill=Red!20,opacity=0.8] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
+            \draw[Red,fill=Red!30,opacity=0.8] ($ (A) + (0*\Depth,0.2*\Width, 0*\Height) $) -- ($ (B) + (0*\Depth,0.2*\Width, 0*\Height) $) -- ($ (F) + (0*\Depth,0.2*\Width, 0*\Height) $) -- ($ (E) + (0*\Depth,0.2*\Width, 0*\Height) $) -- cycle;% Right Face
+
+            %% Following is for debugging purposes so you can see where the points are
+            %% These are last so that they show up on top
+            %\foreach \xy in {O, A, B, C, D, E, F, G}{
+            %    \node at (\xy) {\xy};
+            %}
+        \end{tikzpicture}
+    \end{subfigure}
+    \begin{subfigure}{0.24\textwidth}
+        \newcommand{\Depth}{2}
+        \newcommand{\Height}{2}
+        \newcommand{\Width}{2}
+        \begin{tikzpicture}
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0,\Width,0);
+            \coordinate (B) at (0,\Width,\Height);
+            \coordinate (C) at (0,0,\Height);
+            \coordinate (D) at (\Depth,0,0);
+            \coordinate (E) at (\Depth,\Width,0);
+            \coordinate (F) at (\Depth,\Width,\Height);
+            \coordinate (G) at (\Depth,0,\Height);
+
+            \coordinate(Down) at (0, -0.1*\Width, 0);
+            \coordinate(Up) at (0, 0.1*\Width, 0);
+            \coordinate(Right) at (0.1*\Depth, 0, 0);
+            \coordinate(Left) at (-0.1*\Depth, 0, 0);
+            \coordinate(Forward) at (0, 0, 0.1*\Height);
+            \coordinate(Back) at (0, 0, -0.1*\Height);
+
+            \fill[ Gray,fill=Gray!80, opacity=0.5] (O) -- (C) -- (G) -- (D) -- cycle;% Bottom Face
+            \fill[Gray,fill=Gray!50, opacity=0.5] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \fill[Gray,fill=Gray!10, opacity=0.5] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+            \fill[Gray,fill=Gray!20,opacity=0.4] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+            \fill[Gray,fill=Gray!20,opacity=0.2] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+            \fill[Gray,fill=Gray!20,opacity=0.4] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
+
+            % Back Face
+            \draw[Red, ultra thick, opacity=0.5] ($ (O) + (Back) + (Left) $) -- ($ (A) + (Back) + (Left) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (A) + (Back) + (Up) $) -- ($ (E) + (Back) + (Up) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (E) + (Back) + (Right) $) -- ($ (D) + (Back) + (Right) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (D) + (Back) + (Down) $) -- ($ (O) + (Back) + (Down) $);
+            % Left Side
+            \draw[Red, ultra thick, opacity=0.5] ($ (A) + (Up) + (Left) $) -- ($ (B) + (Up) + (Left) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (O) + (Left) + (Down) $) -- ($ (C) + (Left) + (Down) $);
+            % Right Side
+            \draw[Red, ultra thick, opacity=0.5] ($ (E)  + (Up) + (Right) $) -- ($ (F)  + (Up) + (Right) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (G) + (Down) + (Right) $) -- ($ (D) + (Down) + (Right) $);
+            % Front Face
+            \draw[Red, ultra thick, opacity=0.5] ($ (C) + (Forward) + (Left) $) -- ($ (B) + (Forward) + (Left) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (B) + (Forward) + (Up) $) -- ($ (F) + (Forward) + (Up) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (F) + (Forward) + (Right) $) -- ($ (G) + (Forward) + (Right) $);
+            \draw[Red, ultra thick, opacity=0.5] ($ (G) + (Forward) + (Down) $) -- ($ (C) + (Forward) + (Down) $);
+
+            % \draw[Red, thick] ($ (B) + -0.1*(B) $) -- ($ (C) + -0.1*(C) $);
+            % \draw[Red, thick] ($ (B) + -0.1*(B) $) -- ($ (C) + -0.1*(C) $);
+            % \draw[Red, thick] ($ (B) + -0.1*(B) $) -- ($ (C) + -0.1*(C) $);
+            % \draw[Red, thick] ($ (B) + -0.1*(B) $) -- ($ (C) + -0.1*(C) $);
+
+            %% Following is for debugging purposes so you can see where the points are
+            %% These are last so that they show up on top
+            %\foreach \xy in {O, A, B, C, D, E, F, G}{
+            %    \node at (\xy) {\xy};
+            %}
+        \end{tikzpicture}
+    \end{subfigure}
+    \begin{subfigure}{0.24\textwidth}
+        \newcommand{\Depth}{2}
+        \newcommand{\Height}{2}
+        \newcommand{\Width}{2}
+        \begin{tikzpicture}
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0,\Width,0);
+            \coordinate (B) at (0,\Width,\Height);
+            \coordinate (C) at (0,0,\Height);
+            \coordinate (D) at (\Depth,0,0);
+            \coordinate (E) at (\Depth,\Width,0);
+            \coordinate (F) at (\Depth,\Width,\Height);
+            \coordinate (G) at (\Depth,0,\Height);
+
+            \draw[Gray,fill=Gray!50, opacity=0.5] (O) -- (C) -- (G) -- (D) -- cycle;% Bottom Face
+            \draw[Gray,fill=Gray!10, opacity=0.5] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \draw[Gray,fill=Gray!5, opacity=0.5] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+            \draw[Gray,fill=Gray!8,opacity=0.4] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+            \draw[Gray,fill=Gray!10,opacity=0.2] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+            \draw[Gray,fill=Gray!10,opacity=0.4] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
+
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (O) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (A) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (B) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (C) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (D) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (E) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (F) {};
+            \node[circle, fill=Red, opacity=0.5, minimum size=5pt, inner sep=0] at (G) {};
+
+            % \draw[Red,fill=Red!80] (O) -- (C) -- (G) -- (D) -- cycle;% Bottom Face
+            % \draw[Red,fill=Red!30] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            % \draw[Red,fill=Red!10] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+            % \draw[Red,fill=Red!20,opacity=0.8] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+            % \draw[Red,fill=Red!20,opacity=0.6] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+            % \draw[Red,fill=Red!20,opacity=0.8] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
+
+            %% Following is for debugging purposes so you can see where the points are
+            %% These are last so that they show up on top
+            %\foreach \xy in {O, A, B, C, D, E, F, G}{
+            %    \node at (\xy) {\xy};
+            %}
+        \end{tikzpicture}
+    \end{subfigure}
+    \caption{The faces of a cube; note that the full cube is a face of itself (as is the empty set, which we drew as accurately as possible)}
 \end{figure}
 If this sounds familiar then the intuition for our more general notion of the face of a polyhedron is not far.
-
-Now back in our world of polyhedral geometry, we know that a cube is a polyhedron and that each of those squares, lines, and points are also themselves polyhedron.
-In general, we use the term face to describe all these ``sub-polyhedron'' that make up the boundary of a polyhedron.
-As a note, we do still call the \( 0 \)-dimensional faces vertices.
-The generic term for a \( (d - 1) \)-dimensional face of a \( d \)-dimensional polyhedron is a \textit{facet}.
-
-It's worth defining face formally as it does only require some linear algebra, but the intuition above will likely suffice.
+Back in our world of polyhedral geometry, we know that a cube is a polyhedron and that each of those squares, lines, and points are also themselves polyhedron.
+Informally, we use the term face to describe all these ``sub-polyhedron'' that make up the boundary of a polyhedron.
+We require
 \begin{definition}[Face]\th\label{def:face}
     Let \( P \subseteq \R^n \) be a polyhedron and fix inner product \( \ast \in \inn(\R^n) \).
     Recall that the hyperplane normal to a vector \( x \in \R^n \) at distance \( q \in \R \)  is given by
@@ -286,16 +607,34 @@ It's worth defining face formally as it does only require some linear algebra, b
     \end{gather*}
 
 \end{definition}
-First, we note that that given any \( x \in \R^n \), \( F = \HP_x(0) \cap P = P \) and so \( P \) is face of itself.
-Likewise, there exist hyperplanes such that \( P \cap \HP_x(b) \cap P = \emptyset \), which means the empty set too is a face of any polyhedron \( P \).
+Some notable quirks of this definition are that given any \( x \in \R^n \), \( F = \HP_x(0) \cap P = P \) and so \( P \) is face of itself.
+Likewise, there exist infinitly many hyperplanes such that \( P \cap \HP_x(b) \cap P = \emptyset \), which means the empty set too is a face of any polyhedron \( P \).
+As a note, we do still call the \( 0 \)-dimensional faces vertices, while the generic term for a \( (d - 1) \)-dimensional face of a \( d \)-dimensional polyhedron is a \textit{facet}.
 \begin{figure}[H]
     \centering
-    \todo{Have a square, make a hyper plane show that it intersects along a face}
-    \caption{Examples of defining faces of a square with hyperplanes}
+    \tdplotsetmaincoords{70}{110} % Adjust the viewing angle
+    \begin{tikzpicture}[tdplot_main_coords, scale=1.5]
+
+        % Cube
+        \draw[thick] (0,0,0) -- (2,0,0) -- (2,2,0) -- (0,2,0) -- cycle;
+        \draw[thick] (0,0,2) -- (2,0,2) -- (2,2,2) -- (0,2,2) -- cycle;
+        \draw[thick] (0,0,0) -- (0,0,2);
+        \draw[thick] (2,0,0) -- (2,0,2);
+        \draw[thick] (2,2,0) -- (2,2,2);
+        \draw[thick] (0,2,0) -- (0,2,2);
+
+        % Plane
+        \fill[gray!50, opacity=0.5] (-0.75,-0.75,0) -- (2.75,-0.75,0) -- (2.75,2.75,0) -- (-0.75,2.75,0) -- cycle;
+
+        % Intersection edge
+        \draw[ultra thick, Red, fill=Red, opacity=0.5] (0,0,0) -- (2,0,0) -- (2,2,0) -- (0,2,0) -- cycle;
+
+    \end{tikzpicture}
+    \caption{Example of specifiying a facet of our cube with a plane}
 \end{figure}
 
 From our cube intuition exercise, there are some things about faces that we would hope to generalize to our broader notion of faces.
-We'll state these without proof, and again refer to the early chapters of Ziegler \cite{zieglerLecturesPolytopes1995}.
+We'll state these without proof, and again refer to the early chapters of \cite{zieglerLecturesPolytopes1995}.
 \begin{proposition}
     Given a polyhedron \( P \subseteq R^n \), every face \( F \subseteq P \) is a polyhedron.
     Better, if \( P \) is a polytope then \( F \) is a polytope, and if \( P \) is a cone then \( F \) is a cone.
@@ -330,25 +669,170 @@ We won't be too concerned about complexes of general polyhedra, and instead focu
 \begin{definition}[Polytopal Complex]\th\label{def:polytopalComplex}
     A \emph{polytopal complex} \( \cC \) is a polyhedral complex where every element \( P \in \cC \) is bounded, i.e., a polytope.
 \end{definition}
-\begin{figure}[H]
-    \centering
-    \todo{random polyhedral complex}
-    \caption{An example of a polyhedral complex}
-\end{figure}
+One might guess that next we'll define a conic complex or some such thing.
+In fact, a polyhedral complex of only cones is called a \emph{fan}, we assume mostly to torment anyone trying to do a web-search for information on them.
 \begin{definition}[Fan]\th\label{def:fan}
     A \emph{fan} \( \bSigma \) is a polyhedral complex where every element \( \sigma \in \bSigma \) is a cone.
 \end{definition}
 \begin{figure}[H]
     \centering
-    \todo{some example fans}
-    \caption{An example of a fan}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=2.8]
+            \draw[draw=blue!10,fill=blue!10, fill opacity=.5]    (.17,.07) -- (.9,.07) -- (.9,.8);
+            % \draw[draw=blue!10,fill=blue!10, fill opacity=.5]    (.07,-.07) -- (.9,-.07) -- (.9,-.9) -- (.07,-.9);
+            \draw[draw=blue!10,fill=blue!10, fill opacity=.5]    (-.07,-.17) -- (-.07,-.9) -- (-.8,-.9);
+            \draw[draw=blue!10,fill=blue!10, fill opacity=.5 ]    (-.17,-.07) -- (-.9,-.07) -- (-.9,-.8);
+            % \draw[draw=blue!10,fill=blue!10, fill opacity=.5]    (-.07,.07) -- (-.9,.07) -- (-.9,.9) -- (-.07,.9);
+            % \draw[draw=blue!10,fill=blue!10, fill opacity=.5]    (.07,.2) -- (.07,.9) -- (.8,.9);
+            \draw[->] (0,0) -- (1,0);
+            \draw[->] (0,0) -- (1,1);
+            % \draw[->] (0,0) -- (0,1);
+            \draw[->] (0,0) -- (-1,0);
+            \draw[->] (0,0) -- (-1,-1);
+            \draw[->] (0,0) -- (0,-1);
+            % \node[right] at (1,0) {$\rho_1$};
+            % \node[right] at (1,1) {$\rho_{12}$};
+            % \node[right] at (0,1) {$\rho_2$};
+            % \node[left] at (-1,0) {$\rho_{02}$};
+            % \node[right] at (-1,-1) {$\rho_0$};
+            % \node[right] at (0,-1) {$\rho_{01}$};
+        \end{tikzpicture}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \tdplotsetmaincoords{68}{55}
+        \begin{tikzpicture}[scale=2.5,tdplot_main_coords]
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (1, 0, 0) -- (1, 1, 1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (0, 1, 0) -- (1, 1, 1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (0, 0, 1) -- (1, 1, 1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (1, 0, 0) -- (0, -1, -1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, 1, 0) -- (-1, 0, -1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, 0, 1) -- (-1, -1, 0) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (-1, -1, 0) -- (-1, -1, -1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (-1, 0, -1) -- (-1, -1, -1) -- cycle;
+            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, -1, -1) -- (-1, -1, -1) -- cycle;
+            \draw[->] (0,0,0) -- (1,0,0);
+            % \node[right] at (1,0,0) {$\rho_1$};
+            \draw[->,gray] (0,0,0) -- (0,1,0);
+            % \node[above,gray] at (0,0.97,0) {$\rho_2$};
+            \draw[->] (0,0,0) -- (0,0,1);
+            % \node[above] at (0,0,1) {$\rho_3$};
+            \draw[->] (0,0,0) -- (1,1,1);
+            % \node[right] at (1,1,1) {$\rho_{123}$};
+            \draw[->] (0,0,0) -- (-1,-1,-1);
+            % \node[left] at (-1,-1,-1) {$\rho_0$};
+            \draw[->] (0,0,0) -- (-1,-1,0);
+            % \node[left] at (-1,-1,0) {$\rho_{03}$};
+            \draw[->,gray] (0,0,0) -- (-1,0,-1);
+            % \node[left,gray] at (-1,0,-1) {$\rho_{02}$};
+            \draw[->] (0,0,0) -- (0,-1,-1);
+            % \node[below] at (0,-1,-1) {$\rho_{01}$};
+            %\draw[dotted] (1,1,1) -- (1,1,-1) -- (1,-1,-1) -- (1,-1,1) -- cycle; 
+            %\draw[dotted] (-1,1,1) -- (-1,1,-1) -- (-1,-1,-1) -- (-1,-1,1) -- cycle; 
+            %\draw[dotted] (1,1,1) -- (-1,1,1) -- (-1,-1,1) -- (1,-1,1) -- cycle; 
+            %\draw[dotted] (1,1,-1) -- (-1,1,-1) -- (-1,-1,-1) -- (1,-1,-1) -- cycle; 
+        \end{tikzpicture}
+    \end{subfigure}
+    \caption{Examples of fans; even though they live in different spaces they are both composed only of fans of dimension 2 and less}
+    \label{fig:fans}
 \end{figure}
-We will learn some particular characteristics of fans in the next section, but we've now built up all the background on shapes we will need.
+From the title of this chapter, it will come as no surprise that fans are quite important.
+As such there's a few properties of fans that we want to introduce.
 
-\subsection{Volume Functions}
+\subsection{We're Big Fans (of These Properties of Fans)}
+
+We would like to introduce three properties of fans.
+These properties tend to make fans nice to work with as we will see.
+The first tells us something about the dimension of all the maximal cones in the fan.
+\begin{definition}[Pure]\th\label{def:pure}
+    A cone \(\sigma \in \bSigma \) is maximal if it is not the proper face of another cone in \( \bSigma \).
+    A fan is \emph{pure} if every maximal cone in \( \bSigma \) is the same dimension.
+
+    We say \( \bSigma \) is a \( d \)-fan when it is pure of dimension \( d \).
+\end{definition}
+Basically, a fan is pure if the largest cones in it are all of the same dimension.
+Both fans in figure~\ref{fig:fans} are pure of dimension 2.
+We can consider a counterexample as well.
+\begin{figure}[H]
+    \centering
+    \tdplotsetmaincoords{95}{15}
+    \begin{tikzpicture}[scale=2.5, tdplot_main_coords, scale=0.8]
+        \draw[draw=Red!20,fill=Red,fill opacity=0.5]  (0,0, 0)-- (1, 0, 0) -- (1, 1, 1) -- cycle;
+        \draw[draw=Red!20,fill=Red,fill opacity=0.5]  (0,0, 0)-- (0, 0, 1) -- (1, 1, 1) -- cycle;
+
+        \draw[draw=Blue!20,fill=Blue,fill opacity=0.5] (0,0, 0)-- (1, 0, 0) -- (0, -1, -1) -- cycle;
+        \draw[draw=White!20,fill=White,fill opacity=0.5] (0,0, 0)-- (1, 0, 0) -- (0, -1, -1) -- cycle;
+
+        \draw[draw=Green!20,fill=Green,fill opacity=0.5] (0,0, 0)-- (0, -1, -1) -- (-1, -1, -1) -- cycle;
+        \draw[draw=White!20,fill=White,fill opacity=0.7] (0,0, 0)-- (0, -1, -1) -- (-1, -1, -1) -- cycle;
+
+        \draw[->, thick, black!75] (0,0,0) -- (1,1,1);
+        \draw[->, thick] (0,0,0) -- (-1,-1,-1);
+        \draw[->, thick] (0,0,0) -- (0,-1,-1);
+
+        \draw[draw=Red!20,fill=Red,fill opacity=0.6]  (0,0, 0)-- (0, 0, 1) -- (1, 0, 0) -- cycle;
+        \draw[draw=Red!60,fill=Gray,fill opacity=0.4]  (0,0, 0)-- (0, 0, 1) -- (1, 0, 0) -- cycle;
+
+        \draw[->, thick] (0,0,0) -- (1,0,0);
+        \draw[->, thick] (0,0,0) -- (0,0,1);
+    \end{tikzpicture}
+    \caption{This fan is not pure, since it has maximal cones of both dimension 2 and 3}
+\end{figure}
+The next property relates to how many rays are necessary to generate each cone.
+\begin{definition}[Simplicial]\th\label{def:simplicial}
+    A fan \( \Sigma \) is \emph{simplicial} if every cone \( \sigma \in \Sigma \) is simplicial.
+    A cone \( \sigma \in \Sigma \) is simplicial if
+    \[
+        \dim (\sigma)  = |\sigma(1)|,
+    \]
+    where \( \sigma(1) \) is the set of \( 1 \)-dimensional faces of \( \sigma \).
+\end{definition}
+Alternativly, a cone is simplicial if its rays form a basis for the subspace that cone spans.
+In figure~\ref{fig:cones}, the first two cones are simplicial while the third is not.
+
+Given a simplicial \( d \)-fan, it can have yet another property, that of being tropical.
+Tropical fans come from the realm of tropical geometry, another deep topic we are going to avoid delving into.
+That tropical fans are in play at all relates back to lurking algebraic varieties that we continue to not fully address.
+We can, however, at least somewhat easily characterize tropical fans.
+They are fans that satisfy the weighted balancing condition.
+\begin{definition}[Tropical Fan]\th\label{def:tropical}
+    Let \( \bSigma \) be a simplicial \( d \)-fan with a marked, non-zero point \( u_\rho \in \rho \) for each ray \( \rho \in \bSigma(1) \).
+    Given a weight function
+    \[
+        \omega\,:\; \bSigma(d) \to \R_{>0},
+    \]
+    we say the pair \( (\bSigma, \omega) \) is a \emph{tropical fan} if for every \( \tau \in \bSigma(d-1) \)
+    \[
+        \sum_{\mathclap{\substack{\sigma \in \bSigma(d) \\ \tau \preceq \sigma}}} \omega(\sigma) u_{\sigma \setminus \tau} \in \Span(\tau),
+    \]
+    where \( \sigma \setminus \tau \) is shorthand for \( \sigma(1) \setminus \tau(1) \).
+\end{definition}
+We will go on to immediately abuse notation and say a fan \( \bSigma \) is itself tropical, as long there exists a weight function \( \omega \) that satisfies the condition.
+The exact impliactions of this definition takes a moment to parse, but the main takeaway is that it imposes some relationship between the cones of the fan.
+If the weight function is particularly simple then we have another term.
+\begin{definition}[Balanced Fan]\th\label{def:balanced}
+    A tropical fan \( (\bSigma, \omega) \) is \emph{balanced} if the weight function \( \omega \) is the constant function
+    \[
+        \omega(\sigma) = 1
+    \]
+    for all \( \sigma \in \bSigma(d) \).
+\end{definition}
+When a fan is balanced we will omit refernces to the weight function \( \omega \), a very convenient aspect of having a balanced fan.
+With this, we've now built up all the background on shapes we'll need.
+
+
+\section{The Geometer's Guide to Generating Log-Concave Sequences}
+Having developed our shapes, we are going to need to measure them somehow.
+Specifically, we want their volume.
+As with the rest of this chapter so far, we're going to take something that most people can intuitivly grasp for 3-dimensional shapes and generalize the hell out of it.
+Not only do we need volume for arbitrary dimensional polyhedra, we need something called the mixed volume which gives us some sense of volume of multiple shapes.
+This work however will allow us to introduce a classic result of convex geometry that relates geometry to log-concave sequences.
+
 From here, the last few background points can no longer be readily found in Ziegler, who as a topologist, we suspect without proof, cares little for things like volume.
 Instead, we swap out our Germans and recommend Rolf Schneider's ``Convex Bodies'' \cite{schneiderConvexBodiesBrunn2013} as a comprehensive reference.
 
+\subsection{Volume Functions}
 We again need to formalize something that most of us would take for granted.
 The notion of volume is intuitive enough for 3-dimensional shapes, we however need to generalize this to all dimensions.
 We will actually only need the volume of polytopes, so we restrict our notion of volume to just them.
@@ -377,7 +861,8 @@ We can differentiate different volume maps by which polytope in \( \R^n \) they 
 For example, in \( 3 \)-dimensions, our ``standard'' volume function is the one that takes the unit cube to \( 1 \).
 
 In general, since any two volume functions only differ by constant, we can choose the volume function that makes our equations easiest to read.
-We will be using \textit{simplicial volume} going forward, the volume defined such that
+For example, we will be using \textit{simplicial volume} quite a bit.
+This is the volume defined such that
 \[
     \Vol_n \big(\conv(\{0, e_1, e_2, \dots, e_n\})\big) = 1
 \]
@@ -499,11 +984,10 @@ We can consider an example.
         \end{tikzpicture}
     \end{subfigure}
     \caption{ \( \Vol(\lambda P + \mu Q) = \Vol(P)\lambda^2 + 2\MVol(P, Q)\lambda \mu + \Vol(Q) \mu^2 \) }
-    \todo{Add side lengths to diagram}
 \end{figure}
 Our example in the figure is nice because it is already symmetrical.
 In general this will not be the case and the mixed volume and the coefficients will need to be rewritten to be symmetric, though this can always be done.
-This idea generalizes to any dimension, and provides another definition of mixed volume.
+This idea generalizes to any dimension, and can be taken as another definition of mixed volume.
 \begin{definition}[Mixed Volume -- As Coefficients of Volume Polynomial]
     Let  \( P_1, P_2, \dots, P_\ell \subseteq \R^n \) be polytopes.
     The function
@@ -595,18 +1079,18 @@ Next, let's think about the elements of our fan.
 They are necessarily cones, and we see that there is one cone per flag in our matroid.
 This means that there exists a \( 1 \)-dimensional cone, often called a \textit{ray}, for each proper flat, as every flat is itself a flag.
 In general, the length of the flat corresponds to the dimension of the corresponding cone in the fan.
-As a consequence the biggest, by dimension, cones will correspond to proper flats.
+As a consequence the largest, by dimension, cones will correspond to proper flats.
 Similarly, if \( F_1, F_2 \in \cL \) are non-comparable flats, then there will not be a cone generated by the rays \( e_{F_1} \) and \( e_{F_2} \).
 This is how the fan structure encodes the original combinatorial data of our matroid.
 
 A bit of notation before moving on.
-We will let \( \bSigma_\cM(d) \) be the set of all \( d \)-dimensional cones in \( \bSigma \).
-We notate the rays of our Bergman fan as \( \rho_F \in \bSigma(1) \) for flat \( F \in \cL^\ast \).
+We will write \( \bSigma_\cM(d) \) to be the set of all \( d \)-dimensional cones in \( \bSigma \).
+We will reserve \( \rho \) to designate the rays of our Bergman fan; that is \( \rho_F \in \bSigma(1) \) for flat \( F \in \cL^\ast \).
 More generally, for any flag \( \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_\ell \} \) of our matroid, we write
 \[
     \sigma_\scrF = \cone\bigl( e_{F_1}, \dots, e_{F_\ell} \bigr),
 \]
-for the cone associated with the flag.
+for the cone  associated with \(\scrF\).
 
 \subsubsection{An Example Bergman Fan}
 As always, let's turn to our running example and see its corresponding Bergman fan.
@@ -615,7 +1099,7 @@ Recall that
     E = \{ a, b, c, d \} \quad \text{and} \quad \cL^\ast = \{ a, b, c, d, abd, ac, bc, cd \}.
 \]
 
-Then we can consider the space \( N = \R^E/\langle e_a + e_b + e_c + e_d \).
+Then we can consider the space \( N = \R^E/\langle e_a + e_b + e_c + e_d \rangle\).
 We will designate \( d \) as the special element and associate a basis vector of \( \R^3 \) to the remaining ground elements \( a, b, c \).
 \begin{figure}[H]
     \centering
@@ -703,8 +1187,8 @@ Then we can add in all the rays of our fan, corresponding to the flats.
     \caption{The rays \( \bSigma_\cM(1)\)}
 \end{figure}
 
-Since our proper flags can only have two elements, we need only have at most \( 2 \)-dimensional cones.
-We can see that we only have a cone involving the rays \(\rho_F\) and \( \rho_F'\) if \( F \subsetneq F' \) or \( F' \subsetneq F \).
+Because our proper flags can only have two elements we will only have at most \( 2 \)-dimensional cones,
+since we only have a cone involving the rays \(\rho_F\) and \( \rho_{F'}\) if \( F \subsetneq F' \) or \( F' \subsetneq F \).
 \begin{figure}[H]
     \centering
     \tdplotsetmaincoords{28}{55}
@@ -749,28 +1233,14 @@ We can see that we only have a cone involving the rays \(\rho_F\) and \( \rho_F'
         %\draw[dotted] (1,1,1) -- (-1,1,1) -- (-1,-1,1) -- (1,-1,1) -- cycle;
         %\draw[dotted] (1,1,-1) -- (-1,1,-1) -- (-1,-1,-1) -- (1,-1,-1) -- cycle;
     \end{tikzpicture}
-    \caption{The Bergman fan of \( \cM \), \( \bSigma_\cM \)}
+    \caption{The Bergman fan of \( \cM \) with all of its cones}
 \end{figure}
 We often think of these \( 2 \)-dimensional Bergman fans look like dart fletching.
-This provides no mathematical insight, it's just a polyhedral rorschach test.
+This provides no mathematical insight, just a polyhedral rorschach test.
 
 \subsection{Properties of the Bergman Fan}
-Bergman fans of matroids have some nice properties that will be important later.
-These properties of fans that deal with the kinds of cones in them.
-\begin{definition}[Pure]\th\label{def:pure}
-    A cone \(\sigma \in \bSigma \) is maximal if it is not the proper face of another cone in \( \bSigma \).
-    If every maximal cone in a fan \( \bSigma \) is the same dimension, we say the fan is \emph{pure}.
-    We \( \bSigma \) is a \( d \)-fan when it is pure of dimension \( d \).
-\end{definition}
-
-\begin{definition}[Simplicial]\th\label{def:simplicial}
-    A fan \( \Sigma \) is \emph{simplicial} if for every cone \( \sigma \in \Sigma \),
-    \[
-        \dim (\sigma)  = |\sigma(1)|,
-    \]
-    where \( \sigma(1) \) is the set of \( 1 \)-dimensional faces of \( \sigma \).
-\end{definition}
-Of course, as stated, the Bergman fan of a matroid is both pure and simplicial.
+Given the properties of fans we introduced earlier, it should come as not surprise that Bergman fans tend to be particularly nice.
+To start, we can show that Bergman fans of matroids are always both pure and simplicial.
 \begin{proposition}\th\label{thm:bergFanSimPure}
     Let \( \cM \) be a matroid of rank \( r + 1 \).
     The associated Bergman fan \( \bSigma_\cM \) is a simplicial \( r \)-fan.
@@ -814,24 +1284,17 @@ Of course, as stated, the Bergman fan of a matroid is both pure and simplicial.
     With that we've shown that \( \bSigma_\cM \) is a simplical \( r \)-fan.
 
 \end{proof}
-
-The other property we want is that the Bergman fan of a matroid is balanced.
-\begin{definition}{Balanced}\th\label{def:balanced}
-    Let \( bSigma \) be a simplicial \( d \)-fan.
-    We say \( \bSigma \) is \emph{balanced} if for every \( \tau \in \bSigma(d-1) \),
-    \[
-        \sum_{\mathclap{\substack{\sigma \in \bSigma(d) \\ \tau \preceq \sigma}}} e_{\sigma(1) \setminus \tau(1)} \in \Span(\tau).
-    \]
-\end{definition}
+Now that we know that a Bergman fan must necessarily be simplicial and pure, we can go on to show that the Bergman fan is tropical, and in fact balanced.
 \begin{proposition}
     Let \( \cM \) be a matroid.
     The Bergman fan \( \bSigma_\cM \) is a balanced fan.
 \end{proposition}
-\todo{Should I also prove that it's a balanced fan? I should I'll come back and do this}
-A balanced fan is a type of broader category of fans known as tropical fans.
-We won't delve too far into tropical fans broadly, but what is important to note is that if \( \bSigma \) is a tropical fan, then it has an associated Chow ring \( A^\bullet(\bSigma) \).
-This is built analogously to how we developed the Chow ring of a matroid,  starting with a polynomial ring with one variable per ray in \( \bSigma(1) \).
-Notably, if \( \bSigma \) is the Bergman fan of a matroid \( \cM \), then \( A^\bullet(\bSigma) = A^\bullet(\cM) \).
+\begin{proof}
+    \todo{Ahhhhhhh I can't figure this out}
+\end{proof}
+While we still don't want to go into the deep details of tropical geometry, we would note here that if \( \bSigma \) is a tropical fan, then it has an associated Chow ring \( A^\bullet(\bSigma) \).
+This is built somewhat analogously to how we developed the Chow ring of a matroid,  starting with a polynomial ring with one variable per ray in \( \bSigma(1) \).
+Notably, if \( \bSigma_{\cM} \) is the Bergman fan of a matroid \( \cM \), then \( A^\bullet(\bSigma_\cM) = A^\bullet(\cM) \).
 
 We now have a geometric object associated with our matroid, but we still don't yet have a bridge back to the realm of algebra as promised.
 Also, we seemed to hint volume was going to be useful, but there's no obvious way to take the volume of a fan.
@@ -847,8 +1310,8 @@ From this we can develop a notion of volume, as well as present theorems that re
 \subsection{The Normal Complex of a Fan}
 In essence, the normal complex of a fan is simply a truncation of a fan into a polytopal complex using hyperplanes normal to the rays of the fan, thus the name.
 They were initially developed in \cite{nathansonTropicalFansNormal2023}, and the following definitions and propositions come from this work.
-First, we can't just take any truncation of our fan.
-We need a way to specify truncations that work well, and so we introduce the idea of cubical and pseudocubical values.
+However, we can't just take any truncation of our fan.
+We need a way to specify the truncations that will work, and so we introduce the idea of cubical and pseudocubical values.
 
 \begin{definition}[Cubical Values]\th\label{def:cubical}
     Let \( \bSigma \subseteq N \) be a simplicial \( d \)-fan.
@@ -922,7 +1385,6 @@ We can see an example in \( 2 \)-dimensions.
     \end{tikzpicture}
     \caption{Examples of possible normal truncating hyperplane arrangements for a simple \( 2 \)-dimensional fan}
 \end{figure}
-
 With this, we can now define a normal complex.
 \begin{definition}[Normal Complex]\th\label{def:normalComplex}
     Let \( \bSigma \subseteq N \) be a simplicial \( d \)-fan, with marked point \( u_\rho \) on each ray \( \rho \in \bSigma(1) \).
@@ -944,9 +1406,10 @@ With this, we can now define a normal complex.
     \]
 \end{definition}
 That these truncations of fans give us well-defined polytopal complex is a result of Propositon~3.7 in \cite{nathansonTropicalFansNormal2023}.
-\todo{Give quick summary as to why these are polytopes}
+The basic idea is that because the pseudocublical condition insures the hyperplanes intersect within each cone exactly at one point, these intersection points define the vertices of each polytope in the complex.
+Those with more knowledge of polytopes can also see there is hyperplane description of these polytopes readily available as well.
 Here is another place where an example is worth many words.
-Let's start with one in \( 2 \)-dimensions.
+% Let's start with one in \( 2 \)-dimensions.
 \begin{figure}[H]
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
@@ -996,104 +1459,104 @@ Let's start with one in \( 2 \)-dimensions.
         \caption{The resulting normal complex of the fan given the choice of cubical value}
     \end{subfigure}
 \end{figure}
-We've already seen the Bergman fan of our example matroid, for which we can now give an example of a normal complex.
-\begin{figure}[H]
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \tdplotsetmaincoords{68}{55}
-        \begin{tikzpicture}[scale=2.8,tdplot_main_coords]
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (1, 0, 0) -- (1, 1, 1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (0, 1, 0) -- (1, 1, 1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (0, 0, 1) -- (1, 1, 1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (1, 0, 0) -- (0, -1, -1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, 1, 0) -- (-1, 0, -1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, 0, 1) -- (-1, -1, 0) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (-1, -1, 0) -- (-1, -1, -1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (-1, 0, -1) -- (-1, -1, -1) -- cycle;
-            \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, -1, -1) -- (-1, -1, -1) -- cycle;
-            \draw[->] (0,0,0) -- (1,0,0);
-            % \node[right] at (1,0,0) {$\rho_1$};
-            \draw[->,gray] (0,0,0) -- (0,1,0);
-            % \node[above,gray] at (0,0.97,0) {$\rho_2$};
-            \draw[->] (0,0,0) -- (0,0,1);
-            % \node[above] at (0,0,1) {$\rho_3$};
-            \draw[->] (0,0,0) -- (1,1,1);
-            % \node[right] at (1,1,1) {$\rho_{123}$};
-            \draw[->] (0,0,0) -- (-1,-1,-1);
-            % \node[left] at (-1,-1,-1) {$\rho_0$};
-            \draw[->] (0,0,0) -- (-1,-1,0);
-            % \node[left] at (-1,-1,0) {$\rho_{03}$};
-            \draw[->,gray] (0,0,0) -- (-1,0,-1);
-            % \node[left,gray] at (-1,0,-1) {$\rho_{02}$};
-            \draw[->] (0,0,0) -- (0,-1,-1);
-            % \node[below] at (0,-1,-1) {$\rho_{01}$};
-            %\draw[dotted] (1,1,1) -- (1,1,-1) -- (1,-1,-1) -- (1,-1,1) -- cycle; 
-            %\draw[dotted] (-1,1,1) -- (-1,1,-1) -- (-1,-1,-1) -- (-1,-1,1) -- cycle; 
-            %\draw[dotted] (1,1,1) -- (-1,1,1) -- (-1,-1,1) -- (1,-1,1) -- cycle; 
-            %\draw[dotted] (1,1,-1) -- (-1,1,-1) -- (-1,-1,-1) -- (1,-1,-1) -- cycle; 
-        \end{tikzpicture}
-        \subcaption*{\(\bSigma_\cM\)}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.48\textwidth}
-        \centering
-        \tdplotsetmaincoords{68}{55}
-        \begin{tikzpicture}[scale=1.5,tdplot_main_coords]
+% We've already seen the Bergman fan of our example matroid, for which we can now give an example of a normal complex.
+% \begin{figure}[H]
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \tdplotsetmaincoords{68}{55}
+%         \begin{tikzpicture}[scale=2.8,tdplot_main_coords]
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (1, 0, 0) -- (1, 1, 1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (0, 1, 0) -- (1, 1, 1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5]  (0,0, 0)-- (0, 0, 1) -- (1, 1, 1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (1, 0, 0) -- (0, -1, -1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, 1, 0) -- (-1, 0, -1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, 0, 1) -- (-1, -1, 0) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (-1, -1, 0) -- (-1, -1, -1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (-1, 0, -1) -- (-1, -1, -1) -- cycle;
+%             \draw[draw=blue!20,fill=blue!20,fill opacity=0.5] (0,0, 0)-- (0, -1, -1) -- (-1, -1, -1) -- cycle;
+%             \draw[->] (0,0,0) -- (1,0,0);
+%             % \node[right] at (1,0,0) {$\rho_1$};
+%             \draw[->,gray] (0,0,0) -- (0,1,0);
+%             % \node[above,gray] at (0,0.97,0) {$\rho_2$};
+%             \draw[->] (0,0,0) -- (0,0,1);
+%             % \node[above] at (0,0,1) {$\rho_3$};
+%             \draw[->] (0,0,0) -- (1,1,1);
+%             % \node[right] at (1,1,1) {$\rho_{123}$};
+%             \draw[->] (0,0,0) -- (-1,-1,-1);
+%             % \node[left] at (-1,-1,-1) {$\rho_0$};
+%             \draw[->] (0,0,0) -- (-1,-1,0);
+%             % \node[left] at (-1,-1,0) {$\rho_{03}$};
+%             \draw[->,gray] (0,0,0) -- (-1,0,-1);
+%             % \node[left,gray] at (-1,0,-1) {$\rho_{02}$};
+%             \draw[->] (0,0,0) -- (0,-1,-1);
+%             % \node[below] at (0,-1,-1) {$\rho_{01}$};
+%             %\draw[dotted] (1,1,1) -- (1,1,-1) -- (1,-1,-1) -- (1,-1,1) -- cycle; 
+%             %\draw[dotted] (-1,1,1) -- (-1,1,-1) -- (-1,-1,-1) -- (-1,-1,1) -- cycle; 
+%             %\draw[dotted] (1,1,1) -- (-1,1,1) -- (-1,-1,1) -- (1,-1,1) -- cycle; 
+%             %\draw[dotted] (1,1,-1) -- (-1,1,-1) -- (-1,-1,-1) -- (1,-1,-1) -- cycle; 
+%         \end{tikzpicture}
+%         \subcaption*{\(\bSigma_\cM\)}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.48\textwidth}
+%         \centering
+%         \tdplotsetmaincoords{68}{55}
+%         \begin{tikzpicture}[scale=1.5,tdplot_main_coords]
 
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 0, 1.6) -- (1, 1, 1.6) -- (1.2, 1.2, 1.2) -- cycle; %d,bcd
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 1.6, 0) -- (1, 1.6, 1) -- (1.2, 1.2, 1.2) -- cycle; %b,bcd
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (1.6, 0, 0) -- (1.6, 1, 1) -- (1.2, 1.2, 1.2) -- cycle; %c,bcd
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 0, 1.6) -- (-1.6, -1.6, 1.6) -- (-1.6, -1.6, 0) -- cycle; %d,ad
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 1.6, 0) -- (-1.6, 1.6, -1.6) -- (-1.6, 0, -1.6) -- cycle; %b,ab
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (1.6, 0, 0) -- (1.6, -1.6, -1.6) -- (0, -1.6, -1.6) -- cycle; %c,ac
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (-1.6, -1.6, 0) -- (-1.6, -1.6, -.4) -- (-1.2, -1.2, -1.2) -- cycle; %a,ad
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (-1.6, 0, -1.6) -- (-1.6, -.4, -1.6) -- (-1.2, -1.2, -1.2) -- cycle; %a,ac
-            \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, -1.6, -1.6) -- (-.4, -1.6, -1.6) -- (-1.2, -1.2, -1.2) -- cycle; %a,ab
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 0, 1.6) -- (1, 1, 1.6) -- (1.2, 1.2, 1.2) -- cycle; %d,bcd
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 1.6, 0) -- (1, 1.6, 1) -- (1.2, 1.2, 1.2) -- cycle; %b,bcd
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (1.6, 0, 0) -- (1.6, 1, 1) -- (1.2, 1.2, 1.2) -- cycle; %c,bcd
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 0, 1.6) -- (-1.6, -1.6, 1.6) -- (-1.6, -1.6, 0) -- cycle; %d,ad
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, 1.6, 0) -- (-1.6, 1.6, -1.6) -- (-1.6, 0, -1.6) -- cycle; %b,ab
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (1.6, 0, 0) -- (1.6, -1.6, -1.6) -- (0, -1.6, -1.6) -- cycle; %c,ac
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (-1.6, -1.6, 0) -- (-1.6, -1.6, -.4) -- (-1.2, -1.2, -1.2) -- cycle; %a,ad
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (-1.6, 0, -1.6) -- (-1.6, -.4, -1.6) -- (-1.2, -1.2, -1.2) -- cycle; %a,ac
+%             \draw[draw=green!20, fill=green!20, fill opacity=.5] (0,0,0) -- (0, -1.6, -1.6) -- (-.4, -1.6, -1.6) -- (-1.2, -1.2, -1.2) -- cycle; %a,ab
 
-            \draw[thick] (0, 0, 1.6) -- (1, 1, 1.6) -- (1.2, 1.2, 1.2);
-            \draw[dashed] (0, 1.6, 0) -- (1, 1.6, 1) -- (1.2, 1.2, 1.2);
-            \draw[thick] (.7, 1.6, .7) -- (1, 1.6, 1) -- (1.2, 1.2, 1.2);
-            \draw[thick] (1.6, 0, 0) -- (1.6, 1, 1) -- (1.2, 1.2, 1.2);
-            \draw[thick] (0, 0, 1.6)  -- (-1.6,  -1.6, 1.6)  -- (-1.6, -1.6, 0);
-            \draw[dashed] (0, 1.6, 0) -- (-1.6,  1.6, -1.6) -- (-1.6, 0, -1.6);
-            \draw[thick] (1.6, 0, 0) -- (1.6, -1.6, -1.6) -- (0, -1.6, -1.6);
-            \draw[thick] (-1.6, -1.6, 0) -- (-1.6, -1.6, -.4) -- (-1.2, -1.2, -1.2);
-            \draw[dashed] (-1.6, 0, -1.6) -- (-1.6, -.4, -1.6) -- (-1.2, -1.2, -1.2);
-            \draw[thick] (0, -1.6, -1.6) -- (-.4, -1.6, -1.6) -- (-1.2, -1.2, -1.2);
+%             \draw[thick] (0, 0, 1.6) -- (1, 1, 1.6) -- (1.2, 1.2, 1.2);
+%             \draw[dashed] (0, 1.6, 0) -- (1, 1.6, 1) -- (1.2, 1.2, 1.2);
+%             \draw[thick] (.7, 1.6, .7) -- (1, 1.6, 1) -- (1.2, 1.2, 1.2);
+%             \draw[thick] (1.6, 0, 0) -- (1.6, 1, 1) -- (1.2, 1.2, 1.2);
+%             \draw[thick] (0, 0, 1.6)  -- (-1.6,  -1.6, 1.6)  -- (-1.6, -1.6, 0);
+%             \draw[dashed] (0, 1.6, 0) -- (-1.6,  1.6, -1.6) -- (-1.6, 0, -1.6);
+%             \draw[thick] (1.6, 0, 0) -- (1.6, -1.6, -1.6) -- (0, -1.6, -1.6);
+%             \draw[thick] (-1.6, -1.6, 0) -- (-1.6, -1.6, -.4) -- (-1.2, -1.2, -1.2);
+%             \draw[dashed] (-1.6, 0, -1.6) -- (-1.6, -.4, -1.6) -- (-1.2, -1.2, -1.2);
+%             \draw[thick] (0, -1.6, -1.6) -- (-.4, -1.6, -1.6) -- (-1.2, -1.2, -1.2);
 
-            \draw[thick] (0, 0, 0) -- (1.2, 1.2, 1.2);
-            \draw[thick] (0, 0, 0) -- (0, 0, 1.6);
-            \draw[dashed] (0, 0, 0) -- (0, 1.6, 0);
-            \draw[thick] (0, 0, 0) -- (1.6, 0, 0);
-            \draw[thick] (0, 0, 0) -- (0, -1.6, -1.6);
-            \draw[dashed] (0, 0, 0) -- (-1.6, 0, -1.6);
-            \draw[thick] (0, 0, 0) -- (-1.6, -1.6, 0);
-            \draw[thick] (0, 0, 0) -- (-1.2, -1.2, -1.2);
+%             \draw[thick] (0, 0, 0) -- (1.2, 1.2, 1.2);
+%             \draw[thick] (0, 0, 0) -- (0, 0, 1.6);
+%             \draw[dashed] (0, 0, 0) -- (0, 1.6, 0);
+%             \draw[thick] (0, 0, 0) -- (1.6, 0, 0);
+%             \draw[thick] (0, 0, 0) -- (0, -1.6, -1.6);
+%             \draw[dashed] (0, 0, 0) -- (-1.6, 0, -1.6);
+%             \draw[thick] (0, 0, 0) -- (-1.6, -1.6, 0);
+%             \draw[thick] (0, 0, 0) -- (-1.2, -1.2, -1.2);
 
-            %\draw[gray,->] (0,0,0) -- (1,0,0);
-            %\draw[gray,->] (0,0,0) -- (0,1,0);
-            %\draw[gray,->] (0,0,0) -- (0,0,1);
-            %\draw[gray,->] (0,0,0) -- (1,1,1);
-            %\draw[gray,->] (0,0,0) -- (-1,-1,-1);
-            %\draw[gray,->] (0,0,0) -- (-1,-1,0);
-            %\draw[gray,->] (0,0,0) -- (-1,0,-1);
-            %\draw[gray,->] (0,0,0) -- (0,-1,-1);
-        \end{tikzpicture}
-        \subcaption*{\( C_{\bSigma_\cM, \ast}(z) \)}
-    \end{subfigure}
-    \caption{The Bergman fan and a normal complex of our example matroid}
-    \todo{My example matroid is slightly different. I need to make a corresponging normal complex for it}
-\end{figure}
+%             %\draw[gray,->] (0,0,0) -- (1,0,0);
+%             %\draw[gray,->] (0,0,0) -- (0,1,0);
+%             %\draw[gray,->] (0,0,0) -- (0,0,1);
+%             %\draw[gray,->] (0,0,0) -- (1,1,1);
+%             %\draw[gray,->] (0,0,0) -- (-1,-1,-1);
+%             %\draw[gray,->] (0,0,0) -- (-1,-1,0);
+%             %\draw[gray,->] (0,0,0) -- (-1,0,-1);
+%             %\draw[gray,->] (0,0,0) -- (0,-1,-1);
+%         \end{tikzpicture}
+%         \subcaption*{\( C_{\bSigma_\cM, \ast}(z) \)}
+%     \end{subfigure}
+%     \caption{The Bergman fan and a normal complex of our example matroid}
+%     \todo{My example matroid is slightly different. I need to make a corresponging normal complex for it}
+% \end{figure}
 
 \subsection{The Volume of a Normal Complex}
 After so long hinting at the importance of volume, we finally have something related to our matroid we can actually take the volume of.
 Remember that we, rather lazily, only defined volumes on polytopes.
 We can extend the definition to normal complexes, though out of necessity how we do so is a bit fussy.
 \begin{definition}[Volume of a Normal Complex]\th\label{def:volNormalComplex}
-    Let \( \bSigma \subset N \) be some simplicial \( d \)-fan with marked points \( u_\rho \) for each ray \( \rho \in \bSigma(1) \).
+    Let \( \bSigma \subset N \) be some simplicial \( d \)-fan with marked points \( u_\rho \) on each ray \( \rho \in \bSigma(1) \).
     Choose an inner product \( \ast \in \inn(N) \) and define
     \[
-        N_\sigma = \Span(u_\rho \; | \; \rho \in \sigma(1)) \subseteq N.
+        N_\sigma = \Span\big(u_\rho \; | \; \rho \in \sigma(1)\big) \subseteq N.
     \]
     Then, let \( M_\sigma \) be the vector space dual to \( N_\sigma \).
     Picking \( \{ u_\rho \; | \; \rho \in \sigma(1) \} \) as the basis of \( N_\sigma \), and using our chosen inner product, we may identify the dual basis \( \{ u^\rho \; | \; \rho \in \sigma(1) \} \) of \( M_\sigma \).
@@ -1108,12 +1571,12 @@ We can extend the definition to normal complexes, though out of necessity how we
         \Vol_{\bSigma, \ast}(z) = \sum_{\sigma \in \bSigma(d)} \Vol_\sigma\big(P_{\sigma, \ast}(z)\big).
     \]
 \end{definition}
-\todo{check with Dusty this definition is accurate. I'm skipping over the tensor product, but maybe I shouldn't...}
 
 The basic idea here is that we are taking the volume of each top-dimensional polytope in the complex and summing them.
 Nothing too wild there.
 Most of the verbosity in the definition comes from the fact that we have to choose the volume function for each component rather carefully.
-The specifics of why this must be done we leave to the reader to explore in \cite{nathansonTropicalFansNormal2023}, but it is necessary for the main result of the paper.
+The specifics of why this must be done we leave to the reader to explore in \cite{nathansonTropicalFansNormal2023}, but suffice to say it is necessary for the main theorem of that paper.
+This theorem provides the first part of the bridge we are developing between geometry and algebra.
 \begin{theorem}[Nathanson-Ross 2021]\th\label{thm:volDegCorrespondence}
     Let \( \bSigma \) be a balanced \( d \)-fan.
     Choose an inner product \( \ast \in \inn(N) \) and pseudocubical value \( z  \in \pCub( \bSigma, \ast ) \).
@@ -1192,33 +1655,78 @@ Not only do we have the link between geometry and algebra, it uses the concept o
 However, the Alexandrov-Fenchel inequalities are, classically, very dependent on convexity, and normal complexes are decidedly non-convex.
 
 \subsection{Amazing AF Fans}
-\todo{should I add a bit more about the recursive structure of normal complexes? It feels not strictly necessary, but then i've gone on lots of not strictly necessary tangents}
-Luckily, more recently there have been proofs of the Aleksandrov-Fenchel inequality that make a clearer delineation of the geometric requirements from the rest of the machinery used in the proof.
-Using this, \cite{nowakMixedVolumesNormal2023} develops criteria to check which fans will obey inequalities.
-\begin{definition}[Alexandrov-Fenchel]\th\label{def:AF}
-    Let \( \bSigma \subset N \) be a simplicial \( d \)-fan and \( \ast \in \inn(N) \) an inner product.
+Given our extended mixed volume function on normal complexes, the resulting polynomials will sometimes produce coefficients who obey the Alexandrov-Fenchel inequality.
+This is in fact a property of the underlying fan itself.
+\begin{definition}[Alexandrov-Fenchel Property]\th\label{def:AF}
+    Let \( \bSigma \subseteq \R^n \) be a simplicial \( d \)-fan and \( \ast \in \inn(\R^n) \) an inner product.
     We say that \( (\bSigma, \ast) \) is \emph{Alexandrov-Fencel}, or just \emph{AF}, if \( \Cub(\bSigma, \ast) \neq \emptyset \) and
     \[
         \MVol_{\bSigma, \ast}(z_1, z_2, z_3, \dots, z_d)^2 \geq  \MVol_{\bSigma, \ast}(z_1, z_1, z_3, \dots, z_d)\MVol_{\bSigma, \ast}(z_2, z_2, z_3 \dots, z_d)
     \]
     for all \( z_1, z_2, z_3, \dots, z_d \in \Cub(\bSigma, \ast) \).
 \end{definition}
-So fans that are AF have exactly the properties we want in generating a log-concave sequence.
-The downside, of course, is that having left the convex world, we can't expect every fan to have this property.
-If we want to use this in our proof of the main result, we'll need to show that Bergman fans of matroids are AF.
-Luckily, we have a theorem from \cite{nowakMixedVolumesNormal2023} that gives us a short list of properties to check.
+If a fan is AF, then taking the mixed volumes of any normal complexes built from it will give rise to a log-concave sequence.
+Our goal now then is to show that Bergman fans of matroids are AF\@.
+Luckily, Theorem~5.1 in \cite{nowakMixedVolumesNormal2023} gives us exact criteria to use.
+
+However, to state the theorem, we will need to know how to consider smaller components of a fan, and therefore also normal complexes.
+First, we'll consider the neighborhood of a cone in a fan.
+\begin{definition}[Neighborhood]\th\label{def:nbr}
+    Let \( \bSigma \) be a fan and \( \sigma \in \bSigma \) a cone in the fan.
+    The neighborhood of \( \sigma \) in \( \bSigma \) is
+    \[
+        \nbd(\sigma, \bSigma) = \left\{ \tau \; \middle| \; \tau \preceq \pi, \, \sigma \preceq \pi \right\}.
+    \]
+\end{definition}
+The neighborhood of a cone \( \sigma \) is essentially the collection of all other cones in the fan contain \( \sigma \) as a face.
+We then take all faces of those cones to insure that \( \nbd(\sigma, \bSigma) \) is still a fan.
+In fact \( \nbd(\sigma, \bSigma) \) is still a fan living in the same space as \( \bSigma \).
+If we additionally quotient out the components of \( \sigma \) from the neighborhood we have what is called the star of \( \sigma \).
+\begin{definition}[Star]\th\label{def:star}
+    Let \( \bSigma \in \R^d\) be a fan and \( \sigma \in \bSigma \) a cone in the fan.
+    The \emph{star} of \( \sigma \) is given by
+    \[
+        \Star(\sigma, \bSigma) = \left\{ \overline{\tau} \; \middle| \; \tau \in \nbd(\sigma, \bSigma) \right\} \subseteq \R^d / \Span(\sigma),
+    \]
+    where \( \overline{\tau} \) is the equivalence class of \( \tau \) in the quotient space \( \R^d / \Span(\sigma) \).
+\end{definition}
+When provided with an inner product, we can identify the quotient space \( \R^d / \Span(\sigma)\) with the orthogonal space, \( \Span(\sigma)^\bot \).
+Given we are always providing an inner product, we mostly think of the star as the projection of the neighborhood of \( \sigma \) into \( \Span(\sigma)^\bot \).
+Since the neighborhood was a fan in the original space, the star will be a fan in this orthogonal space, which we notate as  \( \bSigma^{\sigma} \).
+
+Perhaps more surprisingly, if we have the necessary data to make a normal complex on some fan \( \bSigma \), then for any cone \( \sigma \in \bSigma \), we also have everything we need to define a normal complex on \( \bSigma^\sigma \).
+We call these faces of the normal complex, in analogy with polytopes, and the details of their construction and existince can be found in section~4 of \cite{nowakMixedVolumesNormal2023}.
+\begin{definition}[Face of Normal Complex]\th\label{def:faceNC}
+    Let \( \bSigma \subset \R^n \) be a simplicial \( d \)-fan and \( \ast \in \inn(\R^n) \) be an inner product.
+    Given any \( z \in \pCub(\bSigma, \ast) \) and cone \( \sigma \in \Sigma \), the \emph{face} of \( C_{\bSigma, \ast}(z) \) associated to \( \sigma \) is
+    \[
+        F^\sigma\big(C_{\bSigma, \ast}(z)\big)  = C_{\bSigma^\sigma, \ast^\sigma}(z^\sigma),
+    \]
+    where \( \ast^\sigma \) is the restriction of \( \ast \) to \( \Span(\sigma) \) and \( z^\sigma \in \pCub(\bSigma^\sigma, \ast^\sigma) \) is uniquely determined by \( \Sigma, \sigma, \) and \( z \).
+\end{definition}
+A good thing to note here is there is a dimension reversing relationship between the dimension of \( \sigma \) and \( \bSigma^\tau \).
+If \( \bSigma \) is a \( d \)-fan and \( \sigma \) is of dimension \( k \), then \( \bSigma^\sigma \) is pure of dimension \( d-k \).
+We would then call \( F^\sigma\big(C_{\bSigma, \ast}(z)\big) \) a \( (d-k) \)-dimensional face of the normal complex \( C_{\bSigma, \ast}(z) \).
+
+This finally gives us enough backgound information to state Theorem~5.1 of \cite{nowakMixedVolumesNormal2023}.
 \begin{theorem}[Nowak-O-Ross 2022]\th\label{thm:suffAF}
-    Let \( \bSigma \) be a simplicial  \( d \)-fan, and \( \ast \in \Inn(N_\R) \) an inner product.
-    Then \( (\bSigma_\cM, \ast) \) is AF if
+    Let \( \bSigma \) be a balanced \( d \)-fan, and \( \ast \in \Inn(N_\R) \) an inner product such that \( \Cub(\bSigma, \ast) \neq \emptyset \).
+    Then \( (\bSigma, \ast) \) is AF if
     \begin{enumerate}[label=\roman*.]
-        \item for every cone \( \sigma \in \bSigma(k) \), with \( k \leq r - 2 \),
+        \item for every cone \( \sigma \in \bSigma(k) \), with \( k \leq d - 2 \),
               \[
-                  \Star(\tau, \bSigma_\cM) \setminus \{ 0 \}
+                  \Star(\sigma, \bSigma_\cM) \setminus \{ 0 \}
               \]
-              is connected,
-        \item for each 2-dimensional face of the associated normal complex, \( C(\bSigma, z) \), for some cubical \( z \in \Cub(\bSigma, \ast) \), the quadratic form associated to the volume polynomial has exactly one positive eigenvalue.
+              is connected and,
+        \item for for any choice of \( z \in \Cub(\bSigma, \ast) \), each 2-dimensional face of the associated normal complex, \( C(\bSigma, z) \), the quadratic form associated to the volume polynomial has exactly one positive eigenvalue.
     \end{enumerate}
 \end{theorem}
+We can provide a little insight into these two criteria.
+The first we like to think of as telling us our fan can't have ``pinch'' points.
+If cones don't generally meet along facets, then when taking stars within the fan we may get the case that the cones in the star fan meet only at the origin.
+
+For the second condition, first we recall that since we're looking at 2-dimnesional faces of normal complexes, their volume face will be a polynomials in terms  in will consist of squared te
+
 We now finally have laid out every piece of the puzzle we'll need to prove our main result.
 All that's left is to put them together.
 
