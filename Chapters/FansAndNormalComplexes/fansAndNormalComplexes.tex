@@ -102,23 +102,24 @@ Let's make this formal.
 \end{definition}
 An astute reader may notice that our shorthand for line segment above, \( [x, y] \), is in fact just \( \conv(\{x,y\}) \).
 Towards some intuition, we may think of the convex hull as the smallest convex shape that contains all of its generating points.
-In 2 dimensions we like to think of this as stretching a rubber band around a bunch of points and letting it constrict around them.
+In two dimensions we like to think of this as stretching a rubber band around a bunch of points and letting it constrict around them.
 \begin{figure}[H]
     \begin{subfigure}[t]{0.3\textwidth}
         \centering
-        \begin{tikzpicture}[scale=.77]
+        \begin{tikzpicture}[scale=.72]
 
             \node[circle, fill=Black, scale=0.7] (A) at (-1, -3) {};
             % \node[circle, fill=Black, scale=0.7] (B) at (-0.5, -1.5) {};
             \node[circle, fill=Black, scale=0.7] (C) at (1, 3) {};
             \draw[ultra thick, Black] (A) -- (C);
         \end{tikzpicture}
+        \subcaption*{A 1-dimensional polytope}
 
         \subcaption*{A 1-dimensional polytope}
     \end{subfigure}
     \begin{subfigure}[t]{0.3\textwidth}
         \centering
-        \begin{tikzpicture}[scale=.9]
+        \begin{tikzpicture}[scale=.85]
 
             \node[circle, fill=Black, scale=0.7] (A) at (-1, -1) {};
             \node[circle, fill=Black, scale=0.7] (B) at (-1.5, 0.25) {};
@@ -134,13 +135,14 @@ In 2 dimensions we like to think of this as stretching a rubber band around a bu
             \node[circle, fill=Black, scale=0.7] (D) at (1, 4) {};
             \node[circle, fill=Black, scale=0.7] (E) at (2, -.3) {};
         \end{tikzpicture}
+        \subcaption*{A 2-dimensional polytope}
 
         \subcaption*{A 2-dimensional polytope}
     \end{subfigure}
     \begin{subfigure}[t]{0.4\textwidth}
         \centering
         \tdplotsetmaincoords{75}{55}
-        \begin{tikzpicture}[tdplot_main_coords,line join=round, scale=1]
+        \begin{tikzpicture}[tdplot_main_coords,line join=round, scale=.95]
 
             \path
             (0,0,0)  coordinate (O)
@@ -158,13 +160,13 @@ In 2 dimensions we like to think of this as stretching a rubber band around a bu
             \draw[fill=black] (\p) circle (2.5pt);
 
         \end{tikzpicture}
-
         \subcaption*{A 3-dimensional polytope}
     \end{subfigure}
-    \caption{A sampling of polytopes; note that we only highlighted the minimal generating set of points (the vertices)}
+    \caption{A sampling of polytopes; note that we've only highlighted the vertices, which are the minimal set of points that generate the polytope }
 \end{figure}
 
-Likewise, cones are also built of a finite collection of generating vectors.
+We will use a similar definition for cones.
+They are built out of a finite collection of generating vectors.
 \begin{definition}[Cone]\th\label{def:cone}
     Let \( C \subseteq \R^n \).
     We call \( C \) a \emph{cone} if it is the conic combination of finitely many vectors \( x_1, x_2, \dots, x_k \).
