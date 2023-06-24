@@ -1,6 +1,7 @@
 %====================%
 % Packages 
 %====================%
+\usepackage{amssymb}
 \usepackage{enumitem} % Better labels
 %\usepackage[explicit]{titlesec}
 \usepackage[normalem]{ulem}         % Better underline, but keep default emph
@@ -28,9 +29,12 @@
 % Sort out the true phi
 \def\badphi{\phi}
 \def\phi{\varphi}
+% Don't love the default compliment 
+\def\complement{\mathsf{c}}
 % How should we format vectors?
 \renewcommand{\vec}[1]{\bm{#1}}
 \renewcommand{\hat}[1]{\widehat{#1}}
+
 
 %====================%
 % New Commands 
@@ -50,6 +54,7 @@
 % BM Bold Symbols
 \newcommand{\bSigma}{\bm{\Sigma}}
 \newcommand{\bN}{\bm{N}}
+\newcommand{\bM}{\bm{M}}
 % The hipster letters
 \newcommand{\sM}{\mathsf{M}}
 \newcommand{\scrF}{\mathscr{F}}

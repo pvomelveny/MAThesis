@@ -390,7 +390,7 @@ This makes more sense with a picture.
 \end{figure}
 This is a helpful visual intuition, but it may take a moment to be convinced that, up to translation, the resulting shape doesn't depend on either the shape you choose to smear or the choice of point in that shape.
 
-With the Minkowski sum, we can finally define what the polyhedron is our polyhedral geometry.
+With the Minkowski sum, we can finally define a general polyhedron.
 \begin{definition}[Polyhedron]\th\label{def:polyhedron}
     Let \( P \subseteq \R^n \). We call \( P \) a \emph{polyhedron} if
     \[
@@ -399,10 +399,10 @@ With the Minkowski sum, we can finally define what the polyhedron is our polyhed
     for some finite sets \( \{x_1, \dots, x_k\}, \{y_1, \dots, y_\ell\} \subseteq \R^n \).
 \end{definition}
 A polyhedron is the result of the Minkowski sum of a polytope and a cone.
-Clearly every polytope and cone are polyhedron themselves, as \( \conv(\{0\}) = \cone(\{0\}) = \{ 0 \} \).
-Polyhedron are not necessarily bounded, which may seem a bit unusual to those who have seen the word in other contexts.
+Clearly every polytope and cone are polyhedra themselves, as \( \conv(\{0\}) = \cone(\{0\}) = \{ 0 \} \).
+Polyhedra are not necessarily bounded, which may seem a bit unusual to those who have seen the word in other contexts.
 Moreover, all bounded polyhedra are polytopes, which is not necessarily obvious, but useful to keep in mind.
-We will mostly be focused on either polytopes or cones at any one time, but having a more general object that includes both makes our definitions going forward a cleaner.
+We will mostly be focused on either polytopes or cones at any one time, but having a more general object that includes both makes our definitions going forward cleaner.
 
 \subsection{About Faces}
 Given a polyhedron \( P \), we also get a whole family of polyhedron, the faces of \( P \).
@@ -583,18 +583,16 @@ We'd then call the line segments where any two of those squares meet \textit{edg
 \end{figure}
 If this sounds familiar then the intuition for our more general notion of the face of a polyhedron is not far.
 Back in our world of polyhedral geometry, we know that a cube is a polyhedron and that each of those squares, lines, and points are also themselves polyhedron.
-Informally, we use the term face to describe all these ``sub-polyhedron'' that make up the boundary of a polyhedron.
-We require
+Informally, we use the term face to describe all these ``sub-polyhedra'' that make up the boundary of a polyhedron.
 \begin{definition}[Face]\th\label{def:face}
-    Let \( P \subseteq \R^n \) be a polyhedron and fix inner product \( \ast \in \inn(\R^n) \).
+    Let \( P \subseteq \R^n \) be a polyhedron and fix an inner product \( \ast \in \inn(\R^n) \).
     Recall that the hyperplane normal to a vector \( x \in \R^n \) at distance \( q \in \R \)  is given by
     \[
-        \HP_x(b) = \left\{ v \in \R^n \; \middle| \; v \ast x = b \right\},
+        \HP_x(b) = \left\{ v \in \R^n \; \middle| \; v \ast x = b \right\}.
     \]
-    for some inner product \(\ast \in \inn(\R^n) \).
-    Additionally, any hyperplane defines an upper and lower half-spaces given by
+    Additionally, any hyperplane defines a lower half-spaces given by
     \[
-        \UH_x(b) = \left\{ v \in \R^n \; \middle| \; v \ast x \geq b \right\} \quad \text{and} \quad \LH_x(b) = \left\{ v \in \R^n \; \middle| \; v \ast x \leq b \right\},
+        \LH_x(b) = \left\{ v \in \R^n \; \middle| \; v \ast x \leq b \right\},
     \]
     respectively.
 
@@ -602,15 +600,14 @@ We require
     \[
         F = P \cap \HP_x(b)
     \]
-    such that \( P \) lies entirely in the lower half-space (or equivalently upper half-space) of \( \HP_x(b) \); i.e.,
+    such that \( P \) lies entirely in the lower half-space of \( \HP_x(b) \); i.e.,
     \begin{gather*}
-        P \subseteq \LH_x(b) \\
-        \big( \text{or equivalently} \;\; P \subseteq \UH_x(b) \big).
+        P \subseteq \LH_x(b).
     \end{gather*}
 
 \end{definition}
 Some notable quirks of this definition are that given any \( x \in \R^n \), \( F = \HP_x(0) \cap P = P \) and so \( P \) is face of itself.
-Likewise, there exist infinitly many hyperplanes such that \( P \cap \HP_x(b) \cap P = \emptyset \), which means the empty set too is a face of any polyhedron \( P \).
+Likewise, there exist infinitely many hyperplanes such that \( \HP_x(b) \cap P = \emptyset \), which means the empty set too is a face of any polyhedron \( P \).
 As a note, we do still call the \( 0 \)-dimensional faces vertices, while the generic term for a \( (d - 1) \)-dimensional face of a \( d \)-dimensional polyhedron is a \textit{facet}.
 \begin{figure}[H]
     \centering
@@ -632,7 +629,7 @@ As a note, we do still call the \( 0 \)-dimensional faces vertices, while the ge
         \draw[ultra thick, Red, fill=Red, opacity=0.5] (0,0,0) -- (2,0,0) -- (2,2,0) -- (0,2,0) -- cycle;
 
     \end{tikzpicture}
-    \caption{Example of specifiying a facet of our cube with a plane}
+    \caption{Example of specifying a facet of our cube with a plane}
 \end{figure}
 
 From our cube intuition exercise, there are some things about faces that we would hope to generalize to our broader notion of faces.
@@ -661,7 +658,7 @@ The last geometric structure we need as background consist of particular collect
 \begin{definition}[Polyhedral Complex]\th\label{def:polyhedralComplex}
     A \emph{polyhedral complex} \( \cC \) is a finite collection of polyhedra in \( \R^n \) such that
     \begin{enumerate}
-        \item the empty set, a polyhedron by definition, is in \( \cC \),
+        \item the empty set is in \( \cC \),
         \item for any polyhedron \( P \in \cC \), all faces of \( P \) are also in \( \cC \),
         \item for any two polyhedra \( P, Q \in \cC \), the intersection \( P \cap Q \in \cC \).
     \end{enumerate}
@@ -782,7 +779,7 @@ We can consider a counterexample as well.
     \caption{This fan is not pure, since it has maximal cones of both dimension 2 and 3}
 \end{figure}
 The next property relates to how many rays are necessary to generate each cone.
-\begin{definition}[Simplicial]\th\label{def:simplicial}
+\begin{definition}[Simplicial Fan]\th\label{def:simplicial}
     A fan \( \Sigma \) is \emph{simplicial} if every cone \( \sigma \in \Sigma \) is simplicial.
     A cone \( \sigma \in \Sigma \) is simplicial if
     \[
@@ -790,8 +787,21 @@ The next property relates to how many rays are necessary to generate each cone.
     \]
     where \( \sigma(1) \) is the set of \( 1 \)-dimensional faces of \( \sigma \).
 \end{definition}
-Alternativly, a cone is simplicial if its rays form a basis for the subspace that cone spans.
+Alternatively, a cone is simplicial if its rays form a basis for the subspace that cone spans.
 In figure~\ref{fig:cones}, the first two cones are simplicial while the third is not.
+
+Next, we have something that is not specifically a property of fan but rather some convenient extra information.
+\begin{definition}[Marked Fan]\th\label{marked}
+    Let \( \bSigma \) be a fan.
+    We say \( \bSigma \) is a \emph{marked fan} if there is a chosen set
+    \[
+        \left\{ u_\rho \in \rho \; \middle| \; \rho \in \bSigma(1) \right\}
+    \]
+    such that \( \cone(u_\rho) = \rho \).
+\end{definition}
+We may also say that \( \bSigma \) is marked with the points \(  \left\{ u_\rho \in \rho \; \middle| \; \rho \in \bSigma(1) \right\} \).
+Since there will always exist some choice of points that mark a fan we may just say the fan is marked, and not worry about specific values.
+Otherwise, we'll provide the marking explicitly if necessary.
 
 Given a simplicial \( d \)-fan, it can have yet another property, that of being tropical.
 Tropical fans come from the realm of tropical geometry, another deep topic we are going to avoid delving into.
@@ -799,7 +809,7 @@ That tropical fans are in play at all relates back to lurking algebraic varietie
 We can, however, at least somewhat easily characterize tropical fans.
 They are fans that satisfy the weighted balancing condition.
 \begin{definition}[Tropical Fan]\th\label{def:tropical}
-    Let \( \bSigma \) be a simplicial \( d \)-fan with a marked, non-zero point \( u_\rho \in \rho \) for each ray \( \rho \in \bSigma(1) \).
+    Let \( \bSigma \) be a marked, simplicial \( d \)-fan.
     Given a weight function
     \[
         \omega\,:\; \bSigma(d) \to \R_{>0},
@@ -808,10 +818,10 @@ They are fans that satisfy the weighted balancing condition.
     \[
         \sum_{\mathclap{\substack{\sigma \in \bSigma(d) \\ \tau \preceq \sigma}}} \omega(\sigma) u_{\sigma \setminus \tau} \in \Span(\tau),
     \]
-    where \( \sigma \setminus \tau \) is shorthand for \( \sigma(1) \setminus \tau(1) \).
+    where \( \sigma \setminus \tau \) is shorthand for the single element in \( \sigma(1) \setminus \tau(1) \).
 \end{definition}
 We will go on to immediately abuse notation and say a fan \( \bSigma \) is itself tropical, as long there exists a weight function \( \omega \) that satisfies the condition.
-The exact impliactions of this definition takes a moment to parse, but the main takeaway is that it imposes some relationship between the cones of the fan.
+The exact implications of this definition takes a moment to parse, but the main takeaway is that it imposes some relationship between the cones of the fan.
 If the weight function is particularly simple then we have another term.
 \begin{definition}[Balanced Fan]\th\label{def:balanced}
     A tropical fan \( (\bSigma, \omega) \) is \emph{balanced} if the weight function \( \omega \) is the constant function
@@ -820,14 +830,14 @@ If the weight function is particularly simple then we have another term.
     \]
     for all \( \sigma \in \bSigma(d) \).
 \end{definition}
-When a fan is balanced we will omit refernces to the weight function \( \omega \), a very convenient aspect of having a balanced fan.
-With this, we've now built up all the background on shapes we'll need.
+When a fan is balanced we can omit references to the weight function \( \omega \), a very convenient aspect of having a balanced fan.
+We've now built up all the background on shapes we'll need.
 
 
 \section{The Geometer's Guide to Generating Log-Concave Sequences}
 Having developed our shapes, we are going to need to measure them somehow.
 Specifically, we want their volume.
-As with the rest of this chapter so far, we're going to take something that most people can intuitivly grasp for 3-dimensional shapes and generalize the hell out of it.
+As with the rest of this chapter so far, we're going to take something that most people can intuitively grasp for 3-dimensional shapes and generalize the hell out of it.
 Not only do we need volume for arbitrary dimensional polyhedra, we need something called the mixed volume which gives us some sense of volume of multiple shapes.
 This work however will allow us to introduce a classic result of convex geometry that relates geometry to log-concave sequences.
 
@@ -841,7 +851,7 @@ We will actually only need the volume of polytopes, so we restrict our notion of
 \begin{definition}[Volume Function]
     A \emph{volume function} is a map
     \[
-        \Vol_d\,:\; \{\text{polytopes in \( \R^n \)}\} \to \R_{\geq 0}
+        \Vol_n\,:\; \{\text{polytopes in \( \R^n \)}\} \to \R_{\geq 0}
     \]
     such that for any polytopes \( P,Q \subseteq \R^n \), \( \Vol_n \)
     \begin{enumerate}
@@ -877,17 +887,17 @@ We call this map the mixed volume function.
 \begin{definition}[Mixed Volume -- Characterization]\th\label{def:mixedVolume}
     The \emph{mixed volume function} is a map \( \MVol_n \) from an ordered multiset \( P_1, P_2, \dots, P_n \subseteq \R^n \) of polytopes to \( \mathbb{R}_{\geq 0} \), such that it has the following properties:
     \begin{enumerate}
-        \item \( \MVol_n(P, P, \dots, P) = \Vol_n(P) \), for any polytope \( P \subseteq R^n \),
+        \item \( \MVol_n(P, P, \dots, P) = \Vol_n(P) \), for any polytope \( P \subseteq \R^n \),
         \item \( \MVol_n \) is symmetric in all arguments, and
         \item \( \MVol_n \) is multilinear with respect to scaling and Minkowski addition.
     \end{enumerate}
 \end{definition}
-Just like volume we'll often just notate this as \( \MVol \) when safe to do so.
+Just like volume, we'll often just notate this as \( \MVol \) when safe to do so.
 The proof that such a function exists and is indeed uniquely defined by these properties can be found in \cite{schneiderConvexBodiesBrunn2013}.
 While this characterization is useful, it goes very little of the way to actually telling us what the mixed volume is.
 
 Consider two polytopes \( P, Q \subseteq \R^2 \).
-We could ask ourselves, what is the general equation for the volume of the Minkowski sum of \( P \) and \( Q \).
+We could ask ourselves, what is the volume of the Minkowski sum of \( P \) and \( Q \).
 We could be more ambitious and even allow ourselves to scale \( P \) and \( Q \) by arbitrary values.
 That is to say, let us consider the volume of
 \[
@@ -895,7 +905,7 @@ That is to say, let us consider the volume of
 \]
 for some \( \lambda, \mu \in \R\).
 Answering this question is where mixed volumes appear as something more concrete.
-While not immediately obvious, this volume can always be expressed as a polynomial, the mixed volume appears as coefficients of these polynomials.
+While not immediately obvious, this volume can always be expressed as a polynomial in \( \lambda \) and \( \mu \), and mixed volumes appear as coefficients of these polynomials.
 We can consider an example.
 \begin{figure}[H]
     \centering
@@ -985,19 +995,22 @@ We can consider an example.
 
         \end{tikzpicture}
     \end{subfigure}
-    \caption{ \( \Vol(\lambda P + \mu Q) = \Vol(P)\lambda^2 + 2\MVol(P, Q)\lambda \mu + \Vol(Q) \mu^2 \) }
+    \caption*{ \( \Vol(\lambda P + \mu Q) = \MVol(P, P)\lambda^2 + 2\MVol(P, Q)\lambda \mu + \MVol(Q,Q) \mu^2 \) }
+
+    \caption{The mixed volume appears in the coefficients of the volume polynomial;\\
+        recall that \( \MVol(P, P) = \Vol(P) \)}
 \end{figure}
 Our example in the figure is nice because it is already symmetrical.
-In general this will not be the case and the mixed volume and the coefficients will need to be rewritten to be symmetric, though this can always be done.
+In general this will not be the case and the coefficients will need to be rewritten to be symmetric, though this can always be done.
 This idea generalizes to any dimension, and can be taken as another definition of mixed volume.
-\begin{definition}[Mixed Volume -- As Coefficients of Volume Polynomial]
+\begin{definition}[Mixed Volume -- As Coefficients]
     Let  \( P_1, P_2, \dots, P_\ell \subseteq \R^n \) be polytopes.
     The function
     \[
         f(\lambda_1, \lambda_2, \dots, \lambda_\ell)  = \Vol(\lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_\ell P_\ell), \quad \lambda_j \geq 0
     \]
-    is symmetrically a homogeneous polynomial of degree \( n \).
-    It can be written as
+    is a homogeneous polynomial of degree \( n \).
+    It can be written symmetrically as
     \[
         f(\lambda_1, \dots, \lambda_\ell) = \sum_{\mathclap{j_1, j_2, \dots, j_n = 1}}^{\ell} \MVol(P_{j_1}, \dots, P_{j_n})\lambda_{j_1} \cdots \lambda_{j_n}.
     \]
@@ -1014,9 +1027,9 @@ Mixed volumes are the key to a method generating log-concave sequences via geome
 
 \subsection{The Alexandrov–Fenchel Inequality}
 Finally, we conclude with an important classic result in convex geometry.
-Proved by Aleksandr Aleksandrov in \cite{aleksandrovZurTheorieGemischter1937}, with a contemporaneous but not quite accurate proof by Werner Fenchel, this theorem gives us a fundamental relationship of mixed volumes of convex bodies.
+Proved by Alexandr Alexandrov in \cite{aleksandrovZurTheorieGemischter1937}, with a contemporaneous but not quite accurate proof by Werner Fenchel, this theorem gives us a fundamental relationship of mixed volumes of convex bodies.
 We again restrict ourselves to just polytopes, though the theorem applies more broadly.
-\begin{theorem}[Alexandrov–Fenchel Inequality {[Alexandrov 1937]}]\th\label{thm:AFIneq}
+\begin{theorem}[Alexandrov–Fenchel Inequality]\th\label{thm:AFIneq}
     For polytopes \( P, Q, K_3, \dots, K_n \) in \( \mathbb{R}^n \),
     \begin{gather*}
         \MVol(P,Q, K_3, \dots, K_n)^2 \geq \MVol( P, P, K_3, \dots, K_n) \MVol( Q, Q, K_3, \dots, K_n).
@@ -1039,17 +1052,17 @@ But, just like we could make something algebraic out of the structure of a matro
 \section{Bergman Fans}
 Much like Chow rings, the general notion of a Bergman fan is broader than what we actually need.
 Credit goes to, unsurprisingly, George Bergman, who in \cite{bergmanLogarithmicLimitsetAlgebraic1971} developed the idea of logarithmic limit-sets of algebraic varieties, which would go on to be called Bergman fans \cite{feichtnerMatroidPolytopesNested2005}.
-But given we still refuse to carefully define an algebraic variety, the original presentation not too helpful for us here.
-More modern treatments, such as \cite{ardilaBergmanComplexMatroid2006,huhLogconcavityCharacteristicPolynomials2012}, have gone to show us that we can generate the a Bergman fan from the combinatorial data of the matroid alone.
+But given we still refuse to carefully define an algebraic variety, the original presentation is not too helpful for us here.
+More modern treatments, such as \cite{ardilaBergmanComplexMatroid2006,huhLogconcavityCharacteristicPolynomials2012}, have gone to show us that we can generate the Bergman fan from the combinatorial data of the matroid alone.
 
 \subsection{Bergman Fans of Matroids}
 While it may be more accurate to say we'll present the construction of a fan that can be proven to be a Bergman fan, we again simply take it as a definition.
 
 \begin{definition}[Bergman Fan of a Matroid]\th\label{def:bergmanFan}
-    Let \( \cM \) be a matroid with a ground set \( E = \{ e_0, e_1, e_2, \dots, e_k \} \) and lattice of flats \( \cL \).
+    Let \( \cM \) be a matroid with ground set \( E = \{ e_0, e_1, e_2, \dots, e_k \} \) and lattice of flats \( \cL \).
     Let
     \[
-        N = \R^{E}/\langle e_0 + e_1 + \cdots + e_k \rangle
+        \bN_E = \R^{E}/\langle e_0 + e_1 + \cdots + e_k \rangle
     \]
     be a real-valued vector space that identifies \( e_1, \dots, e_k \) with the standard basis vectors.
     For any subset \( I \subseteq E \) of the ground set, we notate
@@ -1063,15 +1076,15 @@ While it may be more accurate to say we'll present the construction of a fan tha
         \bSigma_\cM = \left\{
         \cone\big( e_F \; | \; F \in \scrF \big)
         \;\; \middle| \;\;
-        \scrF \subseteq \cL^\ast \; \text{is a flag of \(\cM\)}.
-        \right\}
+        \scrF \subseteq \cL^\ast \; \text{is a flag of \(\cM\)}
+        \right\}.
     \]
 \end{definition}
 
 Let's unpack this definition.
 First, let's think about what space this fan lives in.
-Essentially, we can think \( N = \R^{E}/\langle e_0 + e_1 + \cdots + e_k \rangle \) as \( \R^k \) where we assign all but one ground element of our matroid to the standard basis vectors.
-This designates one ground element as somewhat special, it doesn't matter which one, but generically we'll designate it \( e_0 \).
+Essentially, we can think \( \bN_E = \R^{E}/\langle e_0 + e_1 + \cdots + e_k \rangle \) as \( \R^k \) where we assign all but one ground element of our matroid to the standard basis vectors.
+This designates one ground element as somewhat special, it doesn't matter which one, but generically we'll call it \( e_0 \).
 Then the vector associated to \( e_0 \) is the vector of all \( -1 \), as the relation in the quotient tells us
 \[
     e_0 = -e_1 - e_2 - \dots - e_k.
@@ -1081,13 +1094,13 @@ Next, let's think about the elements of our fan.
 They are necessarily cones, and we see that there is one cone per flag in our matroid.
 This means that there exists a \( 1 \)-dimensional cone, often called a \textit{ray}, for each proper flat, as every flat is itself a flag.
 In general, the length of the flat corresponds to the dimension of the corresponding cone in the fan.
-As a consequence the largest, by dimension, cones will correspond to proper flats.
+As a consequence the largest, by dimension, cones will correspond to complete flags.
 Similarly, if \( F_1, F_2 \in \cL \) are non-comparable flats, then there will not be a cone generated by the rays \( e_{F_1} \) and \( e_{F_2} \).
 This is how the fan structure encodes the original combinatorial data of our matroid.
 
 A bit of notation before moving on.
-We will write \( \bSigma_\cM(d) \) to be the set of all \( d \)-dimensional cones in \( \bSigma \).
-We will reserve \( \rho \) to designate the rays of our Bergman fan; that is \( \rho_F \in \bSigma(1) \) for flat \( F \in \cL^\ast \).
+We will write \( \bSigma_\cM(d) \) to be the set of all \( d \)-dimensional cones in \( \bSigma_\cM \).
+We will reserve \( \rho \) to designate the rays of our Bergman fan; that is \( \rho_F \in \bSigma_\cM(1) \) for flat \( F \in \cL^\ast \).
 More generally, for any flag \( \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_\ell \} \) of our matroid, we write
 \[
     \sigma_\scrF = \cone\bigl( e_{F_1}, \dots, e_{F_\ell} \bigr),
@@ -1101,7 +1114,7 @@ Recall that
     E = \{ a, b, c, d \} \quad \text{and} \quad \cL^\ast = \{ a, b, c, d, abd, ac, bc, cd \}.
 \]
 
-Then we can consider the space \( N = \R^E/\langle e_a + e_b + e_c + e_d \rangle\).
+Then we can consider the space \( \bN_E = \R^E/\langle e_a + e_b + e_c + e_d \rangle\).
 We will designate \( d \) as the special element and associate a basis vector of \( \R^3 \) to the remaining ground elements \( a, b, c \).
 \begin{figure}[H]
     \centering
@@ -1141,7 +1154,7 @@ We will designate \( d \) as the special element and associate a basis vector of
         % \draw[dotted] (1,1,1) -- (-1,1,1) -- (-1,-1,1) -- (1,-1,1) -- cycle;
         % \draw[dotted] (1,1,-1) -- (-1,1,-1) -- (-1,-1,-1) -- (1,-1,-1) -- cycle;
     \end{tikzpicture}
-    \caption{The vector space \( N \) with the vectors associated to the ground set}
+    \caption{The vector space \(\bN_E \) with the vectors associated to the ground set}
 \end{figure}
 
 Then we can add in all the rays of our fan, corresponding to the flats.
@@ -1237,12 +1250,10 @@ since we only have a cone involving the rays \(\rho_F\) and \( \rho_{F'}\) if \(
     \end{tikzpicture}
     \caption{The Bergman fan of \( \cM \) with all of its cones}
 \end{figure}
-We often think of these \( 2 \)-dimensional Bergman fans look like dart fletching.
-This provides no mathematical insight, just a polyhedral rorschach test.
 
 \subsection{Properties of the Bergman Fan}
-Given the properties of fans we introduced earlier, it should come as not surprise that Bergman fans tend to be particularly nice.
-To start, we can show that Bergman fans of matroids are always both pure and simplicial.
+Given the properties of fans we introduced earlier, it should come as no surprise that Bergman fans tend to be particularly nice.
+To start, we have that Bergman fans of matroids are always both pure and simplicial.
 \begin{proposition}\th\label{thm:bergFanSimPure}
     Let \( \cM \) be a matroid of rank \( r + 1 \).
     The associated Bergman fan \( \bSigma_\cM \) is a simplicial \( r \)-fan.
@@ -1266,7 +1277,7 @@ To start, we can show that Bergman fans of matroids are always both pure and sim
     But now, given that our flats form a flag that have strict inclusion, we may reorder terms to get
     \[
         (\lambda_1 + \lambda_2 + \cdots + \lambda_k) \sum_{\mathclap{i \in F_1}} e_i
-        + (\lambda_2 + \cdots + \lambda_k) \sum_{\mathclap{i \in F(_2 \setminus F_1}} e_i
+        + (\lambda_2 + \cdots + \lambda_k) \sum_{\mathclap{i \in F_2 \setminus F_1}} e_i
         + \cdots
         + \lambda_k \sum_{\mathclap{i \in F_k \setminus F_{k-1}}} e_i  = 0.
     \]
@@ -1281,22 +1292,102 @@ To start, we can show that Bergman fans of matroids are always both pure and sim
     This follows from the fact that if \( \scrF \) is not a complete flag then there exists another flag \( \scrF' \) such that \( \scrF \subsetneq \scrF' \).
     Then we have that \( \sigma_\scrF(1) \subsetneq \sigma_{\scrF'}(1) \) and so \( \sigma_\scrF \) is a face of \( \sigma_{\scrF'} \) and by definition non-maximal.
     Thus, every maximal cone of \( \bSigma_\cM \) is associated to a complete flag, and any complete flag will have \( r \) elements.
-    From above, we may conclude that every maximal flag then has dimension \( r \).
+    From above, we may conclude that every maximal cone has dimension \( r \).
 
-    With that we've shown that \( \bSigma_\cM \) is a simplical \( r \)-fan.
+    With that we've shown that \( \bSigma_\cM \) is a simplicial \( r \)-fan.
 
 \end{proof}
-Now that we know that a Bergman fan must necessarily be simplicial and pure, we can go on to show that the Bergman fan is tropical, and in fact balanced.
+Now that we know that a Bergman fan must necessarily be simplicial and pure, we can go on to show that the Bergman fan is not only tropical but also balanced.
 \begin{proposition}
     Let \( \cM \) be a matroid.
-    The Bergman fan \( \bSigma_\cM \) is a balanced fan.
+    The Bergman fan \( \bSigma_\cM \) is a balanced tropical fan.
 \end{proposition}
 \begin{proof}
-    \todo{Ahhhhhhh I can't figure this out}
+    Let \( \cM = (E, \cL) \) be a matroid of rank \( r + 1 \) and \( \bSigma_\cM \subseteq \bN_E \) its Bergman fan.
+    We'll mark the rays \( \rho \in \bSigma_\cM \) such that \( u_\rho = e_{F_\rho} \) where \( F_\rho \in \cL \) is the flat associated to \( \rho \), and we continue to use the convention that
+    \[
+        e_{I} = \sum_{i \in I} e_i,
+    \]
+    for any \( I \subseteq E \).
+    Recall that for \( \bSigma_\cM \) to be balanced it must meet the balancing condition
+    \[
+        \sum_{\mathclap{\substack{\sigma \in \bSigma(r) \\ \tau \preceq \sigma}}} u_{\sigma \setminus \tau} \in \Span(\tau),
+    \]
+    for every \( \tau \in \bSigma(r-1) \).
+
+    Let us fix an arbitrary \( \tau \in \bSigma(r-1) \) and consider the flag of flats associated to it
+    \[
+        \scrF = \{ F_1 \subsetneq \cdots \subsetneq F_{k-1} \subsetneq  F_{k+1} \subsetneq \cdots \subsetneq F_{r} \}.
+    \]
+    That is, \( \scrF \) is a flag of length \( r - 1 \) with just a single rank \( k \) flat missing from being a complete flag.
+    Any maximal cone \( \sigma \) that contains \( \tau \) as a face will be associated to the same set of flats but with the rank \( k \) flat, \( F_{k} \), added.
+    We can now rephrase our balancing condition in these terms; we wish to show
+    \[
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}} e_{F_{k}} \in \Span(e_{F_1}, \dots, e_{F_{k-1}}, e_{F_{k+1}}, \dots, e_{F_r}).
+    \]
+    % We'll split this proof into two cases, based on the rank of the missing flat.
+
+    % In the first let us assume that \( \scrF \) does not have a rank 1 flat, so
+    % \[
+    %     \scrF = \{ F_2 \subsetneq \cdots \subsetneq F_d \}.
+    % \]
+    % Recall that property \textit{iii.} of \th\ref{thm:simpMatroidProps} tells us that if \( F \) is a flat then for each ground element \( i \in F \) the rank 1 flat \( F_i \) is a subset of \( F \).
+    % And so this gives us
+    % \begin{align*}
+    %     \sum_{\mathclap{\substack{F_1 \in \cL                    \\ F_1 \subsetneq F_{2} }}} e_{F_{1}}
+    %      & = \sum_{\mathclap{\substack{i \in F_{2} }}} e_{F_{i}} \\
+    %      & = \sum_{\mathclap{\substack{i \in F_{2} }}} e_i       \\
+    %      & = e_{F_2}.
+    % \end{align*}
+    % Since \( e_{F_2} \) is clearly in the span of \( \{ e_{F_2}, \dots, e_{F_r} \} \), our fan is balanced in this case.
+
+    For convenience, let us call \( F_0 = \emptyset \) and \( F_{r+1} = E \), as they are the unique rank 0 and \( r \) flats, respectively.
+    We'll set the convention that \( e_{F_0} = \sum_{i \in \emptyset} e_i = 0 \).
+    Similarly, we recall that \( e_E = 0 \).
+    This means we can equivalently show that,
+    \[
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}} e_{F_{k}} \in \Span( e_{F_0}, e_{F_1}, \dots, e_{k-1}, e_{k+1}, \dots, e_{F_r}, e_{F_{r+1}} ).
+    \]
+    Let's first use our basic definitions to rewrite our sum
+    \begin{align*}
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}} e_{F_{k}}
+        \;\; & = \;\;\;
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( \, \sum_{\mathclap{ i \in F_k }}e_i \right) \\
+             & = \;\;\;
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( \; \sum_{\mathclap{ i \in F_{k-1} }}e_i + \sum_{\mathclap{ i \in F_{k} \setminus F_{k-1} }}e_i \, \right) \\
+             & = \;\;\;
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( e_{F_{k-1}} + e_{F_k \setminus F_{k-1}} \right).
+        % \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( e_{F_{k-1}} + \sum_{\mathclap{ i \in F_{k} \setminus F_{k-1} }}e_i \, \right).
+    \end{align*}
+    Indexing nightmare aside, we note that the term \( e_{F_{k-1}}\) in the sum is indepentent of choice of \( F_k \).
+    We'll let \( \Lambda > 0 \) be the number of complete flags that contain \( \scrF \), letting us write
+    \[
+        \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( e_{F_{k-1}} + e_{F_k \setminus F_{k-1}} \right)
+        = \Lambda e_{F_{k-1}} + \sum_{\mathclap{\substack{F_k \in \cL \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( e_{F_k \setminus F_{k-1}} \right).
+    \]
+
+    Now, if we have flats \( F_{k-1} \subsetneq F_{k+1} \) of rank \( k-1 \) and \( k+1 \) respectively, consider an element of the ground set \( i \in F_{k+1} \setminus F_{k-1} \).
+    By definition, the closure \( F = \cl(F_{k-1} \cup i) \) is a flat.
+    Since \( i \) was not in \( F_{k-1} \), \( \rk(F) > \rk(F_{k-1}) \), and in particular must be rank \( k \) since adding a single element can only increase the rank by at most one.
+    By property~\ref{def:F3} of the properties of flats, we know \( F \) is the unique flat such that \( F_{k-1} \subsetneq F \) and \( i \in F \), so we have that \( F_{k-1} \subsetneq F \subsetneq F_{k+1} \).
+    Further, the same property guarantees us that each \( i \in F_{k+1} \setminus F_{k-1} \) will appear in exactly one rank \( k \) flat, \( F_{k,i} \) such that \( F_{k-1} \subsetneq F_{k,i} \subsetneq F_{k+1} \).
+    This face lets us write
+    \begin{align*}
+        \Lambda e_{F_{k-1}} + \sum_{\mathclap{\substack{F_k \in \cL                                 \\ F_{k-1} \subsetneq F_k \subsetneq F_{k+1} }}}\, \left( e_{F_k \setminus F_{k-1}} \right)
+         & = \Lambda e_{F_{k-1}} + e_{F_{k+1} \setminus F_{k-1}}                                    \\
+         & = (\Lambda - 1) e_{F_{k-1}} + \left( e_{F_{k-1}} + e_{F_{k+1} \setminus F_{k-1}} \right) \\
+         & = (\Lambda - 1) e_{F_{k-1}} + e_{F_{k+1}}.
+    \end{align*}
+    In this form we can clearly see this is in the span of \( \{ e_{F_0}, e_{F_1}, \dots, e_{k-1}, e_{k+1}, \dots, e_{F_r}, e_{F_{r+1}} \} \).
+    With this, we've shown the Bergman fan of \( \cM \) is balanced.
 \end{proof}
-While we still don't want to go into the deep details of tropical geometry, we would note here that if \( \bSigma \) is a tropical fan, then it has an associated Chow ring \( A^\bullet(\bSigma) \).
-This is built somewhat analogously to how we developed the Chow ring of a matroid,  starting with a polynomial ring with one variable per ray in \( \bSigma(1) \).
-Notably, if \( \bSigma_{\cM} \) is the Bergman fan of a matroid \( \cM \), then \( A^\bullet(\bSigma_\cM) = A^\bullet(\cM) \).
+Many of the following theorems are about tropical fans more generally, and as such the weight function plays a role.
+However, since all Bergman fans of matroids are balanced, we will state the theorems just for balanced fans and remove refrences to the weight function.
+Simplifying all our lives a little bit.
+
+% While we still don't want to go into the deep details of tropical geometry, we still think it is worthwhile to note that if \( \bSigma \) is a tropical fan, then it has an associated Chow ring \( A^\bullet(\bSigma) \).
+% This is built somewhat analogously to how we developed the Chow ring of a matroid,  starting with a polynomial ring with one variable per ray in \( \bSigma(1) \) and using a quotient to induce relations among the rays based on the cones of the fan.
+% Notably, if \( \bSigma_{\cM} \) is the Bergman fan of a matroid \( \cM \), then \( A^\bullet(\bSigma_\cM) = A^\bullet(\cM) \).
 
 We now have a geometric object associated with our matroid, but we still don't yet have a bridge back to the realm of algebra as promised.
 Also, we seemed to hint volume was going to be useful, but there's no obvious way to take the volume of a fan.
@@ -1304,21 +1395,20 @@ To wrap this up, we move on to our final geometric object.
 
 \section{Normal Complexes}
 The work in this section is by far the most recent, coming from work within the last two years at time of writing.
-We will provide a brief summary of the work by Nathanson and Ross \cite{nathansonTropicalFansNormal2023} and by Nowak and Ross, jointly with the authors \cite{nowakMixedVolumesNormal2023}.
+We will provide a brief summary of the work by Nathanson and Ross \cite{nathansonTropicalFansNormal2023} and by Nowak and Ross, jointly with the author \cite{nowakMixedVolumesNormal2023}.
 
 This section will use the Bergman fan of a matroid to make an object called a normal complex.
 From this we can develop a notion of volume, as well as present theorems that relate this volume back to the Chow ring, finally giving us all the components necessary for our main result.
 
 \subsection{The Normal Complex of a Fan}
-In essence, the normal complex of a fan is simply a truncation of a fan into a polytopal complex using hyperplanes normal to the rays of the fan, thus the name.
+In essence, a normal complex of a fan is simply a truncation of a fan into a polytopal complex using hyperplanes normal to the rays of the fan, thus the name.
 They were initially developed in \cite{nathansonTropicalFansNormal2023}, and the following definitions and propositions come from this work.
 However, we can't just take any truncation of our fan.
 We need a way to specify the truncations that will work, and so we introduce the idea of cubical and pseudocubical values.
 
 \begin{definition}[Cubical Values]\th\label{def:cubical}
-    Let \( \bSigma \subseteq N \) be a simplicial \( d \)-fan.
-    For each ray \( \rho \in \bSigma(1) \) we choose \( u_\rho \) to be a non-zero vector in \( \rho \).
-    Choose an inner product \( \ast \in \inn(N) \) and a vector \( z \in \R^{\bSigma(1)} \) that associates a real number to each ray of our fan.
+    Let \( \bSigma \subseteq \R^n \) be a marked, simplicial \( d \)-fan and \( \ast \in \inn(\R^n) \) an inner product.
+    Pick a vector \( z \in \R^{\bSigma(1)} \) that associates a real number to each ray of our fan.
     For each ray \( \rho \in \bSigma(1) \) we have a corresponding hyperplane and half-space
     \[
         \HP_{\rho, \ast}(z) = \{ v \in N \; | \; v \ast u_\rho = z \}
@@ -1328,20 +1418,20 @@ We need a way to specify the truncations that will work, and so we introduce the
 
     For each cone \( \sigma \in \bSigma \), let \( w_{\sigma,\ast}(z) \) be the unique value such that
     \[
-        w_{\sigma,\ast}(z) \ast u_\rho = z_\rho
+        w_{\sigma}(z) \ast u_\rho = z_\rho
     \]
     for each ray \(\rho \in \sigma(1)\).
 
     We say \( z \) is \emph{cubical} if for all \( \sigma \in \bSigma \),
     \[
-        w_{\sigma, \ast}(z)  \in \sigma^\circ,
+        w_{\sigma}(z)  \in \sigma^\circ,
     \]
-    where \( \sigma^\circ \) is the interior of \( \sigma \).
+    where \( \sigma^\circ \) is the relative interior of \( \sigma \).
 \end{definition}
 \begin{definition}[Pseudocubical]\th\label{def:pseudocubical}
-    Given everything exactly as the previous definition, if we instead require only that
+    Given everything exactly as in the previous definition, if we instead require only that
     \[
-        w_{\sigma, \ast}(z) \in \sigma
+        w_{\sigma}(z) \in \sigma
     \]
     for all \( \sigma \in \bSigma \), we say \( z \) is \emph{pseudocubical}.
 \end{definition}
@@ -1390,7 +1480,7 @@ We can see an example in \( 2 \)-dimensions.
 With this, we can now define a normal complex.
 \begin{definition}[Normal Complex]\th\label{def:normalComplex}
     Let \( \bSigma \subseteq N \) be a simplicial \( d \)-fan, with marked point \( u_\rho \) on each ray \( \rho \in \bSigma(1) \).
-    Choose an inner product \( \ast \in \inn(N) \) and a pseudocubical vector \( z \in pCub(\bSigma, \ast) \).
+    Choose an inner product \( \ast \in \inn(N) \) and a pseudocubical vector \( z \in \pCub(\bSigma, \ast) \).
     Recall that for each ray \( \rho \in \bSigma(1) \) we have a corresponding hyperplane and half-space
     \[
         \HP_{\rho, \ast}(z) = \{ v \in N \; | \; v \ast u_\rho = z \}
@@ -1407,7 +1497,7 @@ With this, we can now define a normal complex.
         C_{\bSigma, \ast}(z) = \bigcup_{\sigma \in \bSigma} P_{\sigma, \ast} (z)
     \]
 \end{definition}
-That these truncations of fans give us well-defined polytopal complex is a result of Propositon~3.7 in \cite{nathansonTropicalFansNormal2023}.
+That these truncations of fans give us well-defined polytopal complex is a result of Proposition~3.7 in \cite{nathansonTropicalFansNormal2023}.
 The basic idea is that because the pseudocublical condition insures the hyperplanes intersect within each cone exactly at one point, these intersection points define the vertices of each polytope in the complex.
 Those with more knowledge of polytopes can also see there is hyperplane description of these polytopes readily available as well.
 Here is another place where an example is worth many words.
@@ -1441,7 +1531,7 @@ Here is another place where an example is worth many words.
             \draw[thick,color=Red] (0,1.2) -- (1.2,0);
             \draw[thick,color=Red] (0,-1.2) -- (-1.2,0);
         \end{tikzpicture}
-        \subcaption{A fan with a possible of arrangements of  hyperplanes given by a cubical value}
+        \subcaption{A fan with a possible arrangement of  hyperplanes given by a cubical value}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.48\textwidth}
@@ -1555,16 +1645,16 @@ After so long hinting at the importance of volume, we finally have something rel
 Remember that we, rather lazily, only defined volumes on polytopes.
 We can extend the definition to normal complexes, though out of necessity how we do so is a bit fussy.
 \begin{definition}[Volume of a Normal Complex]\th\label{def:volNormalComplex}
-    Let \( \bSigma \subset N \) be some simplicial \( d \)-fan with marked points \( u_\rho \) on each ray \( \rho \in \bSigma(1) \).
-    Choose an inner product \( \ast \in \inn(N) \) and define
+    Let \( \bN \) be a real-valued vector space and \( \bSigma \subseteq \bN \) be a simplicial \( d \)-fan with marked points \( u_\rho \).
+    Choose an inner product \( \ast \in \inn(\bN) \) and define
     \[
-        N_\sigma = \Span\big(u_\rho \; | \; \rho \in \sigma(1)\big) \subseteq N.
+        \bN_\sigma = \Span\big(u_\rho \; | \; \rho \in \sigma(1)\big) \subseteq \bN.
     \]
-    Then, let \( M_\sigma \) be the vector space dual to \( N_\sigma \).
-    Picking \( \{ u_\rho \; | \; \rho \in \sigma(1) \} \) as the basis of \( N_\sigma \), and using our chosen inner product, we may identify the dual basis \( \{ u^\rho \; | \; \rho \in \sigma(1) \} \) of \( M_\sigma \).
+    Then, let \( \bM_\sigma \) be the vector space dual to \( \bN_\sigma \).
+    Using \( \{ u_\rho \; | \; \rho \in \sigma(1) \} \) as the basis of \( \bN_\sigma \), and using our chosen inner product, we may identify the dual basis \( \{ u^\rho \; | \; \rho \in \sigma(1) \} \) of \( \bM_\sigma \) as a subset of \( \bN_\sigma \).
     For each \( \sigma \in \bSigma(d) \), we choose the volume function
     \[
-        \Vol_\sigma \,:\; \{\text{Polytopes in \( N_\sigma \)} \}  \to \R_{\geq 0}
+        \Vol_\sigma \,:\; \{\text{Polytopes in \( \bN_\sigma \)} \}  \to \R_{\geq 0}
     \]
     characterized by \( \Vol_\sigma\big( \conv( \{0\} \cup \{u^\rho \; | \; \rho \in \sigma(1)\})\big) = 1 \).
 
@@ -1594,15 +1684,15 @@ This theorem provides the first part of the bridge we are developing between geo
 \end{theorem}
 
 Finally, we have the first link back to the Chow ring.
-By carefully taking volumes of the normal complex, we can evaluate top degree divisors under the degree map.
+By carefully taking volumes of the normal complex, we can evaluate top degrees of divisors under the degree map.
 While this is very cool, we have a problem.
-This only allows us to find evaluate a single divisor raised to the top power under the degree map.
+This only allows us to evaluate a single divisor raised to the top power under the degree map.
 Recall that we want to reason about elements of the form \( \alpha^{d-k}\beta^k \).
 These are called mixed degrees of divisors, and perhaps that is a good hint as to what we need to develop next.
 
 \subsection{Mixed Volumes of Normal Complexes}
 Here we finally can justify introducing the mixed volume function earlier.
-We can't define the mixed volume of on the full normal complexes directly, as the Minkowski sum of two normal complexes would certainly not be a normal complex itself in general.
+We can't define the mixed volume of the full normal complexes directly, as the Minkowski sum of two normal complexes would certainly not be a normal complex itself in general.
 But like volume we could define it component wise.
 
 A distinction from the original mixed volume function is that here is that we can't take the mixed volume of an arbitrary collection of normal complexes.
@@ -1624,7 +1714,8 @@ Here, the basic idea as to why this may work is that taking the Minkowski sum of
 \end{figure}
 That this works in general is not obvious.
 Nor is it immediate that this newly defined function has all the nice properties of the original mixed volumes.
-However, from Proposition~3.1 in \cite{nowakMixedVolumesNormal2023}, we have the following guarantee.
+The development and proof of the following proposition was originally the work of Lauren Nowak in her master's thesis~\cite{nowakMixedVolumesNormal2022}.
+This work was then incorperated into~\cite{nowakMixedVolumesNormal2023} from which Proposition~3.1 gives us the following guarantee.
 \begin{proposition}
     Let \( \bSigma \subset N \) be a simplicial \( d \)-fan, \( \ast \in \inn(N) \) an inner product on \( \R^n \), and  pseudocubical values \( z_1, \dots, z_n \in \pCub(\bSigma, \ast)\).
 
@@ -1639,7 +1730,7 @@ However, from Proposition~3.1 in \cite{nowakMixedVolumesNormal2023}, we have the
         \item \( \MVol_{\bSigma, \ast} \) is multilinear with respect to Minkowski addition in each maximal cone.
     \end{enumerate}
 
-    Further, any function \( \pCub(\bSigma, \ast)^d \to \R_{\geq 0} \)
+    Further, any function \( \pCub(\bSigma, \ast)^d \to \R_{\geq 0} \) satisfying properties 1--3 must be \( \MVol_{\sigma, \ast} \).
 \end{proposition}
 Our new mixed volume function then is well-defined and is uniquely characterized by the same properties as the original.
 Theorem~3.6 of \cite{nowakMixedVolumesNormal2023} extends \th\ref{thm:volDegCorrespondence} to a form that lets us evaluate mixed degrees.
@@ -1668,6 +1759,7 @@ This is in fact a property of the underlying fan itself.
     for all \( z_1, z_2, z_3, \dots, z_d \in \Cub(\bSigma, \ast) \).
 \end{definition}
 If a fan is AF, then taking the mixed volumes of any normal complexes built from it will give rise to a log-concave sequence.
+This is naturally weaker than the Alexandrov-Finchel inequality in the convex setting, which is just universally true, but that it is still sometimes true in a non-convex setting is
 Our goal now then is to show that Bergman fans of matroids are AF\@.
 Luckily, Theorem~5.1 in \cite{nowakMixedVolumesNormal2023} gives us exact criteria to use.
 
@@ -1685,7 +1777,7 @@ We then take all faces of those cones to insure that \( \nbd(\sigma, \bSigma) \)
 In fact \( \nbd(\sigma, \bSigma) \) is still a fan living in the same space as \( \bSigma \).
 If we additionally quotient out the components of \( \sigma \) from the neighborhood we have what is called the star of \( \sigma \).
 \begin{definition}[Star]\th\label{def:star}
-    Let \( \bSigma \in \R^d\) be a fan and \( \sigma \in \bSigma \) a cone in the fan.
+    Let \( \bSigma \subseteq \R^d\) be a fan and \( \sigma \in \bSigma \) a cone in the fan.
     The \emph{star} of \( \sigma \) is given by
     \[
         \Star(\sigma, \bSigma) = \left\{ \overline{\tau} \; \middle| \; \tau \in \nbd(\sigma, \bSigma) \right\} \subseteq \R^d / \Span(\sigma),
@@ -1697,20 +1789,19 @@ Given we are always providing an inner product, we mostly think of the star as t
 Since the neighborhood was a fan in the original space, the star will be a fan in this orthogonal space, which we notate as  \( \bSigma^{\sigma} \).
 
 Perhaps more surprisingly, if we have the necessary data to make a normal complex on some fan \( \bSigma \), then for any cone \( \sigma \in \bSigma \), we also have everything we need to define a normal complex on \( \bSigma^\sigma \).
-We call these faces of the normal complex, in analogy with polytopes, and the details of their construction and existince can be found in section~4 of \cite{nowakMixedVolumesNormal2023}.
+We call these faces of the normal complex, in analogy with polytopes, and the details of their construction and existence can be found in section~4 of \cite{nowakMixedVolumesNormal2023}.
 \begin{definition}[Face of Normal Complex]\th\label{def:faceNC}
     Let \( \bSigma \subset \R^n \) be a simplicial \( d \)-fan and \( \ast \in \inn(\R^n) \) be an inner product.
     Given any \( z \in \pCub(\bSigma, \ast) \) and cone \( \sigma \in \Sigma \), the \emph{face} of \( C_{\bSigma, \ast}(z) \) associated to \( \sigma \) is
     \[
         F^\sigma\big(C_{\bSigma, \ast}(z)\big)  = C_{\bSigma^\sigma, \ast^\sigma}(z^\sigma),
     \]
-    where \( \ast^\sigma \) is the restriction of \( \ast \) to \( \Span(\sigma) \) and \( z^\sigma \in \pCub(\bSigma^\sigma, \ast^\sigma) \) is uniquely determined by \( \Sigma, \sigma, \) and \( z \).
+    where \( \ast^\sigma \) is the restriction of \( \ast \) to \( \Span(\sigma)^\bot \) and \( z^\sigma \in \pCub(\bSigma^\sigma, \ast^\sigma) \) is uniquely determined by \( \Sigma, \sigma, \) and \( z \).
 \end{definition}
 A good thing to note here is there is a dimension reversing relationship between the dimension of \( \sigma \) and \( \bSigma^\tau \).
 If \( \bSigma \) is a \( d \)-fan and \( \sigma \) is of dimension \( k \), then \( \bSigma^\sigma \) is pure of dimension \( d-k \).
 We would then call \( F^\sigma\big(C_{\bSigma, \ast}(z)\big) \) a \( (d-k) \)-dimensional face of the normal complex \( C_{\bSigma, \ast}(z) \).
-
-This finally gives us enough backgound information to state Theorem~5.1 of \cite{nowakMixedVolumesNormal2023}.
+This finally gives us enough background information to state Theorem~5.1 of~\cite{nowakMixedVolumesNormal2023}.
 \begin{theorem}[Nowak-O-Ross 2022]\th\label{thm:suffAF}
     Let \( \bSigma \) be a balanced \( d \)-fan, and \( \ast \in \Inn(N_\R) \) an inner product such that \( \Cub(\bSigma, \ast) \neq \emptyset \).
     Then \( (\bSigma, \ast) \) is AF if
@@ -1720,16 +1811,22 @@ This finally gives us enough backgound information to state Theorem~5.1 of \cite
                   \Star(\sigma, \bSigma_\cM) \setminus \{ 0 \}
               \]
               is connected and,
-        \item for for any choice of \( z \in \Cub(\bSigma, \ast) \), each 2-dimensional face of the associated normal complex, \( C(\bSigma, z) \), the quadratic form associated to the volume polynomial has exactly one positive eigenvalue.
+        \item for any choice of \( z \in \Cub(\bSigma, \ast) \) the volume of each 2-dimensional face of the associated normal complex, \( C(\bSigma, z) \), is quadratic form whose associated matrix has exactly one positive eigenvalue.
     \end{enumerate}
 \end{theorem}
 We can provide a little insight into these two criteria.
-The first we like to think of as telling us our fan can't have ``pinch'' points.
-If cones don't generally meet along facets, then when taking stars within the fan we may get the case that the cones in the star fan meet only at the origin.
+In the first, connectedness is the classic topological definition of connected, but, for those without a topological background, practically we can think of this as being able draw a path between any two points.
+In this case with the origin removed.
+The effect of this criteria is that is it tells us our fans can't have ``pinch'' points.
+If the cones of the fan share a non-0-dimensional face that's not a facet, then when taking stars within the fan we may get the case that the cones in the star fan meet only at the origin.
+Once we then remove the origin, then this will disconnect the star fan, violating the criteria.
 
-For the second condition, first we recall that since we're looking at 2-dimnesional faces of normal complexes, their volume face will be a polynomials in terms  in will consist of squared te
+For the second condition, first we recall that since we're looking at 2-dimensional faces of normal complexes, these will be polytopal complexes with maximal elements of dimension 2.
+The volume of the polytopes will depend on the \( z \)-values that determine the truncation.
+Since each polytope's volume will be determined by 2 \( z \)-values each, we can write the volume of the whole complex as a polynomial in \(z_i\) where each monomial is of degree 2.
+This is what is called a quadratic form, and there is always a matrix associated to quadratic forms, and it is this matrix's eigenvalues that are of interest to us.
 
-We now finally have laid out every piece of the puzzle we'll need to prove our main result.
+We now finally have laid out every piece of existing work we'll need to prove our main result.
 All that's left is to put them together.
 
 \end{document}
