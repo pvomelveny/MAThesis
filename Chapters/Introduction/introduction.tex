@@ -10,8 +10,8 @@
 
 \chapter{Introduction}
 
-This thesis will require us to take a tour of mathematics that have been developing for close to a century.
-The main result synthesizes modern work, from about ten years right up to last year, about a conjecture, posed in seventies, on a mathematical object first formalized in 1935.
+This thesis will take us on a tour of mathematics that have been developing for close to a century.
+The main result synthesizes modern work, from about ten years right up to last year, about a conjecture, posed in the seventies, on a mathematical object first formalized in 1935.
 This threads through work of our friends and mentors, Fields Medal winners, and a host of well-known mathematicians from across the last hundred years.
 While we think the results alone are quite interesting on their own, much of what has made this project so interesting to us is its broad connections to these various places.
 We hope, through the more leisurely pace we are allowed to take in a thesis, to show off this side of the math as well.
@@ -19,18 +19,18 @@ We hope, through the more leisurely pace we are allowed to take in a thesis, to 
 \section{What Are We Doing?}
 
 The key players in this work are \textbf{matroids}, a combinatorial object devised to generalize the notion of ``independence''.
-Matroids are interesting for a multitude of reasons, but of note to us is that, although they are combinatorial objects, they can be alternatively studied as geometric objects, known as \textbf{Bergman fans}, and algebraic objects called \textbf{Chow rings}.
+Matroids are interesting for a multitude of reasons, but of note to us is that, although they are combinatorial objects, they can be alternatively studied through associated geometric objects, known as \textbf{Bergman fans}, and algebraic objects called \textbf{Chow rings}.
 In the early 1970's, a conjecture about the \textbf{characteristic polynomial} of matroids was posed.
 The \textbf{Heron-Rota-Welsh conjecture} was, in essence a combinatorial question, and would remain unresolved for almost 50 years.
 It was through viewing the problem from the algebro-geometric side of things that Adiprasito, Huh, and Katz were finally able to prove the conjecture true in 2015.
 They did this by importing complex machinery from algebraic geometry, known as \emph{Hodge theory}, into the combinatorial world of matroids.
 It is an impressive work that, in part, won author June Huh a Fields medal.
 
-In this thesis we wish to offer an alternative proof of the Heron-Rota-Welsh conjecture.
-To do this, we too will tackle the problem from a geometric perspective.
-In 2021, Nathanson and Ross developed a correspondence between the volume of objects generated from the Bergman fans of matroids, called \textbf{normal complexes}, and the evaluation of degree maps on the Chow Ring.
-This opened the avenue of using the geometric picture of matroids to show characteristics of its algebraic representation.
-Using our recent work with Nowak and Ross, we show this correspondence and certain volumetric properties of normal complexes is sufficient to prove the Heron-Rota-Welsh conjecture.
+In this thesis we wish to outline an alternative proof of the Heron-Rota-Welsh conjecture.
+This work can be view as a companion to the joint paper of the Lauren Nowak, Dustin Ross, and the author.
+The paper~\cite{nowakMixedVolumesNormal2023} furthers the work of Anastasia Nathanson and Ross which developed a correspondence between the volume of objects generated from the from fans, called \textbf{normal complexes}, and the evaluation of degree maps on the Chow Ring under certain conditions.
+Our thesis here, then, looks at using the tools we've developed and applying them to matroid- theoretic ideas, taking a more leisurely pace.
+We highly reccomend Lauren Nowak's thesis,~\cite{nowakMixedVolumesNormal2022}, as yet another companion that provides a deep-dive into the volume-theortic aspects of normal complexes.
 
 \section{Why Are We Doing This?}
 
@@ -42,13 +42,24 @@ Compared to combinatorial Hodge theory, normal complexes have a much lower barri
 That they can prove the same, famously difficult, problem is surprising at least.
 We hope to see some of these techniques and tools expanded and applied elsewhere.
 
-\section{Who Is This For?}
+\section{How Will We Do This?}
 
 By this point we've already introduced quite a few words we don't expect every reader to know offhand.
-Our primary goal is that anyone with a few graduate level courses in mathematics under their belt could read this thesis from start to finish and come out with a comprehensive picture of both the setting and the conclusion.
-To that end we will be providing context for every word in bold appearing above, linking each of them to the overall picture.
+We will essentially be providing context for every word in bold appearing above.
+In doing so, we will provide a plethora of definitions, propositions, and theorems across several fields.
+Why we need to cover quite such a large range will hopefully be apparent as we go on, but we fully acknowledge that this can be a little overwhelming.
 
-However, we also have some secondary goals in terms of readership.
+We will try to be systematic about what we define, cite and prove.
+Outside a few cases where it's illustrative for a larger point, we will take linear algebra and basic abstract algebra for granted.
+For the more specialized objects at play, we will define them in the text.
+As we introduce already known propositions and theorems, we will cite back to either textbooks on the subject or the results of papers.
+Occasionally, a proposition will just seem to be ``common knowledge'' or use a construction very different from the one we use.
+When feasible, we'll provide a proof for these ourselves.
+
+\section{Who Is This For?}
+
+Our primary goal is that anyone with a few graduate level courses in mathematics under their belt could read this thesis from start to finish and come out with a comprehensive picture of both the setting and the conclusion.
+Besides the stated, we also have some secondary goals in terms of readership.
 First, we want this to be of at least some interest to someone already knowledgeable in the field.
 While we are confident that any math of real substance in this thesis will be developed elsewhere, if it's going to appear here it might as well at least be useful to a practitioner.
 Second, and in somewhat of a contradiction, we want this work to be inviting to a curious non-mathematican.
