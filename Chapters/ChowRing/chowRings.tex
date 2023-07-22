@@ -57,7 +57,7 @@ The ideal \( J_{\cM} \) has a less obvious intuition, but the linear forms that 
 As always, working a small example will help.
 
 \subsubsection{A Small Chow Ring Example}
-Recall our ongoing example matroid \( \cM \), whose ground set is \( E = \{ a,b,c,d \} \) and with proper flats
+Recall our ongoing example matroid \( \sM \), whose ground set is \( E = \{ a,b,c,d \} \) and with proper flats
 \[
     \cL^\ast = \{ a, b, c, d, ac, bc, cd, abd \}.
 \]
@@ -151,17 +151,17 @@ We needed that the Chow ring is a graded ring as the degree map is defined only 
     Let \( \cM \) be a matroid of rank \( r + 1 \).
     The \emph{degree map} of \( \cM \) is the linear map
     \[
-        \deg:\; A^r(\cM) \to \Z
+        \deg_\cM:\; A^r(\cM) \to \Z
     \]
     such that for any complete flag \( \scrF \subseteq \cL \) of \( \cM \),
     \[
-        \deg \left( \prod_{F \in \scrF}x_F \right) = 1.
+        \deg_\cM \left( \prod_{F \in \scrF}x_F \right) = 1.
     \]
 \end{definition}
 
 At first glance, it is not obvious that such a map must exist or that if it does that it would be unique.
-However, Adiprasito, Huh, and Katz showed in \cite[Proposition~5.6]{adiprasitoHodgeTheoryCombinatorial2018} that this map exists for every matroid and is uniquely characterized by this definition.
-We will return to the degree map in the next chapter, and better explain how we know that this
+However, Adiprasito, Huh, and Katz showed in~\cite[Proposition~5.6]{adiprasitoHodgeTheoryCombinatorial2018} that this map exists for every matroid and is uniquely characterized by this definition.
+We will briefly return to the degree map in the next chapter to provide a little more context.
 
 \section{The Reduced Characteristic Polynomial}
 
@@ -256,7 +256,7 @@ The definition is quite straightforward, we just require one small proposition a
     If \( a \) is independent, then it's a coloop, since it increases the rank of every subset of \( E \setminus a \).
     If \( a \) is not independent, then it's a loop by definition.
 
-    So this final sum actually consists only of matroids with coloops or loops, and so each have a factor of \( (z - 1) \)
+    So this final sum actually consists only of matroids with coloops or loops, and so each has a factor of \( (z - 1) \).
     We conclude that \( \chi_{\cM}(z) \) must have a factor of \( (z - 1) \).
 \end{proof}
 Now that we're sure there will always be a factor of \( (z - 1) \), the reduced characteristic polynomial is easy to define in terms of the characteristic polynomial.
@@ -266,12 +266,11 @@ Now that we're sure there will always be a factor of \( (z - 1) \), the reduced 
     \[
         \ochi_\cM(z) = \frac{\chi_\cM(z)}{(z-1)}.
     \]
-
-    Further, we may collect the powers of \( z \) and write the reduced characteristic polynomial as
+    Collecting the powers of \( z \) and writing the reduced characteristic polynomial as
     \[
         \ochi_\cM(z) = \sum_{k=0}^r (-1)^k\ow_k z^{r-k},
     \]
-    where the \( \ow_0, \ow_1, \dots, \ow_r \) are the reduced coefficients of \( \ochi_\cM(z) \).
+    we define \( \ow_0, \ow_1, \dots, \ow_r \) as the reduced coefficients of \( \ochi_\cM(z) \).
 \end{definition}
 That this is well-defined for any matroid follows from \th\ref{thm:charPolyFactor}.
 The following proposition tells us why these coefficients are going to be important.
@@ -301,6 +300,7 @@ The following proposition tells us why these coefficients are going to be import
         \{\ow_0, \ow_1, \dots, \ow_r \}
     \]
     be the reduced coefficients of the reduced characteristic polynomial \( \ochi_\cM(z) \).
+    Following from the deletion-contraction property, the reduced characteristic coefficients are positive.
     Assume that \( \{\ow_0, \ow_1, \dots, \ow_r \} \) is a log-concave sequence.
 
     To recover the characteristic polynomial of \( \cM \) we can multiply our polynomial by a factor of \( (z-1) \).
@@ -345,13 +345,13 @@ The following proposition tells us why these coefficients are going to be import
     \[
         \ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} \geq 0.
     \]
-    If \( k = 1 \) or \( k = r \) then this is immediately true, as \(\ow_k \ow_{k-1} = 0\) in either of these cases.
+    If \( k = 1 \) or \( k = r \) then this is immediately true, as \(\ow_{k+1} \ow_{k-2} = 0\) in either of these cases.
     So, we'll go forward and assume that \( 1 < k < r \).
     Now, consider that it must be that
     \[
         \frac{\ow_{k-1}}{\ow_{k-2}} \geq \frac{\ow_k}{\ow_{k-1}} \geq \frac{\ow_{k+1}}{\ow_k}.
     \]
-    This follows directly from the definition of log-concavity and that they're all non-zero.
+    This follows directly from the definition of log-concavity and that they're all positive.
     This means
     \[
         \frac{\ow_{k-1}}{\ow_{k-2}} \geq \frac{\ow_{k+1}}{\ow_k}
@@ -422,7 +422,7 @@ There is a link between \( \alpha \) and \( \beta \) and the reduced coefficient
 \end{proposition}
 Just to confirm our understanding of the degree map, recall it is defined on elements of \( A^r(\cM) \).
 Since \( \alpha, \beta \in A^1(\cM)\), we'll have \( \alpha^{r-k}\beta^k \in A^r(\cM) \) and so this makes sense as input to the degree map.
-An alternative proof given by Dastidar and Ross,~\cite[Proposition~3.11]{dastidarMatroidPsiClasses2021}, shows that the right-hand side satisfies the deletion-contraction property.
+An alternative proof of~\th\ref{thm:coeffIsDeg} given by Dastidar and Ross,~\cite[Proposition~3.11]{dastidarMatroidPsiClasses2021}, shows that the right-hand side satisfies the deletion-contraction property.
 
 \th\ref{thm:coeffIsDeg} means that if we can prove
 \[

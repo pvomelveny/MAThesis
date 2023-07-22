@@ -8,249 +8,20 @@
 
 \begin{document}
 
-\chapter{Results}
+\chapter{A Proof of the Heron-Rota-Welsh Conjecture}
 
-We have now all of the dominos lined up, and we're ready to start knocking them down.
-The bulk of this section will go to proving that our Bergman fans are AF.
-Once we have that, our goal is in sight.
-We'll work our way back from the realm of geometry through a series of implications until we arrive back at the characteristic polynomial.
+We have now all of our dominoes lined up, and we're just about ready to start knocking them down.
+The bulk of this section will go to proving that Bergman fans are AF\@.
+Once we have that, the Heron-Rota-Welsh conjecture is easily in sight, just requiring us to address a few lingering points.
+Then, working our way back from the realm of geometry we follow a quick series of implications back to matroids and the the characteristic polynomial.
 
-\section{Some Necessary Tools}
+\section{Stars and the Products of Minors}
 
-Before we can prove that need to develop a few more concepts in order to prove that Bergman fans are AF.
-This includes introducing a theorem, cramming in some more definitions, and proving a relationship
-We'll then develop a few lemmas of our own that will give us a useful way to reframe star fans.
-
-\subsection{A Useful Linear Algebra Theorem}
-
-We'll start with a classic theorem from linear algebra~\cite{sylvesterXIXDemonstrationTheorem1852}.
-
-\begin{proposition}[Sylvester's Law of Inertia]\th\label{thm:sylvester}
-    Two symmetric square matrices, \( A \) and \( B \), of the same size have the same number of positive, negative, and zero eigenvalues if and only if
-    \[
-        B = SAS^{T}
-    \]
-    where for some non-singular matrix \( S \).
-\end{proposition}
-
-Hopefully the utility of this is fairly clear.
-If we're going to be hunting eigenvalues, matrices are somewhere near.
-This lemma means we won't lose information about the sign of eigenvalues if we manipulate the matrix, just so long as we do it in an invertible way.
-
-\subsection{Surprise Auxiliary Matroid Theory}
-
-We lied about having all the information on matroids necessary after the first chapter, apologies.
-We need a little more to get us to the end.
-First, we need a way to chop matroids up into smaller bits.
-
-\subsubsection{New Matroids From Old}
-Let's say we already have some matroid \( \cM = (E, \I) \).
-Then \( \I \) already has a notion about which of all possible subsets of \( E \) are independent.
-So if we consider some subset \( X \subseteq E \) of the ground set, we should be able to use \( \cM \)'s independent sets to construct independent sets for \( X \) as a ground set.
-This is in fact very easy to do, and we call the resulting matroid a restriction matroid.
-
-\begin{definition}[Restriction Matroid]\th\label{def:restrictionMatroid}
-    Let \( \cM = (E, \I) \) be a matroid.
-    Then for any subset \( X \subseteq E \), we may define the \emph{restriction matroid}, \( \cM|X \), as
-    \[
-        \cM|X = ( X, \I|X )
-    \]
-    where \( \I|X = \{I \in \I \; | \; I \subseteq X\} \).
-\end{definition}
-
-Essentially we just declare \( X \) to be the new ground set and just forget about any independent sets of \( \cM \) that contain any elements not in \( X \).
-Rather than providing a subset to restrict to, one often finds it useful to specify just the things we want to forget.
-
-\begin{definition}[Deletion Matroid]\th\label{def:deletionMatroid}
-    Let \( \cM = (E, \I) \) be a matroid and \( Y \subseteq E \).
-    The matroid that results from the \emph{deletion} of \( Y \) from \( \cM \), sometimes called a \emph{deletion matroid}, is defined as
-    \[
-        \cM \backslash Y = \cM|(E \setminus Y)
-    \]
-\end{definition}
-
-Clearly if \( X = (E \setminus Y) \), then \( \cM|X = \cM \backslash Y \).
-The choice of deletion or restriction is just a matter of what one wants to emphasize, what we keep or what we remove.
-
-The other way to build a matroid out of an existing one is a little less obvious.
-These are called contraction matroids, and they are \emph{dual} to restriction matroids.
-While they're a bit easier to define using duality, we want to avoid introducing all the machinery for that.
-Still, as mathematicians we feel compelled to point out duality anytime we see it.
-
-\begin{definition}[Contraction Matroids]\th\label{def:contractionMatroid}
-
-    Let \( \cM = (E, \I) \) be a matroid.
-    For any subset \( T \subseteq E \) of the ground set, construct the restriction matroid \( M|T \).
-    Then let \( B_T \) be a basis of \( M|T \).
-    The \emph{contraction matroid}, \( \cM/T \), is defined as
-    \[
-        \cM/T = ( E \setminus T, \I/T ),
-    \]
-    where \( \I/T = \{ I \subseteq (E \setminus T) \; | \; I \cup B_T \in \I \} \).
-
-\end{definition}
-
-This definition is more difficult to explain succinctly, but we can compare it with the restriction matroid to try to get some sense of what this does.
-We can think of  restriction matroid as imparting independence on a subset \( X \subseteq E \) by saying subsets are independent if they would be independent in the original matroid.
-The contraction matroid, then, assigns independence on everything \emph{not} in the subset \( T \subseteq E \),  based on if they'd still be independent if we were to add (a basis of) T back in.
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{.54\textwidth}
-        \centering
-        \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
-                none/.style={},
-                graphEdge/.style={thin},
-                Edge/.style={black, very thick}]
-
-            \node [style=graphVertex] (0) at (-3.5, 3.5) {};
-            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
-            \node [style=graphVertex] (2) at (3.5, -3.5) {};
-            \node [style=graphVertex] (3) at (3.5, 3.5) {};
-            \node [style=none] (4) at (3.5, 4.75) {};
-            \node [style=none] (5) at (-4, 0) {};
-            \node [style=none] (6) at (-4, 0) {\( a \)};
-            \node [style=none] (7) at (0, -4) {\( b \)};
-            \node [style=none] (8) at (4, 0) {\( c \)};
-            % \node [style=none] (9) at (3.5, 5) {\( e \)};
-            \node [style=none] (10) at (0.25, 0.4) {\( d \)};
-
-            \draw [style=Edge] (0) to (1);
-            \draw [style=Edge] (1) to (2);
-            \draw [style=Edge] (2) to (3);
-            \draw [style=Edge] (0) to (2);
-            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
-            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
-        \end{tikzpicture}
-        \subcaption*{A graph representing a matroid \( \cM \)}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{.45\textwidth}
-        \centering
-        \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
-                none/.style={},
-                graphEdge/.style={thin},
-                Edge/.style={black, very thick}]
-
-            %\node [style=graphVertex] (0) at (-3.5, 3.5) {};
-            \node [style=graphVertex] (1) at (-3.5, -3.5) {};
-            \node [style=graphVertex] (2) at (3.5, -3.5) {};
-            \node [style=graphVertex] (3) at (3.5, 3.5) {};
-            \node [style=none] (4) at (3.5, 4.75) {};
-            \node [style=none] (5) at (-4, 0) {};
-            % \node [style=none] (6) at (-4, 0) {\( a \)};
-            \node [style=none] (7) at (0, -4.6) {\( b \)};
-            \node [style=none] (8) at (4, 0) {\( c \)};
-            % \node [style=none] (9) at (3.5, 5) {\( e \)};
-            \node [style=none] (10) at (0, -2.4) {\( d \)};
-
-            %\draw [style=Edge] (0) to (1);
-            \draw [style=Edge, bend left=15] (1) to (2);
-            \draw [style=Edge] (2) to (3);
-            \draw [style=Edge, bend left=15] (2) to (1);
-            % \draw [style=Edge, in=150, out=-180, looseness=1.50] (4.center) to (3);
-            % \draw [style=Edge, in=0, out=30, looseness=1.50] (3) to (4.center);
-        \end{tikzpicture}
-        \subcaption*{A graph representing a matroid \( \cM' \)}
-    \end{subfigure}
-    \caption{To provide a modicum of explanation as to why these are called \emph{contractions}, we note that \( \cM/a \) and \( \cM' \) are isomorphic}\label{fig:contractionMatroid}
-
-\end{figure}
-
-Importantly, we can combine deletion and contraction, and indeed the resulting matroids are a rather central point of study in matroid theory.
-
-\begin{definition}[Matroid Minor]\th\label{def:minor}
-    A \emph{minor} of a matroid \( \cM \) is any matroid resulting in any combination of deletions and contractions of \( \cM \).
-
-    Further, any series of deletions and contractions can always be rearranged to, and so any matroid minor is of the form,
-    \[
-        \cM \backslash X / Y,
-    \]
-    where \( X, Y \subseteq E \) are disjoint and possibly empty.
-    When \( X \cup Y \) is nonempty, we call \( \cM \backslash X / Y \) a \emph{proper minor} of \( \cM \).
-\end{definition}
-
-\subsubsection{Matroid Minors and Flats}
-
-The careful reader may have noted that the definitions of restriction and contraction matroids are given in terms of independent sets, but we've clearly established that we are all about flats here.
-Luckily, we have a very useful property relating the lattice of minors and to the lattice of the original matroid.
-First though, a little notation.
-If \( F \) is a flat of \( \cM \), we will define
-\[
-    \cM_{[\emptyset, F]} = \cM|F
-\]
-to be the restriction by \( F \), and
-\[
-    \cM_{[F, E]} = \cM  / F
-\]
-to be the contraction by \( F \).
-For any two flats \( F_1 \) and \( F_2 \) of \( \cM \), we write
-\[
-    \cM_{[F_1, F_2]} = \cM / F_1 \backslash (E \setminus F_2)
-\]
-to be the minor that results from contracting by \( F_1 \) and restricting to \( F_2 \).
-Notation in hand, we can now state a classic result of matroid theory, which can be found, unsurprisingly, in Oxley~\cite[p.~116]{oxleyMatroidTheory2011}.
-
-\begin{proposition}\th\label{thm:minorLattice}
-    Let \( F_1 \) and \( F_2 \) be flats of a matroid \( \cM = (E, \cL)\).
-    Then the lattice of flats of the minor \( \cM_{[F_1, F_2]} \), \( \cL_{[F_1, F_2]} \) is isomorphic to the interval of \( \cL \)
-    \[
-        [F_1, F_2] = \{ F_1 \preceq F \preceq F_2 \; | \; F \in \cL \}
-    \]
-    given by the isomorphism
-    \begin{gather*}
-        \badphi\,:\; \cL_{[F_1, F_2]} \to \cL \\
-        \badphi(F) = F \cup F_1.
-    \end{gather*}
-\end{proposition}
-
-This means the lattice of a minor can be ``seen'' within the lattice structure of our original matroid, just up to some relabeling of the nodes.
-We note that this proposition only works for flats, not arbitrary subsets of the ground set, but that's more than enough for what we need.
-
-Importantly, if \( F_1 \) and \( F_2 \) are adjacent to each other in the lattice of flats, then \( \cM_{[F_1, F_2]} \) is isomorphic to a matroid whose sole flag is \( \{ \emptyset \subsetneq E \} \).
-The Bergman fan of such a matroid is just the point \( \{ 0 \} \), living in a \( 0 \)-dimnesional vector space.
-
-\subsection{Products and Isomorphisms of Fans}
-
-The last tool we're going to need is to develop a relationship between the stars of Bergman fans and the fans of its minors.
-Let's start by defining the product of a fan.
-\begin{definition}[Product Fan]\th\label{def:productFan}
-    Let \( \bSigma \) and \( \bSigma' \) be fans in vector spaces \( \bN \) and \( \bN' \) respectively.
-    The \emph{product fan} given by \( \bSigma \) and \( \bSigma' \) is
-    \[
-        \bSigma \times \bSigma' = \{ \sigma \times \sigma' \; | \; \sigma \in \bSigma, \sigma' \in \bSigma' \} \subseteq \bN \oplus \bN'.
-    \]
-\end{definition}
-Essentially, when making a product fan, we put the fans in orthogonal spaces and make cones between all possible combinations of the cones in each fan.
-We notate cones of the product fan as \( (\sigma, \sigma') \), where \( \sigma \in \bSigma \) and \(\sigma' \in \bSigma' \).
-Rays of the product fan correspond to elements \( (\rho, 0) \) or \( 0, \rho' \) where \( \rho \) and \( \rho' \) are rays in their respective fans.
-Importantly, the product fan can be extended to arbitrary numbers of fans.
-If we have fans \( \bSigma_1, \dots, \bSigma_k \) in vector spaces \( \bN_1, \dots, \bN_k \) then
-\[
-    \prod_{i=1}^k \bSigma_i \subseteq \bigoplus_{i=1}^k \bN_i
-\]
-is the corresponding product fan, with cones of the form \( (\sigma_1, \dots, \sigma_k) \).
-
-Now we need to define what it means for two fans to be isomorphic.
-\begin{definition}[Fan Isomorphism]\th\label{def:fanIsomorphism}
-    Let \( \bSigma \) and \( \bSigma' \) be fans in \( \bN \) and \( \bN' \) respectively.
-    We say that \( \bSigma \) and \( \bSigma' \) are \emph{isomorphic} if there exists a linear bijection
-    \[
-        \phi\,:\; \bN \to \bN'
-    \]
-    that induces a bijective map between cones of \( \bSigma \) and \( \bSigma' \), given by
-    \begin{gather*}
-        \phi^\ast \,:\; \bSigma \to \bSigma' \\
-        \phi^\ast(\sigma) = \cone\big(\phi(\rho) \,|\, \rho \in \sigma(1)\big).
-    \end{gather*}
-    Given that the fans are isomorphic, we will notate this as \( \bSigma \cong \bSigma' \).
-\end{definition}
-This is just to say that two fans are isomorphic if we can find an isomorphism between their respective spaces that preserves the combinatorial data of the fans.
-We are going to show that there is an isomorphism between star fans of a matroid and product fans of matroid minors.
-To get there we need the first ingrediant of a fan isomorphism, a linear bijection.
-\begin{proposition}\th\label{thm:quotientBijection}
+Before we can prove that Bergman fans are AF, we would like to establish a relationship between the stars of fans of matroids and the fans of that matroid's minors.
+We are going to show that there is an isomorphism between star fans of a matroid and the product of fans of the minors.
+This will let us use knowledge of matroids in proving facts about stars, rather than treating them as purely geometric objects.
+To get there we need the first ingredient of a fan isomorphism, a linear map.
+\begin{lemma}\th\label{thm:quotientBijection}
     Let \( \bSigma_\cM \subset \bN_E \) be the Bergman fan of a matroid,
     \[
         \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_k \} \subseteq \cL^\ast
@@ -261,8 +32,8 @@ To get there we need the first ingrediant of a fan isomorphism, a linear bijecti
         \varphi:\, \bN_E / \Span(\sigma_{\scrF}) \to \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}} \\
         [e_I] \mapsto \bigoplus_{i=1}^{k+1} e_{I \cap (F_i \setminus F_{i-1})}
     \end{gather*}
-    is an isomorphism.
-\end{proposition}
+    is a linear isomorphism.
+\end{lemma}
 \begin{proof}
     Consider the very similar map
     \begin{gather*}
@@ -270,30 +41,27 @@ To get there we need the first ingrediant of a fan isomorphism, a linear bijecti
         e_I \mapsto \bigoplus_{i=1}^{k+1} e_{I \cap (F_i \setminus F_{i-1})}.
     \end{gather*}
     We will show \( \varphi' \) is a surjective linear map and that its kernel is exactly \( \Span(\sigma_\scrF)  \).
-    With that, we can leverage Noether's first isomorphism theorem, and we will have that \( \varphi \) is an isomorphism.
+    With that, we can leverage the first isomorphism theorem, which will give us that \( \varphi \) is an isomorphism.
 
     Our map is linear by its definition, so let's first show that it is surjective.
-    This isn't too bad.
-    Consider some vector \( w \in  \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}}\),
-    is of the form
+    Consider some vector \( w \in  \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}}\) of the form
     \[
-        w = \bigoplus_{i=1}^{k+1} \left( \sum_{j \in (F_i \setminus F_{i-1} )} \lambda_j e_j \right);
+        w = \bigoplus_{i=1}^{k+1} \left( \sum_{j \in (F_i \setminus F_{i-1} )} \lambda_j e_j \right).
     \]
-    i.e.; each is a linear combination of the elements in some \( F_i \setminus F_{i-1} \).
+    Then \( w \) is a linear combination of the elements in some \( F_i \setminus F_{i-1} \).
     This of course is the image of the vector
     \[
-        v = \sum_{i=1}^{k+1} \left( \sum_{j \in (F_i \setminus F_{i-1} )} \lambda_j e_j \right),
+        v = \sum_{i=1}^{k+1} \left( \sum_{j \in (F_i \setminus F_{i-1} )} \lambda_j e_j \right) \in \bN_E,
     \]
-    so we have surjectivity.
+    and so we have surjectivity.
 
-    Next we want to show that any element in the \( \Span(\sigma_\scrF) \) in the kernel.
-    We can figure this out seeing what gets mapped to 0 in any one of the \( \bN_{F_i \setminus F i-1} \).
-    From construction of the space, anything in \( \Span( e_{F_i \setminus F{i-1}}) \) is sent to 0 in \( \bN_{F_i \setminus F_{i-1}} \), in particular \( e_{F_i \setminus F_{i-1}} \) itself.
-    So we can see that some \( v \in \Span( \sigma ) \) is of the form
+    Next we want to show that any element in \( \Span(\sigma_\scrF) \) is in the kernel.
+    From construction, anything in \( \Span( e_{F_i \setminus F_{i-1}}) \) is sent to 0 in \( \bN_{F_i \setminus F_{i-1}} \), in particular \( e_{F_i \setminus F_{i-1}} \) itself.
+    Given some \( v \in \Span( \sigma_\scrF ) \) of the form
     \[
         v = \lambda_1 e_{F_1} + \lambda_2 e_{F_2} + \cdots + \lambda_k e_{F_k},
     \]
-    and under our map will be
+    we have
     \begin{align*}
         \phi'(v) & = \lambda_1 \phi'(e_{F_1}) + \lambda_2 \phi'(e_{F_2}) + \cdots + \lambda_k \phi'(e_{F_k})                                                                                                                                                 \\
                  & = \lambda_1 \left(e_{F_1}\right) + \lambda_2 \left(e_{F_1} \oplus  e_{F_2 \setminus F_1}\right) + \cdots + \lambda_k \left(e_{F_1} \oplus \lambda_k e_{F_2 \setminus F_1} \oplus \cdots \oplus \lambda_k e_{F_k \setminus F_{k-1}}\right) \\
@@ -301,19 +69,39 @@ To get there we need the first ingrediant of a fan isomorphism, a linear bijecti
                  & = (\lambda_1 + \lambda_2 + \cdots + \lambda_k) 0 \oplus (\lambda_2 + \lambda_3 + \cdots + \lambda_k) 0 \oplus \cdots \oplus \lambda_k 0                                                                                                   \\
                  & = 0
     \end{align*}
-    Finally, we note that the only other thing mapped to 0 would be an element of the form \( \lambda e_{E \setminus F_k} \) which is 0 when mapped to \( \bN_{F_{k+1} \setminus F_k} \).
-    It is not immediately obvious that this is in \( \Span(\sigma_\scrF) \).
-    However, we recall that in \( \bN_E  \), \( e_E = 0 \), which means \( e_{E \setminus F_k} = -e_{F_k} \), which clearly is in the span of \( \sigma_\scrF \).
-    We may conclude then that \( \ker( \phi' ) = \Span(\sigma_\scrF) \).
+    showing that \( \Span(\sigma_\scrF) \subseteq \ker(\phi') \).
 
+    Now we just need to count some dimensions.
+    By definition, \( \dim(\bN_E) = | E | - 1 \).
+    Likewise, each \( \bN_{F_i \setminus F_{i-1}} \) has dimension \( | F_i \setminus F_{i-1} | - 1 \).
+    This gives us
+    \begin{align*}
+        \dim\left( \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}} \right) & = \sum_{i=1}^{k+1} | F_i \setminus F_{i-1} | - 1                    \\
+                                                                             & = \left(\sum_{i=1}^{k+1} | F_i \setminus F_{i-1} |\right) - (k + 1) \\
+                                                                             & = | E | - (k + 1),
+    \end{align*}
+    as \( \{  F_i \setminus F_{i-1} \}_{i=1}^{k+1} \) is just a partition of \( E \).
+    Since \( \phi' \) is surjective, this means
+    \[
+        \dim\big(\im(\phi')\big) = | E | - (k + 1)
+    \]
+    as well.
+    We have that \( \scrF \) is a flag of \( k \) flats, so \( \dim(\sigma_\scrF) = k \), which thanks to the inclusion we found above means \( \dim\big(\ker(\phi')\big) \geq k \).
+    But by the rank-nullity theorem
+    \begin{align*}
+        \dim\big(\ker(\phi')) & = \dim(\bN_E) - \dim\big( \im(\phi') \big)  \\
+                              & = | E | - 1 - \left( | E | - (k + 1)\right) \\
+                              & = k
+    \end{align*}
+    giving us that \( \ker(\phi') \) is exactly \( \Span(\sigma_\scrF) \).
     With that we have
     \[
         \bN_E/ \Span(\sigma_{\scrF}) \cong \bigoplus_{i=1}^{k+1} \bN_{F_i \setminus F_{i-1}}
     \]
-    by Noether's first isomorphism theorem and that our map \( \phi \) is the given isomorphism between these spaces.
+    by the first isomorphism theorem and that our map \( \phi \) is the given isomorphism between these spaces.
 \end{proof}
 
-With an isomorphism between these two spaces in hand, we can show that the stars of a matroid's Bergman fan have a local structure equivalent to the product of the Begrman fans of its minors.
+With an isomorphism between these two spaces in hand, we can show that the stars of a matroid's Bergman fan have a local structure equivalent to the product of the Bergman fans of its minors.
 \begin{lemma}\th\label{thm:starBijection}
     Let \( \bSigma_\cM \subseteq \bN_E \) be the Bergman fan of a matroid,
     and \( \sigma_\scrF \in \bSigma(k) \) be a cone with ray generators corresponding to the flag \( \scrF = \{F_1, \dots, F_k\} \).
@@ -330,89 +118,83 @@ With an isomorphism between these two spaces in hand, we can show that the stars
     \]
     be a flag of flats, and again define \( F_0 = \emptyset \) and \( F_{k+1} = E \).
     Take \( \phi \) to be the isomorphism given in \th\ref{thm:quotientBijection}.
-    As per the definition, to show that the two fans are isomorphic, we just need to show that \( \phi \) induces a bijection
+    As per \th\ref{def:fanIsomorphism}, a fan isomorphism still requires an additional component, a bijective map
     \[
-        \phi^\ast \,:\; \Star(\sigma_\scrF, \bSigma_{\cM}) \to \prod_{i=1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
+        \phi^\ast: \Star(\sigma_\scrF, \bSigma_\cM) \to \prod_{i=1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}
     \]
-    Thanks to linearity, we check that rays of the star fan are maped to the rays of the product fan and vice versa.
+    between cones of the fan.
+    We'll show that we can use \( \phi \) to induce this map between cones.
+    Without loss of generality let us assume \( \sigma_\scrF \) is not a maximal cone, as 0-dimensional fans are trivially isomorphic.
 
-    %%% Let's try to do this just for rays
-    % Let's first consider an element of the star fan \( \overline{\tau} \in \Star(\sigma_\scrF, \bSigma_\cM) \).
-    % From our definitions, we know that \( \overline{\tau} \) corresponds to some cone in the neighborhood of \( \sigma_\scrF \), \( \tau \in \nbd(\sigma_\scrF, \bSigma_\cM) \).
-    % Further then, we know that \( \tau \) is the face of some cone \( \pi \) such that \( \pi \in \bSigma_\cM(r) \) and \( \sigma_\scrF \preceq \pi \).
-    % Since \( \pi \) is a maxiamal cone, it must be associated to some complete flag \( \scrF' \), and since \( \sigma_\scrF \preceq \pi \) it must be that \( \scrF \subseteq \scrF' \).
-    % Let \( \scrF' = \{ F_1, \dots, F_k, G_1, \dots, G_\ell \} \), where \( G_i \in \cL^\ast \) are proper flats and \( \{ F_1, \dots, F_k \} \cap \{ G_1, \dots, G_\ell \} = \emptyset \).
-    % Finally, since \( \tau \subseteq \pi \) we know that
-    % \[
-    %     \tau = \cone(e_{F_{i_1}}, \dots, e_{F_{i_m}}, e_{G_{j_1}}, \dots, e_{G_{j_n}})
-    % \]
-    % for \( m \leq k \) and \( n \leq \ell \).
-    % This then means that
-    % \[
-    %     \overline{\tau} = \cone([e_{G_{j_1}}], \dots, [e_{G_{j_n}}]),
-    % \]
-    % since all \( [e_{F_i}] = 0 \).
+    Consider a cone of the star fan \( \overline{\tau} \in \Star(\sigma_\scrF, \bSigma_\cM) \).
+    From our definitions, we know that \( \overline{\tau} \) corresponds to some cone in the neighborhood of \( \sigma_\scrF \), \( \tau \in \nbd(\sigma_\scrF, \bSigma_\cM) \).
+    Further then, we know that \( \tau \) is the face of some cone \( \pi \) such that \( \pi \in \bSigma_\cM(r) \) and \( \sigma_\scrF \preceq \tau \).
+    Since \( \pi \) is a maximal cone, it must be associated to some complete flag \( \scrF' \), and since \( \sigma_\scrF \preceq \pi \) it must be that \( \scrF \subseteq \scrF' \).
 
-    Let's assume \( \sigma_\scrF \) is not a maximal cone, as otherwise it's trivially true that the star fan, which is 0-dimensional, is isomorphic to the product fan, the product of several 0-dimensional fans.
-    Consider a ray of the star fan \( \overline{\rho} \in \Star(\sigma_\scrF, \bSigma_\cM) \).
-    From our definitions, we know that \( \overline{\rho} \) corresponds to some ray in the neighborhood of \( \sigma_\scrF \), \( \rho \in \nbd(\sigma_\scrF, \bSigma_\cM) \).
-    Further then, we know that \( \rho \) is the face of some cone \( \tau \) such that \( \tau \in \bSigma_\cM(r) \) and \( \sigma_\scrF \preceq \tau \).
-    Since \( \tau \) is a maxiamal cone, it must be associated to some complete flag \( \scrF' \), and since \( \sigma_\scrF \preceq \tau \) it must be that \( \scrF \subseteq \scrF' \).
-    Let \( \scrF' = \{ F_1, \dots, F_k, G_1, \dots, G_\ell \} \), where \( G_i \in \cL^\ast \) are proper flats and \( \{ F_1, \dots, F_k \} \cap \{ G_1, \dots, G_\ell \} = \emptyset \).
-    As \( \rho \subseteq \tau \) and \( \overline{\rho} \neq 0\), we know that
+    Let \( \scrF' = \{ F_1, \dots, F_k, G_1, \dots, G_\ell \} \), where \( G_i \in \cL^\ast \) and \( \{ F_1, \dots, F_k \} \cap \{ G_1, \dots, G_\ell \} = \emptyset \).
+    As \( \tau \subseteq \pi \), we know that
     \[
-        \rho = \cone( e_{G_{j}} )
+        \tau = \cone( e_{F_{i_1}}, \dots, e_{F_{i_m}}, e_{G_{j_1}}, \dots,  e_{G_{j_n}}) \in \bN_E
     \]
-    for some \( 1 \leq j \leq \ell \).
-    This then means that
+    giving us
     \[
-        \overline{\rho} = \cone([e_{G_{j}}]).
+        \overline{\tau} = \cone([e_{G_{j_1}}], \dots,  [e_{G_{j_n}}]) \in \Star(\sigma_\scrF, \bSigma_\cM).
     \]
-    Because flats are totally ordered, there must be some {\( 1 \leq i \leq k+1 \)} such that
+    Because flats are totally ordered, for each \( G_j \) there must be some {\( 1 \leq i \leq k+1 \)} such that
     \[
         F_{i-1} \subsetneq G_j \subsetneq F_{i}.
     \]
-    Then we have that
-    \begin{align*}
-        \phi^\ast(\rho) = \cone(\phi([e_{G_j}]))
-    \end{align*}
-    and
+    Then for each \( G_j \) we have that
     \begin{align*}
         \phi([e_{G_j}]) & = 0 \oplus \cdots \oplus e_{G_j \cap (F_i \setminus F_{i-1})} \oplus \cdots \oplus 0 \\
                         & = e_{G_j \cap (F_i \setminus F_{i-1})}                                               \\
                         & = e_{G_j \setminus F_{i-1}},
     \end{align*}
-    with the last equality coming from the fact that \( G_j \subsetneq F_i \).
-    From \th\ref{thm:minorLattice}, we know \( G_j \setminus F_{i-1} \) corresponds to a flat of the matroid minor \( \cM_{[F_{i-1}, i]} \).
-    Thus,  \( \cone(e_{G_j \setminus F_{i-1}}) \) is a ray in the product fan of minors.
-    This shows that every ray in the star fan is uniquely mapped to a ray in the product fan.
-
-    In the other direction, consider a ray in the product fan, \(\rho = (0, \dots, \rho_i, \dots, 0) \).
-    We know that \( \rho_i \) is a ray of its respective fan in the product, \( \bSigma_{\cM_{[F_{i-1, F_i}]}}\).
-    Further, we have that \( \rho_i \) is associated to a flat, \( G \), in \( \cM_{[F_{i-1, F_i}]} \).
-    This means that the ray of the product fan is
+    where \th\ref{thm:minorLattice} tells us that \( G_j \setminus F_{i-1} \) is a flat of the matroid minor \( \cM_{[F_{i-1}, F_i]} \) and so \( \phi([G_j]) \) is a ray in product fan.
+    If we have the case
     \[
-        \rho = \cone( e_{G} ).
+        F_{i-1} \subsetneq G_j \subsetneq  G_j' \subsetneq F_{i}
     \]
-    Taking the inverse of \( \phi^\ast \), we have
-    \begin{align*}
-        (\phi^{-1})^\ast (\rho) & = \cone\big(\phi^{-1}(e_G)\big) \\
-                                & = \cone([e_G])                  \\
-                                & = \cone([e_G] + [e_{F_{i-1}}])  \\
-                                & = \cone([e_G + e_{F_{i-1}}])    \\
-                                & = \cone([e_{G \cup F_{i-1}}]),
-    \end{align*}
-    where we use the fact that \( e_{F_{i-1}} \in \Span(\sigma_\scrF) \) and so \(  [e_{F_{i-1}}] = [0] \) in the star fan.
-    Again by \th\ref{thm:minorLattice} we have that \( G \cup F_{i-1} \) is a flat of \( \cM \) and is included in a maximal cone that contains \( \sigma_\scrF \).
-    This means that \( \cone([e_{G \cup F_{i-1}}]) \) is a ray in the star fan, as desired.
+    then \( G_j \subsetneq  G_j' \) implies \(  G_j \setminus F_{i-1} \subsetneq  G_j' \setminus F_{i-1} \) and so
+    \[
+        \cone\big( \phi([e_{ G_j \setminus F_{i-1}}]), \phi([e_{G_j' \setminus F_{i-1}}]) \big) \in \bSigma_{\cM_{[F_{i-1}, F_i]}}.
+    \]
+    Otherwise, the cone between rays of different fans in the product are in the product fan by definition.
+    This means that we have that
+    \[
+        \cone\big( \phi([e_{G_{j_1}}]), \dots,  \phi([e_{G_{j_n}}])\big)
+    \]
+    is an element of the product fan.
 
-    Since we've shown that the isomorphism\( \phi \) induces a bijection between cones of \( \Star(\sigma_\scrF, \bSigma_{\cM}) \) and \( \prod_{i=1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}} \),
-    we may conclude that the fans are isomorphic.
+    Consider the map
+    \begin{gather*}
+        \phi^\ast = \Star(\sigma_\scrF, \bSigma_\cM) \to \prod_{i=1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}} \\
+        \phi^\ast\big(\cone\big([e_{G_{j_1}}], \dots,  [e_{G_{j_n}}])\big) = \cone\big( \phi([e_{G_{j_1}}]), \dots,  \phi([e_{G_{j_n}}])\big)
+    \end{gather*}
+    as our bijection between cones, given that we can write any cone in the star
+    \[ \overline{\tau}  = \cone\big([e_{G_{j_1}}], \dots,  [e_{G_{j_n}}])\big) \]
+    as above.
+    Also from above, we see that \( \phi^\ast \) is injective, since \( \phi \) maps rays of the star uniquely to rays of the product.
+    To confirm it is surjective, consider an arbitrary element
+    \[
+        (\tau_1, \dots, \tau_{k+1}) \in \prod_{i=1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
+    \]
+    Each \( \tau_i \) is a cone in \( \bSigma_{\cM_{[F_{i-1}, F_i]}} \) corresponding to a flag \( \{ G_{i,1} \subsetneq \dots \subsetneq G_{i,m} \} \) of \( \cM_{[F_{i-1}, F_i]} \).
+    We can again use \th\ref{thm:minorLattice} which tells us that each \( G_{i,j} \cup F_{i-1} \) is a flat of \( \cM \).
+    Further, since each \( G_{i, j} \cup F_{i-1} \) can be totally ordered with respect to both themselves and elements of \( \scrF \) they correspond to a flag.
+    This flag, \( \scrF' \), contains \( \scrF \), and so the cone \( \tau_{\scrF'} \) is in the neighborhood of \( \sigma_\scrF \).
+    From the work above we can then conclude that
+    \[
+        \phi^\ast(\overline{\tau}_{\scrF'}) = (\tau_1, \dots, \tau_m)
+    \]
+    giving us surjectivity.
+    This gives us that \( \phi^\ast \) is a bijection of cones.
+
+    The condition that for any cone \( \overline{\tau} \in \Star(\sigma_\scrF, \bSigma_\cM) \) the restriction \( \phi|_{\overline{\tau}} \) is a bijection between \( \overline{\tau} \) and \( \phi^\ast(\overline{\tau}) \) follows immediately from the definition of \( \phi^\ast \) and that \( \phi \) is already a bijection.
+    We may conclude that our fans are isomorphic.
 \end{proof}
 
-This lemma lets us move from star fans, which can be a little hard to reason about, to the product of several Bergman fans of matroids.
-
-\section{The Bergman Fans of Matroids are AF}
+\section{Bergman Fans of Matroids are AF}
 
 With everything in the last section at our disposal, we may finally prove a key theorem.
 \begin{theorem}\th\label{thm:matroidAF}
@@ -435,7 +217,7 @@ We'll tackle this one condition at a time, starting with the connectedness condi
     \[
         \rho_1 \prec \tau_1 \succ \rho_2 \prec \cdots \succ \rho_{k-1} \prec \tau_{k-1} \succ \rho_k
     \]
-    where each \( \rho_i \) is a ray and each \( \tau_i \) is a 2-dimmensional face.
+    where each \( \rho_i \) is a ray and each \( \tau_i \) is a 2-dimensional face.
     Since any point in a fan is connected to a ray, specifically one of the generating rays of the cone the point lives in, a path like this between arbitrary rays is enough to show our fan is connected without the origin.
 
     For some notational convenience, we will write
@@ -443,18 +225,17 @@ We'll tackle this one condition at a time, starting with the connectedness condi
         \rho_1 \sim \tau_1 \sim \rho_2 \sim \cdots \sim \rho_{k-1} \sim \tau_{k-1} \sim \rho_k
     \]
     and let the reader interpret the correct face inclusions.
-    If this seems lazy, please take it up with Fields Medal winner June Huh, from whom we lifted this notation.
     Additionally, in keeping with our general convention, we'll write \( e_F \) for the ray generated by \( \sum_{i \in F} e_{\{i\}} \) and \( \tau_{F_1, F_2} \) for the cone generated by rays \( e_{F_1} \) and \( e_{F_2} \).
-    Finally, we assume \( cM \) is at least a rank 3 matroid, and so \( \bSigma_\cM \) has maximal cones of dimension at least 2.
+    Finally, we assume \( \cM \) is at least a rank 3 matroid, and so \( \bSigma_\cM \) has maximal cones of dimension at least 2, as otherwise the lemma is vacuously true.
 
     Now, we will consider this in two steps.
     First we'll look at \( \bSigma_\cM \setminus \{ 0 \} \) itself.
     Let \( e_{F}, e_{F'} \in \bSigma_\cM(1) \) be two arbitrary rays of our fan.
-    If there exists some ground element \( i \in F \cap F' \), then, trivially, we have the sequence
+    If there exists some ground element \( i \in F \cap F' \), then we have the sequence
     \[
-        e_F \sim \tau_{\{F, \{i\}\}} \sim e_{\{i\}} \sim \tau_{\{\{i\}, F'\}} \sim e_F'.
+        e_F \sim \tau_{\{F, \{i\}\}} \sim e_{\{i\}} \sim \tau_{\{\{i\}, F'\}} \sim e_{F'}.
     \]
-    So, let us consider instead that \( F \cap F' = \emptyset \).
+    Let us now consider that \( F \cap F' = \emptyset \).
     Let \( a \in F \) be an element of \( F \) and \( b \in F' \).
     To start, we have the sequence
     \[
@@ -476,7 +257,7 @@ We'll tackle this one condition at a time, starting with the connectedness condi
     \[
         \prod_{i = 1}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
     \]
-    So, it is sufficient to show this product fan is connected.
+    So, it is sufficient to show this product fan is connected after removing the origin.
     Recall that cones of the product fan are of the form
     \[
         (\sigma_1, \sigma_2, \dots, \sigma_k) \in \bSigma_{\cM_{[\emptyset, F_1]}} \times \bSigma_{\cM_{[F_{1}, F_2]}} \times \cdots \times \bSigma_{\cM_{[F_{k-1}, F_k]}} \times \bSigma_{\cM_{[F_{k}, E]}},
@@ -486,8 +267,8 @@ We'll tackle this one condition at a time, starting with the connectedness condi
 
     Now, to show our product fan is connected, we'll consider two cases.
     We will omit irrelevant zeros from our notation going forward for ease of reading, but we can add as many zeros in other positions as necessary without changing any part of the proof.
-    In the first case, our two rays come from different fans in the product
-    If \( (\rho_1, 0) \) and \( (0, \rho_2) \) are rays, then, trivially, there exists the path
+    In the first case, our two rays come from different fans in the product.
+    If \( (\rho_1, 0) \) and \( (0, \rho_2) \) are rays, then there exists the path
     \[
         (\rho_1, 0) \sim (\rho_1, \rho_2) \sim (0, \rho_2)
     \]
@@ -499,199 +280,169 @@ We'll tackle this one condition at a time, starting with the connectedness condi
     Where this breaks down, however, is if the minor has rank 2; i.e., the Bergman fan has only 1-dimensional cones.
     We can't, after removing the origin, get between rays solely within this fan.
     Recall though that our star fan must be pure of at least dimension 2.
-    This means if this \(\bSigma \) has only 1-dimensional cones, then there is at least one other nonzero fan, which we'll call \( \bm{\Sigma'} \), in the product that has at least a one ray.
+    This means if this \(\bSigma \) has only 1-dimensional cones, then there is at least one other nonzero fan, which we'll call \( \bm{\Sigma'} \), in the product that has at least one ray.
     Let \( \eta \in  \bm{\Sigma'} \) be said ray.
     Then we have the path
     \[
-        (\rho_1, 0) \sim (\rho_1, \eta) \sim (0, \eta) \sim (\rho_1, \eta) ~ (\rho_1, 0)
+        (\rho_1, 0) \sim (\rho_1, \eta) \sim (0, \eta) \sim (\rho_1, \eta) \sim (\rho_1, 0)
     \]
     connecting the two rays of \( \bSigma \).
 
-    With this we've shown that any possible star of a Bergman fan of a matroid is connected even without the origin.
+    With this we've shown that any possible star of a Bergman fan of a matroid is connected without the origin.
 \end{proof}
 
-Next we may turn to the other requirement, that the quadratic form that determines the volume of the 2-dimensional faces of the normal complex corresponds to a matrix with exactly one positive eigenvalue.
-
+Next we may turn to the second criterion, that the quadratic form that determines the volume of the 2-dimensional faces of the normal complex corresponds to a matrix with exactly one positive eigenvalue.
+For this, we will be using a classic result of linear algebra known as Sylvester's Lay of Inertia~\cite{sylvesterXIXDemonstrationTheorem1852}.
+\begin{proposition}[Sylvester's Law of Inertia]\th\label{thm:sylvester}
+    Two symmetric square matrices, \( A \) and \( B \), of the same size have the same number of positive, negative, and zero eigenvalues if and only if
+    \[
+        B = SAS^{T}
+    \]
+    for some non-singular matrix \( S \).
+\end{proposition}
+Our general strategy will be to first find the volume polynomials of star fans and then show that we can find an invertible change of basis that lets us express it as a sum of squares.
+A quadratic form that consists only of squares corresponds to a diagonal matrix, so we can immediately read off the signs of the eigenvalues from the signs of the squared terms.
+Sylvester's law of inertia then promises us that the signs of the eigenvalues are not particular to our choice of basis, rather invariant under any choice.
 \begin{lemma}[Volume Quadratic Form Has One Positive Eigenvalue]\th\label{thm:matroidOnePosEigen}
 
     Let \( \cM \) be a matroid of rank \( r + 1 \) and \( \bSigma_\cM \) be the Bergman fan associated to the matroid, with \( \ast \in \Inn(\bN_E) \) an inner product.
-
-    For any cubical \( z \in \Cub(\bSigma_\cM, \ast) \), the quadratic form associated to the volume polynomial of each \( 2 \)-dimensional face of the normal complex \( C_{\bSigma_\cM,\ast}(z) \)  has exactly one positive eigenvalue.
+    For every \( \sigma \in \bSigma_\cM(r - 2) \), the quadratic form associated to the volume polynomial of \( \Star(\sigma, \bSigma_\cM) \) has exactly one positive eigenvalue.
 
 \end{lemma}
 \begin{proof}
-    Recall that faces of a normal complex, \( F^\tau(C_{\bSigma_\cM, \ast}(z)) \), correspond to truncations of the star fan for some cone  \( \tau \preceq \bSigma_\cM \).
-    Since we want \( 2 \)-dimensional faces, we will consider the stars associated to some \( \tau_\scrF \in \bSigma_\cM(r - 2) \), where \( \scrF = \{ F_1 \subsetneq \cdots \subsetneq F_{k} \} \).
-    Once again using \th\ref{thm:starBijection}, we have that \( \Star(\tau, \bSigma_\cM) \) is in bijection with the product fan
+    Consider some \( \tau_\scrF \in \bSigma_\cM(r - 2) \), where \( \scrF = \{ F_1 \subsetneq \cdots \subsetneq F_{k} \} \).
+    From the dimension reversing relationship of cones and their stars, we know that \( \Star(\tau_\scrF, \bSigma_\cM) \) is a \( 2 \)-fan.
+    Once again using \th\ref{thm:starBijection}, we have that
     \[
-        \prod_{i=0}^{k+1} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
+        \Star(\tau_\scrF, \bSigma_\cM) \cong \prod_{i=0}^{r-2} \bSigma_{\cM_{[F_{i-1}, F_i]}}.
     \]
-    Recall that if \( F_{i-1} \) and \( F_i \) are adjacent to each other in the lattice of flats then the resulting fan \( \bSigma_{\cM_{[F_{i-1}, F_i]}} = \{ 0 \} \) and so contributes nothing to the product.
-    Since here we have that \( k = r - 2 \), there are only 2 flats not in \( \scrF \).
-    This means our product fan has two possible forms. Either
+    Recall that \( F_{i-1} \) and \( F_i \) are adjacent to each other in the lattice of flats, \( \bSigma_{\cM_{[F_{i-1}, F_i]}} \) is just \( \{0\} \) and can be ignored as an element of the product.
+    Since flags of \( \bSigma_\cM \) have \( r \) elements and \( |\scrF| = r - 2\), there are only two possible structures for our fan,
+    either
     \[
         \bSigma_{\cM_{[F_{i-1}, F_i]}} \times \bSigma_{\cM_{[F_{j-1}, F_j]}}
         \quad \quad \text{or} \quad \quad
-        \bSigma_{\cM_{[F_{i-1}, F_i]}}
+        \bSigma_{\cM_{[F_{i-1}, F_i]}}.
     \]
-    where the first is the product of two rank 2 minors and the second is a rank 3 minor.
-    This just depends on if the two missing flats are adjacent to each other or not.
-    We will again take this proof in cases, considering the two possible structures of our star fan.
+    Where in the first case the missing ranks of the flag are between two different pairs of flats and in the second the missing ranks are adjacent.
+    We will split our proof into cases based on the two possible structures of our star fan.
 
     In the first case, let us assume that \( \Star(\tau_\scrF, \bSigma_\cM) = \bSigma \times \bSigma' \) where  \( \bSigma \) and  \( \bSigma' \) are both pure of dimension 1.
-    This means that the \( 2 \)-dimensional cones are exactly
+    This means that the \( 2 \)-dimensional cones in the product fan are exactly
     \[
-        \{ \cone(\rho, \rho') \; | \; \rho \in \bSigma(1), \rho' \in \bSigma(1) \}.
+        \{ \cone(\rho, \rho') \; | \; \rho \in \bSigma, \rho' \in \bSigma \}.
     \]
-    Let \( z^{\tau_\scrF} \) be the \( z \)-values our face.
-    For convenience, let \( (x_1, \dots, x_k) \subset z^{\tau_\scrF} \) be the \( z \)-values associated to rays of \( \bSigma \) and
-    \( (y_1, \dots, y_\ell) \subset z^{\tau_\scrF} \) be the \( z \)-values associated to rays of \( \bSigma' \).
-    Recall that the volume of a normal complex is the sum of the volumes of the polytopes that comprise it.
-    Since every ray of \( \bSigma \) is orthogonal to every ray of \( \bSigma' \), this has the straight forward volume:
+    The volume polynomial is given by
     \[
-        \Vol\Big(F^{\tau_\scrF}\big(C_{\bSigma_{\cM}, \ast}(z)\big)\Big) \, = \; \sum_{\mathclap{\substack{1 \leq i \leq k \\ 1 \leq j \leq \ell}}} x_i y_j.
+        \deg_{\bSigma \times \bSigma'}\big(D(z)^2\big) = \sum_{\mathclap{\rho_1, \rho_2 \in \bSigma \times \bSigma'(1)}} z_{\rho_1}z_{\rho_2} \deg_{\bSigma \times \bSigma'}(x_{\rho_1}x_{\rho_2}).
     \]
-
-    Thinking of this as a polynomial in variables \( (x_1, \dots, x_k, y_1, \dots, y_\ell) = (\vec{x}, \vec{y}) \), we see each monomial is of degree 2, so this is a quadratic form.
-    Thus, there exists a symmetric matrix \( A \) such that
+    Since each fan only has rank one flats there are no cones in the fan between rays of an individual fan.
+    Conversely, in a product fan there is a cone between every pair of rays of different fans in the product.
+    In our fairly simple case then, we see that this gives us
     \[
-        \begin{bmatrix}
-            \vec{x} & \vec{y}
-        \end{bmatrix}
-        A
-        \begin{bmatrix}
-            \vec{x} \\ \vec{y}
-        \end{bmatrix}
-        = \; \sum_{\mathclap{\substack{1 \leq i \leq k \\ 1 \leq j \leq \ell}}} x_i y_j.
-    \]
-    Taking \( (\vec{x}, \vec{y}) \) as a basis, it is not too difficult to work out that \( A = [a_{i,j}] \) where
-    \[
-        a_{i,j} =
+        \deg_{\bSigma \times \bSigma'}(x_{\rho_1}x_{\rho_2}) =
         \begin{cases}
-            \frac{1}{2} & 1 \leq i \leq k \;\text{and} \; 1 \leq j - k \leq \ell \\
-            0           & \text{otherwise}.
+            0 & \rho_1, \rho_2 \in \bSigma\; \text{or}\; \rho_1, \rho_2 \in \bSigma'                           \\
+            1 & \rho_1 \in \bSigma, \rho_2 \in \bSigma'\; \text{or}\; \rho_2 \in \bSigma, \rho_1 \in \bSigma'.
         \end{cases}
     \]
-    Finding the eigenvalues of this matrix, however, is not so easy.
+    We may use this to get the volume polynomial as
+    \[
+        \sum_{\mathclap{\rho_1, \rho_2 \in \bSigma \times \bSigma'(1)}} z_{\rho_1}z_{\rho_2} \deg_{\bSigma \times \bSigma'}(x_{\rho_1}x_{\rho_2})
+        = 2\sum_{\mathclap{\rho \in \bSigma, \rho' \in \bSigma'}} z_{\rho}z_{\rho'},
+    \]
+    accounting for the fact that \( z_{\rho}z_{\rho'} = z_{\rho'}z_{\rho} \).
 
-    To get around this, we would like to note another way to write our volume polynomial.
-    We offer,
+    As per our strategy, we want to write this polynomial as a sum of squared terms.
+    Some prodding will reveal that
     \[
-        \sum_{\mathclap{\substack{1 \leq i \leq k \\ 1 \leq j \leq \ell}}} x_i y_j
-        = \frac{1}{4} \big((x_1 + \cdots + x_k + y_1 + \cdots y_\ell)^2 - (x_1 + \cdots + x_k - y_1 - \cdots - y_\ell)^2\big).
+        2\sum_{\mathclap{\rho \in \bSigma, \rho' \in \bSigma'}} z_{\rho}z_{\rho'}
+        = \frac{1}{2} \left( \sum_{\rho \in \bSigma} z_\rho  + \sum_{\rho' \in \bSigma} z_\rho' \right)^2 - \frac{1}{2} \left( \sum_{\rho \in \bSigma} z_\rho  + \sum_{\rho' \in \bSigma} z_\rho' \right)^2
     \]
-    This works, because in the expression \( -(x_1 + \cdots + x_k - y_1 - \cdots - y_\ell)^2 \), only terms of the form \( 2x_i y_j \) are positive, with the rest going to cancel out the unwanted terms in the first expression, ultimitly yielding the same volume as above.
-    Our goal now is to find an invertible change of basis, \( S \), that gives us \( \frac{1}{4}(x_1 + \cdots + x_k + y_1 + \cdots y_\ell) \) and \( \frac{1}{4}(-x_1 - \cdots - x_k + y_1 + \cdots + y_\ell) \) as the first two basis elements.
-    Then the matrix associated with this quadratic form, in this basis, would trivially have eigenvalues \( 1, -1, 0, \dots, 0 \).
-    Then we could use \th\ref{thm:sylvester}, Sylvester's Law of Inertia, to get that there is exactly one positive eigenvalue of \( A \) as well.
-
-    Luckily, a rather na\"ive change of basis matrix works out here.
-    As a quick intuition building example, if \( \vec{x} = ( x_1, x_2) \) and \( \vec{y} = (y_1, y_2, y_3) \), then our change of basis matrix would be
+    is such a way to write the volume.
+    The key idea is that in the expression
     \[
-        S = \frac{1}{4}
-        \begin{bmatrix}[cc|ccc]
-            \phantom{-}1 & \phantom{-}1 & 1 & 1 & 1 \\
-            -1           & -1           & 1 & 1 & 1 \\
-            \phantom{-}0 & \phantom{-}1 & 0 & 0 & 0 \\
-            \phantom{-}0 & \phantom{-}0 & 1 & 0 & 0 \\
-            \phantom{-}0 & \phantom{-}0 & 0 & 1 & 0 \\
-        \end{bmatrix}.
+        -\left( \sum_{\rho \in \bSigma} z_\rho  + \sum_{\rho' \in \bSigma} z_\rho' \right)^2
     \]
-    Clearly this gives us our basis.
-    In general this matrix, which we'll scale to remove the fraction, \( 4S = [s_{i,j}] \) will be given by
-    \[
-        s_{i,j}  = \begin{cases}
-            \phantom{-}1, & i = 1                                                  \\
-            -1,           & i = 2 \quad \text{and} \quad 1 \leq j \leq k           \\
-            \phantom{-}1, & i = 2 \quad \text{and} \quad 1 \leq j-k \leq \ell      \\
-            \phantom{-}1, & i = j + 1  \quad \text{and} \quad 1 \leq j-k \leq \ell \\
-            \phantom{-}0, & \text{otherwise}.
-        \end{cases}
-    \]
-    While this looks rather complicated, it's just two rows of \( \pm 1 \) and then just \( 1 \) along the subdiagonal of all other rows.
-    This matrix is diagonaizable by elementary row operations and will have no zeros along the diagonal, so we are safely assured that \( S \) is invertible.
-    Then the quadratic form
-    \[
-        B = S^{-1}AS
-    \]
-    is a diagonal matrix with eigenvalues \( 1, -1, 0, 0, \dots \), and so we conclude that \( A \) must also have exactly 1 positive eigenvalue.
+    only terms of the form \( z_\rho z_{\rho'} \) are positive, with the rest going to cancel out the unwanted terms in the first expression.
+    After adjusting for some slight over counting we see the polynomials agree.
+    Since this is the sum of squared terms, we may read the signs of the eigenvalues of the associated matrix from the signs of the sums themselves, showing we have exactly one positive eigenvalue.
+    By Sylvester's law of inertia then any matrix congruent to the one associated to the quadric form will have one positive eigenvalue, as desired.
 
     With the first case done, we have to turn to the second, when our face is the normal complex associated to a rank 3 minor.
-    Then \( \Star(\tau, \bSigma_\cM) = \bSigma \) is a minor of our matroid with rank 3.
-    % We will again break up the \( z \) values associated to the normal complex of this face.
-    % This time however we will consider \( \vec{x} = (x_1, \dots, x_k) \subseteq z \) to be the \( z \) values of rays associated to rank 1 flats and \( \vec{y} = (y_1, \dots, y_k) \subseteq z \) to be the \( z \) values of rays of rank 2 flats.
-    For convenience, let \( F \subseteq \cL \) be all rank 1 flats of \( \bSigma \) and let \( G \subseteq \) be all rank 2 flats of \( \bSigma \).
-    The work of Nathanson and Ross in \cite{nathansonTropicalFansNormal2023} gives us that the volume of the normal complex of any rank 3 matroid is given by
+    Let \( \bSigma = \Star(\tau, \bSigma_\cM)  \), and recall that as a the Bergman fan of a rank 3 matroid, \th\ref{thm:volRank3} gives us the volume polynomial as
     \[
-        \Vol\big(C_{\bSigma, \ast}(z)\big) = 2\sum_{F \subsetneq G} z_F z_G - \sum_{G} z_G^2 - \sum_{F}(\cL^\sharp(F) - 1)z_F^2,
+        \deg_\bSigma(D(z)^2) =  2\sum_{\mathclap{\substack{F \subsetneq G \\ F,G \in \cL^\ast}}} z_F z_G - \sum_{\mathclap{\substack{G \in \cL^\ast \\ \rk(G)=2}}} z_G^2 - \sum_{\mathclap{\substack{F \in \cL^\ast \\ \rk(F)=1}}}(\cL^\sharp(F) - 1)z_F^2,
     \]
-    where we take \( \cL^\sharp(F) \) is the number of minimal flats containing \( F \).
+    where \( \cL^\sharp(F) \) is the number of minimal flats containing \( F \).
+    We propose that we can write this instead as
+    \[
+        \deg_\bSigma(z) = \left( \sum_{\rk(F) = 1} z_F\right)^2 - \sum_{\substack{\rk(G) = 2}} \left( z_G - \sum_{\mathclap{\substack{F \subsetneq G }}} z_F\right)^2,
+    \]
+    which gives us the volume in terms of sums of squares.
+    We again see this would have one positive eigenvalue.
 
-    Considering this as a polynomial in \( z_{F_1}, \dots, z_{F_k}, z_{G_1}, \dots, z_{G_\ell} \), it is not immediately obvious that this would have only 1 positive eigenvalue.
-    Again, we propose a different way to write this that has obvious eigenvalues.
-    We propose that
-    \[
-        \Vol\big(C_{\bSigma, \ast}(z)\big) = \left( \sum_F z_F\right)^2 - \sum_G \left( z_G - \sum_{F \subsetneq G} z_F\right)^2.
-    \]
-    This would have eigenvalues \( 1, -1, \dots, -1, 0, \dots, 0 \) as desired.
-    To see that these are equal, We will break this down slightly.
+    To see that these are equal, we will break this new expression down.
     First, we note that
     \begin{equation}
-        \left( \sum_F z_F\right)^2 = \sum_F z_F^2 + \sum_{F_1, F_2 \in F} 2z_{F_1}z_{F_2}.
+        \left( \sum_{\rk(F) = 1} z_F\right)^2 = \sum_{\rk(F) = 1} z_F^2 + 2\sum_{\mathclap{\substack{\rk(F_1) = 1, \\ \rk(F_2) = 1}}} z_{F_1}z_{F_2}.
     \end{equation}
-    Then, let's look at the internal part of the second expression to see for a single \( \hat{G} \in G \) we have
+    Then, let's look at the internal part of the second expression to see for a fixed rank 2 flat \( \hat{G} \) we have
     \begin{equation}
-        \left( z_{\hat{G}} - \sum_{F \subsetneq {\hat{G}}} z_F \right)^2 = z_{\hat{G}}^2 - \sum_{F \subseteq \hat{G}}2 z_F z_{\hat{G}} + \sum_{\substack{F_1,F_2 \subseteq \hat{G}}}2z_{F_1} z_{F_2} + \sum_{F \in \hat{G}} z_F^2.
+        \left( z_{\hat{G}} - \sum_{F \subsetneq {\hat{G}}} z_F \right)^2
+        = z_{\hat{G}}^2 - 2\sum_{F \subsetneq \hat{G}} z_F z_{\hat{G}} + 2\sum_{\mathclap{F_1,F_2 \subsetneq \hat{G}}}z_{F_1} z_{F_2} + \sum_{F \subsetneq \hat{G}} z_F^2.
     \end{equation}
     What's important to note here is that if \( F_1, F_2 \subseteq G \), then there cannot be another rank 2 flat \( G' \) that contains both.
-    This is a direct consequence of property~\ref{def:F3} of lattice matroids.
+    This is a consequence of property~(\ref{def:F3}) of flats.
     But when we let the outer sum range over all possible rank 2 flats, we will get \( \cL^\sharp(F) \) copies of each \( z_F^2 \), and so we have
     \begin{equation}
-        \sum_G \left( z_G - \sum_{F \subsetneq G} z_F\right)^2 =
-        \sum_{G}z_G^2
-        - \sum_{F \subseteq G}2 z_F z_{G}
-        + \sum_{\substack{F_1,F_2 \subseteq F}}2z_{F_1} z_{F_2}
-        + \sum_{F} \cL^\sharp(F)z_F^2.
+        \sum_{\rk(G) = 2} \left( z_G - \sum_{F \subsetneq G} z_F\right)^2 =
+        \sum_{\rk(G)=2}z_G^2
+        - \sum_{F \subsetneq G}2 z_F z_{G}
+        + 2\sum_{\substack{\rk(F_1) = 1, \\ \rk(F_2) = 1}}z_{F_1} z_{F_2}
+        + \sum_{\rk(F) = 1} \cL^\sharp(F)z_F^2.
     \end{equation}
-
-    So if we subtract our result in (1.3) from the one in (1.1), we are left with
+    If we subtract our result in (1.3) from the one in (1.1), we are left with
     \[
-        2\sum_{F \subset G} z_F z_G - \sum_G z^2_G - \sum_F (\cL\sharp(F) - 1)z_F,
+        2\sum_{\mathclap{\substack{F \subsetneq G \\ F,G \in \cL^\ast}}} z_F z_G - \sum_{\mathclap{\substack{G \in \cL^\ast \\ \rk(G)=2}}} z_G^2 - \sum_{\mathclap{\substack{F \in \cL^\ast \\ \rk(F)=1}}}(\cL^\sharp(F) - 1)z_F^2,
     \]
-    thus concluding our final case and proof.
+    recovering our original volume polynomial.
+    We may again appeal to Sylvester's law of inertia to conclude that the matrix associated to the volume polynomial will have one positive eigenvalue.
+    Having covered both cases we conclude that the \( 2 \)-stars of a Bergman fans of matroids have quadratic forms with one positive eigenvalue.
 
 \end{proof}
 
-With \th\ref{thm:matroidConnected} and \th\ref{thm:matroidOnePosEigen}, we see that Bergman fans of matroids will always satisfy the criteria of \th\ref{suffAF}.
+With \th\ref{thm:matroidConnected} and \th\ref{thm:matroidOnePosEigen}, we see that Bergman fans of matroids will always satisfy the criteria of \th\ref{thm:suffAF}.
 
 \section{Tying Up Loose Ends}
 
-We now know that Bergman fans of matroids are AF, but this will only help us if we can find a pseudocubcal value associated to the divisors \( \alpha \) and \( \beta \).
+We now know that Bergman fans of matroids are AF, but this will only help us if we can find a pseudocubical value associated to the divisors \( \alpha \) and \( \beta \).
 An immediate problem to address is that it could be that no cubical values exist at all.
 Luckily, Proposition~7.4 of~\cite{nathansonTropicalFansNormal2023} gives us the following guarantee.
 \begin{proposition}\th\label{thm:existCubical}
     Let \( \cM = (E, \cL) \) be a matroid with ground set \( E = \{ e_0, e_1, \dots, e_n \} \).
-    Take \( \bSigma_\cM \) to be the Bergman fan of \( \cM \) in \( \bN^E \) such that we associate \( (e_1, e_2, \dots, e_n) \) to the standard basis vectors and \( \ast \) to be the standard inner product on this basis.
+    Take \( \bSigma_\cM \) to be the Bergman fan of \( \cM \) in \( \bN_E \) such that we associate \( (e_1, e_2, \dots, e_n) \) to the standard basis vectors and \( \ast \) to be the standard inner product on this basis.
     Then
     \[
         \Cub(\bSigma_\cM, \ast) \neq \emptyset.
     \]
 \end{proposition}
-Going forward in this section, we'll take for granted that a matroid \( \cM = (E, \cL) \) has a ground set \( E = \{ e_0, e_1, \dots, e_n \} \), and that \( \bSigma_\cM \subseteq \bN^E \) associates \( \{e_1, e_2, \dots, e_n\} \) to the standard basis vectors.
+
+Going forward in this section, we'll take for granted that a matroid \( \cM = (E, \cL) \) has ground set \( E = \{ e_0, e_1, \dots, e_n \} \), and that \( \bSigma_\cM \subseteq \bN_E \) associates \( \{e_1, e_2, \dots, e_n\} \) to the standard basis vectors.
 This makes \( e_0 \) our distinguished element, such that
 \[
     e_0 = -\sum_{i=1}^n e_i.
 \]
-Additionaly, we'll just take \( \ast \) to be the standard inner product.
-These assumptions allow us to easily invoke the above proposition.
+Additionally, we'll take \( \ast \) to be the standard inner product.
+These assumptions allow us to invoke the above proposition.
 
 Another important element from~\cite{nathansonTropicalFansNormal2023}, is that \( \pCub(\bSigma_\cM, \ast) \) is a cone in the space \( \R^{\bSigma_\cM(1)} \).
-Specifically, purely cubical values are elements of the relative interior of this cone and pseudocubical values are elements on the boundary.
+Specifically, purely cubical values are elements of the relative interior of this cone and pseudocubical values include elements on the boundary.
 If \( \Cub(\bSigma_\cM, \ast) \) is non-empty then so is \( \pCub(\bSigma_\cM, \ast) \).
-Averting that problem, we now have to define the \( z \)-values associated to \( \alpha \) and \( \beta \) and show that they are indeed pseudocubcal.
+We now define the \( z \)-values associated to \( \alpha \) and \( \beta \) and show that they are indeed pseudocubical.
 
 Recall that the definition of \( \alpha \) and \( \beta \) are independent of choice of ground element.
-This means we're free to pick, and going forward we'll work with the assumption for flats \( F \in \cL^\ast \),
+This means we're free to pick, and going forward we'll work with the assumption that
 \[
     \alpha = \sum_{e_0 \in F} x_F \quad \text{and} \quad \beta = \sum_{e_0 \notin F} x_F.
 \]
@@ -717,10 +468,9 @@ We define \( z^\alpha = (z^\alpha_F \, | \, F \in \cL^\ast) \) and \( z^\beta = 
 \]
 determines the components.
 A quick inspection shows that \( D(z^\alpha) = \alpha \) and \( D(z^\beta) = \beta \) as desired.
-Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubcal.
+Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubical.
 \begin{proposition}
-    Let \( \cM \) be a matroid, \( \bSigma_\cM \subseteq \bN_E \) be it's Bergman fan, and \( \ast \) be the standard inner product.
-    The \( z \)-values \(  z^\alpha \) and \( z^\beta \) lie in the pseudocubcal cone,
+    The \( z \)-values \(  z^\alpha \) and \( z^\beta \) lie in the pseudocubical cone:
     \[
         z^\alpha, z^\beta \in  \pCub(\bSigma_\cM, \ast).
     \]
@@ -729,13 +479,13 @@ Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubcal.
     Let \( \bSigma_\cM \subseteq \bN_E \) be the Bergman fan of \( \cM \) and take \( \ast \) to be the standard inner product.
     To avoid confusion, let \( E = \{ e_0, e_1, \dots, e_n \} \) be the set of ground elements of \( \cM \) and \( \{ u_{e_1}, \dots, u_{e_n} \} \) to be the standard basis vectors of \( \bN_E \) associated to the ground elements.
     As usual, we'll write \( u_I = \sum_{i \in I} u_i \) and recall that \( u_{e_0} = -u_{e_1} - \cdots - u_{e_n} \).
-    For any \( z \in \R^{\bSigma_{\cL^\ast}} \), we will define \( w_{\sigma}(z) \) to be the unique element in the intersection
+    For any \( z \in \R^{\bSigma_{\cM}} \), we will define \( w_{\sigma}(z) \) to be the unique element in the intersection
     \[
-        \Span(\sigma_\scrF) \cap \left\{ v \in \bN_E \; \middle| \; v \ast u_F = z_F \, \text{for all flats \( F \) associated to rays in \( \sigma(1) \)} \right\} = \{ w_{\sigma} \}.
+        \Span(\sigma) \cap \left\{ v \in \bN_E \; \middle| \; v \ast u_F = z_F \, \text{for all flats \( F \) associated to rays in \( \sigma(1) \)} \right\}.
     \]
-    That this intersection always yields a single element comes from the fact that our cones are always simplicial.
+    That this intersection always yields a single element comes from the fact that our cones are simplicial.
 
-    In order to prove that \( z^\alpha, z^\beta \in \R^{\bSigma_\cM(1)} \) are pseudocubcal, we must show that for all cones \( \sigma \in \bSigma_\cM \),
+    In order to prove that \( z^\alpha, z^\beta \in \R^{\bSigma_\cM(1)} \) are pseudocubical, we must show that for all cones \( \sigma \in \bSigma_\cM \),
     \[
         w_\sigma(z^\alpha) \in \sigma \quad \text{and} \quad w_\sigma(z^\beta) \in \sigma.
     \]
@@ -753,7 +503,7 @@ Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubcal.
                                            \frac{1}{|F_1|}u_{F_1} & \quad e_0 \notin F_1
                                        \end{cases}
     \end{align*}
-    with \( F_k^\complement \) being the expected set compliment, \( F_k^\complement = E \setminus F_k \).
+    with \( F_k^\complement \) being the set compliment, \( F_k^\complement = E \setminus F_k \).
     Since these are in a ray of \( \sigma_\scrF \), they would of course be in \( \sigma_\scrF \).
     This is sufficient to show that \(  z^\alpha, z^\beta \in \pCub(\bSigma_\cM, \ast) \).
 
@@ -766,7 +516,7 @@ Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubcal.
             \phantom{-} | I^\complement \cap J^\complement | & e_0 \in I \; \text{and} \; e_0 \in J.
         \end{cases}
     \]
-    The first case follows simply from the fact that the dot product multiplies the entries pairwise, and the \( 1 \) associated to \( u_{e_j} \) will only contribute to the sum if it's in both vectors.
+    The first case follows simply from the fact that the inner product multiplies the entries pairwise, and the \( 1 \) associated to \( u_{e_j} \) will only contribute to the sum if it's in both vectors.
     The second case follows from the fact that if \( e_0 \in J \),  \( u_J = - u_{E \setminus J} \), thanks to \( u_{e_0} \) being a vector with every entry set to \( -1 \).
     The final case follows from the previous two, and that \( (-1) \cdot (-1) = 1 \).
 
@@ -811,9 +561,9 @@ Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubcal.
     \[
         w_{\sigma_\scrF}(z^\alpha) \ast u_{F_j} = z^\alpha_j.
     \]
-    We conclude then that we have correctly defined \( w_{\sigma_\scrF}(z^\alpha) \) and that it is in the cone \( \sigma_\scrF \), and so pseudocubcal.
+    We conclude then that \( w_{\sigma_\scrF}(z^\alpha) \) is in the cone \( \sigma_\scrF \), and so \( z^alpha \) is pseudocubical.
 
-    The proof that \(  w_{\sigma_\scrF}(z^\beta) \) is well-defined follows analogously.
+    The proof that \(  w_z^\beta \) is pseudocubical follows analogously.
     We want to show that
     \begin{align*}
         w_{\sigma_\scrF}(z^\beta) \ast u_{F_j} = z^\beta_{F_j}
@@ -843,34 +593,34 @@ Now we just need to show that \( z^\alpha \) and \( z^\beta \) are pseudocubcal.
     On the other hand, if \( e_0 \in F_1 \), then \( z^\beta_{F_j} = 0 \) for each \( 1 \leq j \leq k \).
     Since \( w_{\sigma_\scrF}(z^\beta) = 0 \) this again works just fine.
 
-    With that we've shown that both \( z^\alpha \) and \( z^\beta \) are pseudocubcal values in \( \pCub(\bSigma_\cM, \ast) \).
+    With that we've shown that both \( z^\alpha \) and \( z^\beta \) are pseudocubical values in \( \pCub(\bSigma_\cM, \ast) \).
 \end{proof}
 
 Finally, we have one last problem to address.
-From above we can see that \(  z^\alpha, z^\beta \notin \Cub(\bSigma_\cM, \ast) \).
-They are on the boundary of \( \pCub(\bSigma_\cM, \ast) \), however \th\ref{thm:suffAF} assumes stirctly cubical \( z \)-values.
+From the proof above we can see that \(  z^\alpha, z^\beta \notin \Cub(\bSigma_\cM, \ast) \).
+They are on the boundary of \( \pCub(\bSigma_\cM, \ast) \), however the definition of AF fans, \th\ref{def:AF}, is only for strictly cubical \( z \)-values.
 We turn, in desperation, to a bit of analysis to help us here.
 \begin{lemma}\th\label{thm:cubeLimit}
-    Let \( \cM \) be a matroid and \( \ast \in \inn(\bN_E) \) an inner product such that \( \Cub( \bSigma_\cM, \ast) \) is nonempty.
-    Then for any \( z \in \pCub(\bSigma_\cM, \ast) \), there exists values \( z_t \) such that
+    Let \( \bSigma \subseteq \bN \) be a fan and \( \ast \in \inn(\bN_E) \) an inner product such that \( \Cub( \bSigma, \ast) \) is nonempty.
+    Then for any \( z \in \pCub(\bSigma, \ast) \), there exists values \( z_t \in \Cub(\bSigma_\cM, \ast) \), \( t \in (0, 1] \), such that
     \[
-        \lim_{t \to 0} z_t = z
+        \lim_{t \to 0} z_t = z.
     \]
-    and every \( z_t \in \Cub(\bSigma_\cM, \ast) \).
 \end{lemma}
 \begin{proof}
-    This actually follow from convex geometry.
-    Take any \( z \in \pCub( \bSigma_\cM, \ast) \), and recall that \(  \Cub( \bSigma_\cM, \ast) \) is a cone in \( \R^{\bSigma_\cM(1)} \).
-    Since we've assumed \( \Cub( \bSigma_\cM, \ast) \) is nonempty, let \( z_1 \in \Cub( \bSigma_\cM, \ast) \) be a point in the interior of the cone.
+    This actually follows from convex geometry.
+    Take any \( z \in \pCub( \bSigma, \ast) \), and recall that \(  \pCub( \bSigma, \ast) \) is a cone in \( \R^{\bSigma(1)} \).
+    Since we've assumed \( \Cub( \bSigma, \ast) \) is nonempty, let \( z_1 \in \Cub( \bSigma, \ast) \) be a point in the interior of the cone.
     Then define
     \[
         z_t = t z_1 + (1 - t)z.
     \]
-    Clearly \( \lim_{t \to 0} z_t = z \) and when \( t \) is restricted to the interval \( [0,1] \) this is just the convex hull of \( z \) and \( z_1 \).
-    Since this line segment must be contained in the cone, all points must be in the interior except maybe \( z \), and so \( z_t \in \Cub( \bSigma_\cM, \ast) \).
+    Then \( \lim_{t \to 0} z_t = z \) and when \( t \) is restricted to the interval \( [0,1] \) this is just the convex hull of \( z \) and \( z_1 \).
+    Since this line segment must be contained in the cone and \( z_1 \) is in the interior, all points must be in the interior except maybe \( z \).
+    Thus for all \( t \in (0,1) \) we have \( z_t \in \Cub( \bSigma, \ast) \).
 \end{proof}
-This allows us to approximate any pseudocubcal value using only cubical values.
-We now, truly, have everything we need to get to the final result.
+This allows us to approximate any pseudocubical value using only cubical values.
+We now, truly, have everything we need to get to prove our final theorem.
 
 \section{Putting It All Together}
 
@@ -879,7 +629,7 @@ We now, truly, have everything we need to get to the final result.
 \end{Result}
 \begin{proof}
     Let \( \cM = (E, \cL) \) be a matroid with ground set \( E = \{ e_0, e_1, \dots, e_n \} \).
-    Take \( \bSigma_\cM \subseteq \bN_E \) to be the Bergman fan of \( \cM \) in \( \bN^E \) such that we associate \( (e_1, e_2, \dots, e_n) \) to the standard basis vectors and choose \( \ast \in \inn(\bN_E) \) to be the standard inner product on this basis.
+    Take \( \bSigma_\cM \subseteq \bN_E \) to be the Bergman fan of \( \cM \) and associate \( (e_1, e_2, \dots, e_n) \) to the standard basis vectors and choose \( \ast \in \inn(\bN_E) \) to be the standard inner product on this basis.
 
     By \th\ref{thm:coeffIsDeg}, we know that the reduced characteristic coefficients of \( \cM \) can be associated to mixed degrees of divisors under the degree map,
     \[
@@ -894,7 +644,7 @@ We now, truly, have everything we need to get to the final result.
         \ow_k = \MVol_{\Sigma, \ast}(\underbrace{z^\alpha,\ldots,z^\alpha}_{r-k},\underbrace{z^\beta,\ldots,z^\beta}_{k}).
     \]
 
-    By \th\ref{thm:existCubical} we know that \( \pCub(\bSigma, \ast) \) is non-empty and so we may use \th\ref{thm:cubeLimit} to get \( z_t^\alpha \) and \( z_t^\beta \) such that
+    By \th\ref{thm:existCubical} we know that \( \Cub(\bSigma, \ast) \) is non-empty, and so we may use \th\ref{thm:cubeLimit} to get sequences of cubical values \( z_t^\alpha \) and \( z_t^\beta \) such that
     \[
         \lim_{t \to 0 } z_t^\alpha = z^\alpha \quad \text{and} \quad  \lim_{t \to 0 } z_t^\beta = z^\beta.
     \]
@@ -905,18 +655,17 @@ We now, truly, have everything we need to get to the final result.
     which means \( \lim_{t \to 0} \ow_{k,t} = \ow_k \).
     Because \( z_t^\alpha, z_t^\beta \in \Cub(\bSigma_\cM, \ast) \) and \( \bSigma_\cM \) is AF by \th\ref{thm:matroidAF}, we have that
     \[
-        \left(\MVol_{\Sigma, \ast}(\underbrace{z_t^\alpha,\ldots,z_t^\alpha}_{r-k},\underbrace{z_t^\beta,\ldots,z_t^\beta}_{k})\right)^2
+        \MVol_{\Sigma, \ast}(\underbrace{z_t^\alpha,\mydots,z_t^\alpha}_{r-k},\underbrace{z_t^\beta,\mydots,z_t^\beta}_{k})^2
         \geq
-        \MVol_{\Sigma, \ast}(\underbrace{z_t^\alpha,\ldots,z_t^\alpha}_{r-k-1},\underbrace{z_t^\beta,\ldots,z_t^\beta}_{k-1})
-        \MVol_{\Sigma, \ast}(\underbrace{z_t^\alpha,\ldots,z_t^\alpha}_{r-k+1},\underbrace{z_t^\beta,\ldots,z_t^\beta}_{k+1})
+        \MVol_{\Sigma, \ast}(\underbrace{z_t^\alpha,\mydots,z_t^\alpha}_{r-k-1},\underbrace{z_t^\beta,\mydots,z_t^\beta}_{k-1})
+        \MVol_{\Sigma, \ast}(\underbrace{z_t^\alpha,\mydots,z_t^\alpha}_{r-k+1},\underbrace{z_t^\beta,\mydots,z_t^\beta}_{k+1})
     \]
-    for \( 1 < k < r \), as per \th\ref{def:AF}.
-    This in turn means
+    for \( 1 < k < r \), as per \th\ref{def:AF}, which in turn means
     \[
         \ow_{k,t}^2 \geq \ow_{k-1,t}\ow_{k+1,t}.
     \]
     Since \( \MVol_{\Sigma, \ast} \) is always non-negative, this makes the sequence \( \{ \ow_{1,t}, \dots, \ow_{k-1,t}  \} \) log-concave for any \( t \in (0,1] \).
-    This implies that under the limit as \( t \to 0 \) we also have \( \{ \ow_{1}, \dots, \ow_{k-1} \} \) is a log-concave sequence.
+    This implies that under the limit as \( t \to 0 \) we have that \( \{ \ow_{1}, \dots, \ow_{k-1} \} \) is a log-concave sequence.
     As the reduced characteristic coefficients are log-concave, \th\ref{thm:reducedImpliesOriginal} tells us we may conclude that the Whitney numbers of the first kind are log-concave, proving the Heron-Rota-Welsh conjecture.
 
 \end{proof}

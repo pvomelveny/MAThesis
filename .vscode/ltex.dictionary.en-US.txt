@@ -10,3 +10,8 @@ matriod
 subvarieties
 polytopes
 topologist
+idempotency
+poset
+coloop
+coloops
+surjective

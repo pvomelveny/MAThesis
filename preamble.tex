@@ -11,6 +11,7 @@
 \usepackage{mathrsfs}               % I need more curly letters 
 \usepackage{mathtools}              % Mostly just for \substack
 \usepackage{relsize}
+\usepackage{ragged2e}
 \usepackage{caption}                % Better captions and
 \usepackage{subcaption}             % Captions for subfigures
 \usepackage{float}                   % Be strict about [H]ere in figures
@@ -22,9 +23,21 @@
 \usepackage{tikz-cd}
 \usepackage[obeyFinal]{easy-todo} % Add to-do's
 
+%====================%
+% Nicer looking links 
+%====================%
+\hypersetup{
+    colorlinks=true,
+    linkcolor=Blue,
+    filecolor=Magenta,
+    urlcolor=Cyan,
+    citecolor=Violet,
+    pdfpagemode=FullScreen,
+}
+
 
 %====================%
-% Re-Define 
+% Re-Define Stuff
 %====================%
 % Sort out the true phi
 \def\badphi{\phi}
@@ -34,6 +47,8 @@
 % How should we format vectors?
 \renewcommand{\vec}[1]{\bm{#1}}
 \renewcommand{\hat}[1]{\widehat{#1}}
+% Narrower low dots
+\newcommand\mydots{\hbox to 1em{.\hss.\hss.\,}}
 
 
 %====================%
@@ -42,6 +57,7 @@
 %% Nice Letters
 % Blackboard Bold
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\bbS}{\mathbb{S}}
 % Fancy Math Cal Letters
@@ -52,7 +68,7 @@
 \newcommand{\cM}{\mathcal{M}}
 \newcommand{\cC}{\mathcal{C}}
 % BM Bold Symbols
-\newcommand{\bSigma}{\bm{\Sigma}}
+\newcommand{\bSigma}{{\bm{\Sigma}}}
 \newcommand{\bN}{\bm{N}}
 \newcommand{\bM}{\bm{M}}
 % The hipster letters
@@ -81,6 +97,7 @@
 \DeclareMathOperator{\pr}{pr}
 \DeclareMathOperator{\conv}{conv}
 \DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\im}{Im}
 \newcommand{\HP}{\operatorname{H}}
 \newcommand{\UH}{\operatorname{H}^{+}}
 \newcommand{\LH}{\operatorname{H}^{-}}
@@ -88,6 +105,31 @@
 %% Math Symbols
 \newcommand{\Inn}{\mathrm{Inn}}
 \newcommand{\cone}{\mathrm{cone}}
+
+%% Big Center Dot 
+\makeatletter
+\newcommand*{\bigcdot}{}% Check if undefined
+\DeclareRobustCommand*{\bigcdot}{%
+    \mathbin{\mathpalette\bigcdot@{}}%
+}
+\newcommand*{\bigcdot@scalefactor}{.5}
+\newcommand*{\bigcdot@widthfactor}{1.15}
+\newcommand*{\bigcdot@}[2]{%
+    % #1: math style
+    % #2: unused
+    \sbox0{$#1\vcenter{}$}% math axis
+    \sbox2{$#1\cdot\m@th$}%
+    \hbox to \bigcdot@widthfactor\wd2{%
+        \hfil
+        \raise\ht0\hbox{%
+            \scalebox{\bigcdot@scalefactor}{%
+                \lower\ht0\hbox{$#1\bullet\m@th$}%
+            }%
+        }%
+        \hfil
+    }%
+}
+\makeatother
 
 %====================%
 % Messing with things

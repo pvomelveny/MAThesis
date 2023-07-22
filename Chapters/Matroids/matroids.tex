@@ -100,7 +100,7 @@ Then we have the set \( E = \{ a, b, c, d \} \subseteq \R^3 \).
     \caption{The collection of vectors in \(E\)}
     \label{fig:vectorMatroid}
 \end{figure}
-The observant will note that this of course cannot be linearly independent, and indeed we can confirm by showing the linear combination
+The observant will note that \( E \) of course cannot be linearly independent, and indeed we can confirm by showing the linear combination
 \[
     1a + 1b + 0 c + (-1)d = 0.
 \]
@@ -259,16 +259,10 @@ Not to be confused with the graph of a function or whatever it is business analy
 There are quite a few definitions of graphs, each allowing for slightly different properties, but for our purposes, we can use a rather basic definition.
 \begin{definition}[Graph]\label{def:graph}
 
-    A \emph{graph} is a pair of sets \( G = (V, E) \), where \( V \) is a set of objects known as vertices and
-    \[
-        E \subseteq \big\{ \{x, y\} \; | \; x, y \in V \big\}
-    \]
-    is a set of edges.
+    A \emph{graph} is a pair of sets \( G = (V, E) \), where \( V \) is a set of objects known as vertices, and \( E \) is a multiset of edges \( \{ x, y \} \), for \( x,y \in V \).
 \end{definition}
 A brief aside for our friends who actually care about graphs;
-the definition here is for an \emph{undirected simple graph permitting loops}.
-The treatment of graphs and their relation to matroids in this paper extends easily enough for most other graphs because, as far as matroids are concerned, this kind of graph carries pretty much all the information necessary.
-Indeed, we will see soon enough that even allowing loops is an unnecessary flourish.
+the definition here is for an \emph{undirected multigraph permitting loops}.
 We again recommend~\cite{oxleyMatroidTheory2011} for the serious graph theorist's entry into matroids.
 
 For the rest of us, this definition may feel rather opaque.
@@ -285,7 +279,7 @@ The corresponding picture of our graph is below.
 \begin{figure}[H]\label{fig:simpleGraph}
     \centering
     \begin{tikzpicture}[scale=.8,
-            graphVertex/.style={fill=black, draw=black, shape=circle},
+            graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
             none/.style={},
             graphEdge/.style={very thick}]
 
@@ -334,7 +328,7 @@ First, we need the notion of a walk.
     \[
         (v_1, e_1, v_2, e_2, v_3, \ldots, e_{k-1}, v_k),
     \]
-    where each \( v_i \in V \), \( e_j \in E \) and \( v_i \in e_i \) and \( v_{i+1} \in e_i \)
+    where each \( v_i \in V \), \( e_j \in E \) and \( v_i \in e_i \) and \( v_{i+1} \in e_i \).
 \end{definition}
 Intuitively, a walk starts at some vertex and then follows an edge to another, connected vertex then continues to follow edges to vertices until ending at some vertex.
 If we put our finger on a vertex and trace along edges to another vertex, we've defined a walk.
@@ -364,7 +358,7 @@ Let us immediately take to our example for this section to consider some possibl
     \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 inEdge/.style={blue, very thick}]
@@ -395,7 +389,7 @@ Let us immediately take to our example for this section to consider some possibl
     \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 inEdge/.style={red, very thick}]
@@ -426,7 +420,7 @@ Let us immediately take to our example for this section to consider some possibl
     \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.7},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 inEdge/.style={blue, very thick}]
@@ -510,7 +504,7 @@ The first definition of matroids should, again, look very familiar.
 They correspond precisely to the properties we identified in linearly independent subsets and that we saw again in independent edge sets.
 We can take this opportunity to define our now familiar examples as a matroid.
 
-We will let the ground set \( E = \{ a, b, c, d \} \), and pick the independent sets to be
+We name our matroid \( \sM = (E, \I) \), where \( E = \{ a, b, c, d \} \) and we pick the independent sets to be
 \[
     \I = \{
     \emptyset,
@@ -519,6 +513,7 @@ We will let the ground set \( E = \{ a, b, c, d \} \), and pick the independent 
     abc, acd, bcd
     \}.
 \]
+
 Coming as probably no surprise, this has the same independence relations as both our vector example and our graph example.
 We should confirm that \( \I \) obeys the properties (I1)-(I3), but we already know this particular set must.
 
@@ -552,7 +547,7 @@ For the most part, their meaning is related to that in the original context, so 
 Still, it is not necessary to have heard of them before;
 these definitions exist perfectly fine on their own in the world of matroids, as we shall see.
 
-We use the independent set axioms to these terms and state properties, but we could have started with any of the axioms and developed all these terms.
+We use the independent set axioms to define these terms and state properties, but we could have started with any of the axioms and developed all these terms.
 It's actually quite a fun exercise to develop parallel definitions from different starting axioms.
 
 \subsubsection{All Your Bases Belong to Matroid}
@@ -619,7 +614,7 @@ To do so we'll introduce the notion of a basis of a matroid.
     \begin{subfigure}[t]{.45\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 inEdge/.style={blue, very thick}]
@@ -645,7 +640,7 @@ To do so we'll introduce the notion of a basis of a matroid.
         \end{tikzpicture}
         \subcaption{A basis of a graph is a spanning tree}
     \end{subfigure}
-    \caption{The set \( \{acd\} \) is a basis of \( \cM \), which we can view in the vector and graph setting}
+    \caption{The set \( \{acd\} \) is a basis of our example \( \sM \), which we can view in the vector and graph setting}
     \label{fig:basisExamples}
 \end{figure}
 
@@ -671,7 +666,7 @@ For those recalling their linear algebra, yes, this does have the very useful pr
 As we see in the examples in Figure~\ref{fig:basisExamples}, a basis has a very literal interpretation in the context of vector spaces and graphs.
 If pressed for an intuition of a basis in the more general matroid setting, we'd say that they give us an idea of ``how much'' (in)dependence is going on amongst the elements in the ground set; likely accompanied by us literally waving our hands through the air.
 If our matroid has 1000 elements in its ground set, but its bases only have size 3, then there must be a lot of dependence amongst all those elements of the ground set.
-However vague the idea, it would be very useful to be able to quantify ``how much'' independence is going on in any subset \( X \subseteq E \) of a matroids ground set.
+However vague the idea, it would be very useful to be able to quantify ``how much'' independence is going on in any subset \( X \subseteq E \) of a matroid's ground set.
 
 \subsubsection{Rank and Closure}
 
@@ -704,7 +699,6 @@ This notion that we can add more elements to a subset without changing its rank 
         \cl_\cM \, : \; 2^E \to 2^E \\
         X \mapsto \{ e \in E \; | \; \rk(X \cup e) = \rk(X) \}.
     \end{gather*}
-
     For any \( X \subseteq E \), we call \( \cl_\cM(X) \) the \emph{closure of \( X \)}.
 
 \end{definition}
@@ -918,19 +912,18 @@ Indeed, just like independent sets have some useful properties, so do the set of
 
 \begin{proposition}[Properties of Flats]\th\label{prop:matroidFlatAxioms}
     Let \( \cM = (E, \I) \), be a matroid.
-    Then the set
+    Then the set of flats
     \[
         \cF = \{ X \subseteq E \; | \; X = \cl(X) \}
     \]
-    is the set of flats of \( \cM \), and \( \cF \) has the following properties:
+    has the following properties:
     \begin{enumerate}[label=(F\arabic*)]
         \item \( E \in \cF \).\label{def:F1}
         \item If \(F_1, F_2 \in \cF\), then \( F_1 \cap F_2 \in \cF \).\label{def:F2}
         \item If \( F \in \cF \) and \(F_1, F_2, \dots , F_k \in \cF \) are the minimal flats such that \( F \subsetneq F_i \),
               then the sets \( F_1 \setminus F,\, F_2 \setminus F,\, \dots,\, F_k \setminus F \) partition \( E \setminus F \).\label{def:F3}
     \end{enumerate}
-
-    Further, let \( E \) be any ground set and \( \cF \subseteq 2^{E} \) be a collection of subsets of the ground set such that properties (F1)--(F3) hold.
+    Further, let \( E \) be any set and \( \cF \subseteq 2^{E} \) be a collection of subsets of \( E \) such that properties (F1)--(F3) hold.
     Define
     \[
         \cl \, : \; 2^E \to 2^E
@@ -957,7 +950,7 @@ In essence, if you take a flat, \( F \) (with \( F \neq E \), since no flats hav
 This shouldn't be too surprising, since if an element, let's call it \( x \), is not in \( F \), then \( \cl(F \cup x) \) will have to have a higher rank than \( F \).
 That this \emph{partitions} \( E \setminus F \) just means that each \( e \in E \) that's not in \( F \) is going to appear in exactly one flat one rank higher (specifically the flat \( \cl(F \cup e) \)).
 
-Finally, the proposition asserts that if we start with a ground set and then a collection of subsets of that ground set that meet all three properties (F1)--(F3), then that is sufficient to characterize a matroid.
+Finally, the proposition asserts that if we start with a set and then a collection of subsets that meet all three properties (F1)--(F3), then that is sufficient to characterize a matroid.
 That is, we could take (F1)--(F3) as another axiomatization of a matroid.
 A recommended exercise would be to reconstruct all the definitions in the preceding section starting with just these axioms.
 
@@ -1003,7 +996,7 @@ Some posets have an even stronger structure, called a lattice.
 If you've never seen this definition before, it can be a bit heavy on symbols, but once we ground it in our set of flats it won't be too bad.
 First though, we must establish how our flats form a lattice \cite[Lemma~1.7.3]{oxleyMatroidTheory2011}.
 
-\begin{proposition}[The Collection of Flats Form a Lattice]\th\label{thm:flatLattice}
+\begin{proposition}[The Collection of Flats Forms a Lattice]\th\label{thm:flatLattice}
     Let \( \cM \) be a matroid and \( \cF \) be the set of all flats of \( \cM \).
     Then \( ( \cF, \subseteq) \) is a lattice, with the operations
     \begin{align*}
@@ -1069,7 +1062,6 @@ Since \textit{every} lattice of flats always has 1 element of rank~0 as a minima
     \[
         \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_k \} \subseteq \cL^\ast.
     \]
-
     If \( \rk(\cM) = r + 1 \), then a flag \( \scrF = \{ F_1 \subsetneq F_2 \subsetneq \cdots \subsetneq F_r \} \) is a \emph{maximal} flag of \( \cM \).
 
 \end{definition}
@@ -1112,7 +1104,7 @@ Rather than providing a subset to restrict to, one often finds it useful to spec
     \begin{subfigure}[t]{.54\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 Edge/.style={black, very thick}]
@@ -1142,7 +1134,7 @@ Rather than providing a subset to restrict to, one often finds it useful to spec
     \begin{subfigure}[t]{.45\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 Edge/.style={black, very thick}]
@@ -1179,14 +1171,12 @@ Still, as mathematicians we feel compelled to point out duality anytime we see i
 \begin{definition}[Contraction Matroids]\th\label{def:contractionMatroid}
 
     Let \( \cM = (E, \I) \) be a matroid.
-    For any subset \( T \subseteq E \) of the ground set, construct the restriction matroid \( \cM|T \).
-    Then let \( B_T \) be a basis of \( \cM|T \).
+    For any subset \( T \subseteq E \) of the ground set, construct the restriction matroid \( \cM|T \) and choose a basis\( B_T \) of \( \cM|T \).
     The \emph{contraction matroid}, \( \cM/T \), is defined as
     \[
         \cM/T = ( E \setminus T, \I/T ),
     \]
     where \( \I/T = \{ I \subseteq (E \setminus T) \; | \; I \cup B_T \in \I \} \).
-
 \end{definition}
 
 This definition is more difficult to explain succinctly, but we can compare it with the restriction matroid to try to get some sense of what this does.
@@ -1198,7 +1188,7 @@ The contraction matroid, then, assigns independence on everything \emph{not} in 
     \begin{subfigure}[t]{.54\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 Edge/.style={black, very thick}]
@@ -1228,7 +1218,7 @@ The contraction matroid, then, assigns independence on everything \emph{not} in 
     \begin{subfigure}[t]{.45\textwidth}
         \centering
         \begin{tikzpicture}[scale=.5,
-                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
+                graphVertex/.style={fill=black, draw=black, shape=circle, scale=0.6},
                 none/.style={},
                 graphEdge/.style={thin},
                 Edge/.style={black, very thick}]
@@ -1262,8 +1252,7 @@ Importantly, we can combine deletion and contraction, and indeed the resulting m
 
 \begin{definition}[Matroid Minor]\th\label{def:minor}
     A \emph{minor} of a matroid \( \cM \) is any matroid resulting in any combination of deletions and contractions of \( \cM \).
-
-    Further, any series of deletions and contractions can always be rearranged to one deletion and one contraction, any matroid minor is of the form
+    Since, any series of deletions and contractions can always be rearranged to one deletion and one contraction, any matroid minor is of the form
     \[
         \cM \backslash X / Y,
     \]
@@ -1308,7 +1297,7 @@ Notation in hand, we can now state a classic result of matroid theory, which can
 This means the lattice of a minor can be ``seen'' within the lattice structure of our original matroid, just up to some relabeling of the nodes.
 We note that this proposition only works for flats, not arbitrary subsets of the ground set, but that's more than enough for what we need.
 %TODO: Lattice diagram here????
-If \( F_1 \) and \( F_2 \) are adjacent to each other in the lattice of flats, then \( \cM_{[F_1, F_2]} \) is isomorphic to a matroid whose sole flag is \( \{ \emptyset \subsetneq E \} \).
+If \( F_1 \) and \( F_2 \) are adjacent to each other in the lattice of flats, then \( \cM_{[F_1, F_2]} \) is isomorphic to a matroid whose sole flag is \( \{ \emptyset \subsetneq F_2 \setminus F_1 \} \).
 
 
 \subsection{`Tis the Gift to Be Simple}
@@ -1352,7 +1341,7 @@ If this seems like a lot, the big takeaway is that this promises that the very b
 For those coming in with lattice knowledge, the second two properties mean the lattice of a simple matroid is \emph{atomic}.
 We can verify these properties in our example, \( \sM \), which is a simple matroid.
 
-Our admission of simplification done admission of simplification done, we have now learned everything we need about the construction of matroids.
+Our admission of simplification done, we have now learned everything we need about the construction of matroids.
 It's time to learn about some polynomials.
 
 \section{The Characteristic Polynomial}
@@ -1523,10 +1512,10 @@ But there's nothing particularly special about our choice of graph, we will get 
 
     Let \( \chi_G(n) \) be the number of \( n \)-colorings of graph \( G \).
     Then the map
-    \begin{gather*}
-        \N \to \N \\
-        z \mapsto \chi_G(z)
-    \end{gather*}
+    \begin{align*}
+        \N & \to \N            \\
+        z  & \mapsto \chi_G(z)
+    \end{align*}
     is a polynomial with integer coefficients, known as the \emph{chromatic polynomial} of \( G \).
 
 \end{definition}
@@ -1570,7 +1559,7 @@ We'll return to these numbers soon, as they are main players of the Heron-Rota-W
 \subsection{Properties of the Characteristic Polynomial}
 
 Let's establish some important properties of the characteristic polynomial.
-We mentioned loops when while talking about simple matroids, but we should introduce them, and their dual coloops, officially.
+We mentioned loops while talking about simple matroids, but we should introduce them, and their dual coloops, officially.
 While there are many equivalent definitions, we'll use the ones that relate to how they interact with closures and rank.
 \begin{definition}[Loop]\th\label{def:loop}
     For a matroid \( \cM \) with ground set \( e \in E \), we say \( e \) is a \emph{loop} if for all \( X \subseteq E \)
@@ -1589,7 +1578,7 @@ They generalize loops in a graph, where the term is particularly apt.
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=1.5,
-            vertex/.style={fill=black, draw=black, shape=circle, scale=0.8},
+            vertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
             every loop/.style={looseness=15}]]
         \node [style=vertex] (0) at (0, 1.75) {};
         \node [style=vertex] (2) at (1, 0) {};
@@ -1627,7 +1616,7 @@ In graph theory, and some older matroid texts, a coloop sometimes goes by the mu
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=1.5,
-            vertex/.style={fill=black, draw=black, shape=circle, scale=0.8},
+            vertex/.style={fill=black, draw=black, shape=circle, scale=0.5},
             every loop/.style={looseness=15}]]
         \node [style=vertex] (0) at (-3, 1) {};
         \node [style=vertex] (1) at (-3, -1) {};
@@ -1779,9 +1768,6 @@ Now that we know what loops and coloops are, we can state some very useful prope
     completing the last portion of our proof.
 
 \end{proof}
-These properties are what let us concentrate only on simple matroids.
-Property~\ref{prop:chi1} the characteristic polynomial easy to calculate, just not at all interesting.
-
 Property~\ref{prop:chi3} is called the \emph{deletion-contraction} property.
 This property lets us wrap up the graph connection.
 Since any graph can be represented by a matroid, and the characteristic polynomial is in some sense inspired by the chromatic polynomial, it would be natural to ask if there is a relation between them.
@@ -1796,7 +1782,7 @@ And there is, in fact, a very nice one.
     where \( c \) is the number of connected components of \( G \).
 \end{proposition}
 
-The difference stems from the fact chromatic polynomial of a graph satisfies the more general deletion-contraction property
+The difference stems from the fact that the chromatic polynomial of a graph satisfies the more general deletion-contraction property
 \[
     \chi_G(z) = \chi_{G \setminus e}(z) - \chi_{G / e}(z)
 \]
@@ -1804,7 +1790,7 @@ for any edge \( e \) of graph \( G \), regardless of if it is a loop, coloop, or
 For those who want more on the connections between these values, and how they relate to the more general Tutte polynomial, we found the overview given by Ardila,~\cite{ardilaTuttePolynomialsHyperplane2022}, to be a great help.
 
 Finally, we can state some known properties of the Whitney numbers of the first kind.
-From the work of Gian-Carlo Rota, \cite[Theorem~4]{rotaFoundationsCombinatorialTheory1964}, we have the following property.
+From the work of Gian-Carlo Rota, \cite[Theorem~4]{rotaFoundationsCombinatorialTheory1964}, we have the following property, which follows from \th\ref{thm:charPolyProps}.
 \begin{proposition}\th\label{thm:whitneyPositive}
     Let \( \cM \) be a simple matroid.
     Then the Whitney numbers of the first kind of \( \chi_\cM(z) \), \( w_0, w_1, \dots, w_{\rk(\cM)} \), are strictly positive and \( w_0 = 1 \).
@@ -1832,11 +1818,11 @@ First, a few definitions necessary to carefully state the conjecture.
 \end{definition}
 
 The values of a unimodal sequence get larger until a certain point, and after they start to decrease.
-Such a sequence is also known as \emph{concave}, since the average of any two non-consecutive points in the sequence will be less than a point in between them;
-i.e.\ for a sequence \( x_0, x_1, \dots, x_k \) and \( i < j < k \),
-\[
-    2x_j \geq x_i + x_k.
-\]
+% Such a sequence is also known as \emph{concave}, since the average of any two non-consecutive points in the sequence will be less than a point in between them;
+% i.e.\ for a sequence \( x_0, x_1, \dots, x_k \) and \( i < j < k \),
+% \[
+%     2x_j \geq x_i + x_k.
+% \]
 We can define an even stronger condition.
 
 \begin{definition}[Log-Concavity]\th\label{def:logConcave}
