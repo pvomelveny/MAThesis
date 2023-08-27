@@ -1,7 +1,7 @@
 \documentclass[12pt,oneside]{../../sfsuthesis}  
 
 \RequirePackage{standalone}
-\usepackage[draft]{../../MAThesisOutputFormat}
+\usepackage[final]{../../MAThesisOutputFormat}
 \input{../../preamble.tex}
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{../../thesis.bib}
@@ -12,14 +12,14 @@
 \chapter{Matroids}
 
 The underpinning of all our work are mathematical objects known as matroids.
-Though, as we've noted, they've been around since the 1930's, they're not, yet, household objects every mathematician knows.
+Though, as we have noted, they've been around since the 1930's, they are not, yet, household objects every mathematician knows.
 This is the shallowest scratch into the world of matroids, slanted heavily towards what's necessary for our problem at hand.
-There are many full books on matroids, for those curious to dig into more depth.
+There are many books on matroids, for those curious to dig into more depth.
 We are partial to the treatment by Oxley's \textit{Matroid Theory}~\cite{oxleyMatroidTheory2011}.
 
 We will build up to matroids by developing some intuition from more familiar, motivating mathematical objects.
 Then we will introduce the definition(s) of matroids and introduce the characteristic polynomial.
-We will wrap up this chapter by stating the Heron-Rota-Welsh conjecture.
+We will wrap up this chapter by stating the Heron--Rota--Welsh conjecture.
 
 \section{Linear Algebra Done Hastily}
 
@@ -40,7 +40,7 @@ First, let us recall the definition of linear independence.
     Otherwise, we say the set is \emph{linearly dependent}.
 \end{definition}
 While this is a familiar definition to many of us, it will be illustrative to all to take a more concrete example.
-We'll define the vectors \( a = (1, 0, 0), b = (0, 1, 0), c = (0, 0, 1), \) and \( d = (1, 1, 0) \).
+We will define the vectors \( a = (1, 0, 0), b = (0, 1, 0), c = (0, 0, 1), \) and \( d = (1, 1, 0) \).
 Then we have the set \( E = \{ a, b, c, d \} \subseteq \R^3 \).
 \begin{figure}[H]
     \centering
@@ -97,7 +97,7 @@ Then we have the set \( E = \{ a, b, c, d \} \subseteq \R^3 \).
         % at (0, 0, 0){e};
     \end{tikzpicture}
     % Caption
-    \caption{The collection of vectors in \(E\)}
+    \caption{The collection of vectors in \(E\).}
     \label{fig:vectorMatroid}
 \end{figure}
 The observant will note that \( E \) of course cannot be linearly independent, and indeed we can confirm by showing the linear combination
@@ -158,7 +158,7 @@ For example, consider \( \{ c, d\} \subseteq E \).
         at (\ax, \ay,0){d};
     \end{tikzpicture}
     % Caption
-    \caption{A linearly independent subset of \(E\)}
+    \caption{A linearly independent subset of \(E\).}
     \label{fig:subsetOfE}
 \end{figure}
 Take a look to confirm there is no nonzero linear combination of our elements that gives us the \( 0 \)-vector.
@@ -195,8 +195,8 @@ Namely, looking for patterns amongst these independent sets.
 
 We suspect that those with some knowledge of linear algebra will immediately be ready to note that the largest independent subsets of \( E \) have 3 elements.
 And, sure enough, that is true!
-But this is more a property of the vector space, \( \R^3 \) in this case, that we're pulling the vectors from than some intrinsic relationship or property of the subsets.
-We'd like to call attention to some properties that may be less obvious (or so obvious one forgets they're even there).
+But this is more a property of the vector space, \( \R^3 \) in this case, that we are pulling the vectors from than some intrinsic relationship or property of the subsets.
+We'd like to call attention to some properties that may be less obvious (or so obvious one forgets they are even there).
 First, something entirely uninteresting.
 
 \begin{property}[The empty set is an independent subset]\th\label{emptyIsIndependent}
@@ -207,9 +207,9 @@ First, something entirely uninteresting.
     and \( \emptyset \) is linearly independent.
 \end{property}
 That \( \emptyset \) is linearly independent is what we call vacuously true.
-That is to say, it's true mostly as a quirk of how we define linear independence.
+That is to say, it is true mostly as a quirk of how we define linear independence.
 Since we can't form a non-zero linear combination that gives the 0-vector, because there are \emph{no} elements at all, it can't be linearly dependent.
-But then if it's not linearly dependent, it has to be independent.
+But then if it is not linearly dependent, it has to be independent.
 Proof by being pedantic, really the heart of mathematics if one thinks about it.
 Next, a property that will surprise no one who has taken a linear algebra class, but is worth making explicit.
 
@@ -221,7 +221,7 @@ Next, a property that will surprise no one who has taken a linear algebra class,
     then \( I' \) is linearly independent.
 \end{property}
 Recall we suggested that in order to check that our list of independent subsets of \( E \) was correct, it was sufficient to just check the subsets with the most elements.
-This property tells us that if we've figured out the maximal subsets, then filling in the rest is just a matter of taking subsets of those.
+This property tells us that if we have figured out the maximal subsets, then filling in the rest is just a matter of taking subsets of those.
 One may even begin to see the specter of combinatorics lurking.
 \th\ref{subsetIsIndependent} falls out easily from our definition.
 If no non-zero linear combination of vectors in a set gives us the 0-vector, then using fewer vectors isn't going to change that.
@@ -303,18 +303,18 @@ The corresponding picture of our graph is below.
         % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (1) to (4.center);
     \end{tikzpicture}
 
-    \caption{Our example graph \( G \)}
+    \caption{Our example graph \( G \).}
 
 \end{figure}
 
-Now that we know what a graph is, it's time to figure out what ``independence'' could possibly mean.
+Now that we know what a graph is, it is time to figure out what ``independence'' could possibly mean.
 
 
 
 \subsection{Independence in the Realm of Graphs}
 
 The first thing to note is that we will define independence on the set of edges of a graph;
-that is, for some graph \( G = (V, E) \), an independent set will be some subset \( I \subseteq E \), meeting some criteria we'll discuss below.
+that is, for some graph \( G = (V, E) \), an independent set will be some subset \( I \subseteq E \), meeting some criteria we will discuss below.
 What then would it mean for a set of edges to be independent?
 Well, if we take some subset of the edges, we restrict which vertices are accessible via those edges.
 But there might still be redundant edges.
@@ -331,7 +331,7 @@ First, we need the notion of a walk.
     where each \( v_i \in V \), \( e_j \in E \) and \( v_i \in e_i \) and \( v_{i+1} \in e_i \).
 \end{definition}
 Intuitively, a walk starts at some vertex and then follows an edge to another, connected vertex then continues to follow edges to vertices until ending at some vertex.
-If we put our finger on a vertex and trace along edges to another vertex, we've defined a walk.
+If we put our finger on a vertex and trace along edges to another vertex, we have defined a walk.
 Now that we have a walk, we may define a cycle.
 \begin{definition}[Cycle]
     A \emph{cycle} is a walk
@@ -445,12 +445,12 @@ Let us immediately take to our example for this section to consider some possibl
             % \draw [style=graphEdge, in=0, out=30, looseness=1.50] (3) to (4.center);
         \end{tikzpicture}
 
-        \subcaption{Independent: The edge set \( \{ a, c \} \) does not contain a cycle. It's not necessary for all vertices to be connected}
+        \subcaption{Independent: The edge set \( \{ a, c \} \) does not contain a cycle. It is not necessary for all vertices to be connected}
     \end{subfigure}
-    \caption{Some examples of independent/dependent sets of edges}
+    \caption{Some examples of independent/dependent sets of edges.}
 \end{figure}
 
-Now that we've got some practice under our belt, it's time to play our favorite game again.
+Now that we have got some practice under our belt, it is time to play our favorite game again.
 Given our example graph, \( G = (V, E) \), we want to identify the set of all possible independent vectors.
 A few moments of tracing paths along the graph, hunting for cycles, will reveal that from our set of edges \( E = \{ a, b, c, d \} \), the independent subsets are precisely
 \[
@@ -472,7 +472,7 @@ It was the reoccurrence of these properties across different mathematical object
 
 \section{Matroids, Finally}
 
-Matroids were initially developed by Hassler Whitney in the paper \textit{On the Abstract Properties of Linear Dependence}~\cite{whitneyAbstractPropertiesLinear1935}.
+Matroids were developed independently by Hassler Whitney, in the paper \textit{On the Abstract Properties of Linear Dependence}~\cite{whitneyAbstractPropertiesLinear1935}, and Takeo Nakasawa, in the series of papers \textit{Zur Axiomatik der linearen Abh\"angigkeit}\footnote{Roughly translated as \emph{On the Axiomatization of Linear Dependence}.}~\cite{nakasawaZurAxiomatikLinearen1935,nakasawaZurAxiomatikLinearen1936,nakasawaZurAxiomatikLinearen1936a}.
 The introduction of Whitney's paper parallels our journey so far, covering, much more succinctly, shared properties of linear independence and independence of graph edges.
 He then goes on  to introduce several equivalent definitions of a matroid.
 
@@ -483,7 +483,7 @@ However, it can be extremely non-obvious that a given definition is equivalent t
 The path between the various axiomatizations can be so difficult to see that they have been affectionately called \textit{cryptomorphic} to one another.
 
 We will primarily be concerned with two axiomatizations, one based on the notion of independent sets and another based on what are called \emph{flats}.
-The first definition follows closely from the background we've developed so far.
+The first definition follows closely from the background we have developed so far.
 This allows us to more easily define the terms and properties of matroids that we will need in the second definition.
 It is this second definition that will be of key importance for the following chapters, so it is important to develop it here.
 
@@ -519,7 +519,7 @@ We should confirm that \( \I \) obeys the properties (I1)-(I3), but we already k
 
 
 \subsubsection{Aside: Representable Matroids}
-Given that we've already seen the example ``matroid'' arise twice in other contexts, it is natural to ask if we've gained anything new with matroids.
+Given that we have already seen the example ``matroid'' arise twice in other contexts, it is natural to ask if we have gained anything new with matroids.
 If every matroid could just be studied as a finite collection of vectors and its independent subsets, we don't really have to go through the trouble defining a whole new object.
 
 It turns out that this is not the case.
@@ -527,7 +527,7 @@ A matroid that can arise from a finite set of vectors, like our example, is call
 However, there are \emph{unrepresentable} matroids.
 A lot of them in fact.
 
-The distinction between representable and unrepresentable matroids has no bearing on the results of this thesis, but it's worth noting here.
+The distinction between representable and unrepresentable matroids has no bearing on the results of this thesis, but it is worth noting here.
 Our examples are representable, as it allows us to leverage some visual intuition, but everything we say here holds for all matroids.
 
 \subsection{The Uphill Path to Flats}
@@ -548,12 +548,12 @@ Still, it is not necessary to have heard of them before;
 these definitions exist perfectly fine on their own in the world of matroids, as we shall see.
 
 We use the independent set axioms to define these terms and state properties, but we could have started with any of the axioms and developed all these terms.
-It's actually quite a fun exercise to develop parallel definitions from different starting axioms.
+It is actually quite a fun exercise to develop parallel definitions from different starting axioms.
 
 \subsubsection{All Your Bases Belong to Matroid}
 
-First, we will finally address a pattern we've noted earlier, that the largest independent sets all seem to have the same number of elements, or, as we like to say in the business, the same \emph{cardinality}.
-To do so we'll introduce the notion of a basis of a matroid.
+First, we will finally address a pattern we have noted earlier, that the largest independent sets all seem to have the same number of elements, or, as we like to say in the business, the same \emph{cardinality}.
+To do so we will introduce the notion of a basis of a matroid.
 \begin{definition}[Basis]\th\label{def:basis}
     Given a matroid \( \cM = (E, \I) \), an independent set \( B \in \I \) is a \emph{basis} of \( \cM \) if
     \[
@@ -640,7 +640,7 @@ To do so we'll introduce the notion of a basis of a matroid.
         \end{tikzpicture}
         \subcaption{A basis of a graph is a spanning tree}
     \end{subfigure}
-    \caption{The set \( \{acd\} \) is a basis of our example \( \sM \), which we can view in the vector and graph setting}
+    \caption{The set \( \{acd\} \) is a basis of our example \( \sM \), which we can view in the vector and graph setting.}
     \label{fig:basisExamples}
 \end{figure}
 
@@ -897,7 +897,7 @@ In our running example, we could start applying the closure operator left and ri
         \end{tikzpicture}
         \subcaption{Rank 3: The matroid itself is rank 3, so the flat of this rank is the whole ground set, \( abcd \)}
     \end{subfigure}
-    \caption{Examples of flats of rank 1, 2, and 3} in our example matroid \( \sM \), viewed as vectors
+    \caption{Examples of flats of rank 1, 2, and 3\\ in our example matroid \( \sM \), viewed as vectors.}
 \end{figure}
 Since flats are maximal with respect to rank, they naturally divide up by rank; i.e.
 \begin{align*}
@@ -943,7 +943,7 @@ This follows directly from the fact that the closure of a basis has to be every 
 
 The second property~\ref{def:F2} says that the set of flats is closed under intersection;
 i.e.\ the elements shared between any two flats is a flat itself.
-This follows from the properties of closure and a bit of set theory; it's a fun little exercise to prove.
+This follows from the properties of closure and a bit of set theory; it is a fun little exercise to prove.
 
 The last property,~\ref{def:F3}, looks more intimidating than it is.
 In essence, if you take a flat, \( F \) (with \( F \neq E \), since no flats have higher rank than \( E \)), then for every element \emph{not} in \( F \) you're going to find it in a flat that is one rank higher.
@@ -985,7 +985,7 @@ Some posets have an even stronger structure, called a lattice.
     \]
     called a \emph{meet}, such that for any two elements \( a, b \in L \),
     \begin{enumerate}[label=\roman*.]
-        \item the join \(a \vee b \) is an element of the lattice such that \( a \preceq a \vee b \) and \( b \preceq a \vee b \), and for any element \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) it's the case that \( a \vee b \preceq c \),
+        \item the join \(a \vee b \) is an element of the lattice such that \( a \preceq a \vee b \) and \( b \preceq a \vee b \), and for any element \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) it is the case that \( a \vee b \preceq c \),
         \item the meet \(a \wedge b \) is an element of the lattice such that  \( a \wedge b \preceq a \) and \( a \wedge b \preceq b \), and for any \( c \in L \) such that \( c \preceq a \) and \( c \preceq b \) then we have \( c \preceq a \wedge b \).
               % \item \(a \vee b \in L\); \( a \preceq a \vee b \) and \( b \preceq a \vee b \); for any \( c \in L \) such that \( a \preceq c \) and \( b \preceq c \) then \( a \vee b \preceq c \),
               % \item \(a \wedge b \in L\); \( a \wedge b \preceq a \) and \( a \wedge b \preceq b \); for any \( c \in L \) such that \( c \preceq a \) and \( c \preceq b \) then \( c \preceq a \wedge b \),
@@ -993,7 +993,7 @@ Some posets have an even stronger structure, called a lattice.
 
 \end{definition}
 
-If you've never seen this definition before, it can be a bit heavy on symbols, but once we ground it in our set of flats it won't be too bad.
+If you have never seen this definition before, it can be a bit heavy on symbols, but once we ground it in our set of flats it won't be too bad.
 First though, we must establish how our flats form a lattice \cite[Lemma~1.7.3]{oxleyMatroidTheory2011}.
 
 \begin{proposition}[The Collection of Flats Forms a Lattice]\th\label{thm:flatLattice}
@@ -1034,7 +1034,7 @@ It is, if not traditional, convenient to structure a lattice graphically in a \e
         &  &                              &                                                        &                                         &  &                                             \\
         &  &                              & \emptyset{}\arrow[llluu] \arrow[luu] \arrow[ruu] \arrow[rrruu]  &                                         &  &
     \end{tikzcd}
-    \caption{The Hasse diagram of flats of our running example matroid}
+    \caption{The Hasse diagram of flats of our running example matroid.}
 \end{figure}
 
 When reading a Hasse diagram, if we have two entries \( x \) and \( y \), with a line connecting them and \( x \) is higher on the page than \( y \), we say \( x \) \emph{covers} \( y \).
@@ -1160,12 +1160,12 @@ Rather than providing a subset to restrict to, one often finds it useful to spec
         \end{tikzpicture}
         \subcaption*{A graph representation of the deletion \( \cM \setminus a \)}
     \end{subfigure}
-    \caption{Deletion matroids generalize deletion in graphs, where we quite literally delete edges}\label{fig:contractionMatroid}
+    \caption{Deletion matroids generalize deletion in graphs, where we quite literally delete edges.}\label{fig:contractionMatroid}
 \end{figure}
 
 The other way to build a matroid out of an existing one is a little less obvious.
 These are called contraction matroids, and they are \emph{dual} to restriction matroids.
-While they're a bit easier to define using duality, we want to avoid introducing all the machinery for that.
+While they are a bit easier to define using duality, we want to avoid introducing all the machinery for that.
 Still, as mathematicians we feel compelled to point out duality anytime we see it.
 
 \begin{definition}[Contraction Matroids]\th\label{def:contractionMatroid}
@@ -1244,7 +1244,7 @@ The contraction matroid, then, assigns independence on everything \emph{not} in 
         \end{tikzpicture}
         \subcaption*{A graph representing the contraction \( \cM / a \)}
     \end{subfigure}
-    \caption{The term contraction also originates in graph theory, where there is some decent visual intuition}\label{fig:contractionMatroid}
+    \caption{The term contraction also originates in graph theory, where there is some decent visual intuition.}\label{fig:contractionMatroid}
 
 \end{figure}
 
@@ -1262,7 +1262,7 @@ Importantly, we can combine deletion and contraction, and indeed the resulting m
 
 \subsubsection{Matroid Minors and Flats}
 
-While we've defined restriction and contraction matroids in terms of independent sets, we've clearly established that we are all about flats here.
+While we have defined restriction and contraction matroids in terms of independent sets, we have clearly established that we are all about flats here.
 Luckily, we have a very useful property relating the lattice of minors to the lattice of the original matroid.
 First though, a little notation.
 If \( F \) is a flat of \( \cM \), we will define
@@ -1322,7 +1322,7 @@ If this feels overly restrictive, worry not, for Oxley\cite[p.~49]{oxleyMatroidT
 \end{proposition}
 
 If we care mostly about the lattice of matroids, then we can take any matroid and find a simple matroid with an identical lattice structure.
-We'll see the main practical benefit of working with simple matroids in the next section.
+We will see the main practical benefit of working with simple matroids in the next section.
 However, we also get convenience, we don't have to keep track of unnecessary letters, and aesthetics, the lattice diagrams look much nicer, as a bonus.
 If we take our matroid to be simple, then our lattice structure has the following properties.
 
@@ -1342,7 +1342,7 @@ For those coming in with lattice knowledge, the second two properties mean the l
 We can verify these properties in our example, \( \sM \), which is a simple matroid.
 
 Our admission of simplification done, we have now learned everything we need about the construction of matroids.
-It's time to learn about some polynomials.
+It is time to learn about some polynomials.
 
 \section{The Characteristic Polynomial}
 
@@ -1371,12 +1371,12 @@ This time, pick a graph, \( G \), like the one pictured below.
         \draw (2) to (1);
         \draw (0) to (1);
     \end{tikzpicture}
-    \caption{An example graph, \(G\)}
+    \caption{An example graph, \(G\).}
 \end{figure}
 
 Let's say we have three colors, and we want to color the vertices of the graph so that no two connected vertices have the same color.
 Such an arrangement of colors would be called a 3-coloring of \( G \).
-It's not too hard to come up with some colors that work.
+It is not too hard to come up with some colors that work.
 
 \begin{figure}[H]
     \centering
@@ -1397,7 +1397,7 @@ It's not too hard to come up with some colors that work.
         \draw (2) to (1);
         \draw (0) to (1);
     \end{tikzpicture}
-    \caption{A 3-coloring of \(G\)}
+    \caption{A 3-coloring of \(G\).}
 \end{figure}
 
 But now, suppose we wanted to know how many unique ways we could use those three colors to color the graph.
@@ -1409,7 +1409,7 @@ But now let's suppose we want to know how many ways we can use 1000 colors to co
 Since our set of markers only has 12 distinct colors, we will have to turn to math to solve this one.
 
 The strategy is not too complicated, just pick a vertex and say how many colors we have to choose from, then find a connected vertex that hasn't been assigned a color yet, and say how many colors it is allowed to choose from.
-Repeat until we're out of vertices to label.
+Repeat until we are out of vertices to label.
 Instead of picking a specific number, let's say we have \( n \) colors to choose from.
 
 \begin{figure}[H]
@@ -1499,13 +1499,13 @@ Instead of picking a specific number, let's say we have \( n \) colors to choose
             \draw (0) to (1);
         \end{tikzpicture}
 
-        %\subcaption{Independent: The edge set \( \{ a, c \} \) does not contain a cycle. It's not necessary for all vertices to be connected}
+        %\subcaption{Independent: The edge set \( \{ a, c \} \) does not contain a cycle. It is not necessary for all vertices to be connected}
     \end{subfigure}
-    \caption{The process of figuring out the number of \( n \)-colorings of \( G \); the choice of starting vertex doesn't matter, though that's not necessarily obvious}
+    \caption{The process of figuring out the number of \( n \)-colorings of \( G \); the choice of starting vertex doesn't matter, though that's not necessarily obvious.}
 \end{figure}
 We then just have to multiply the number of possibilities together.
 For \( G \), if we have \( n \) colors to choose from, there are \( n {(n-1)}^2 (n - 2) \) different ways to arrange those colors on the graph.
-We've just discovered the \emph{chromatic polynomial} of \( G \).
+We have just discovered the \emph{chromatic polynomial} of \( G \).
 But there's nothing particularly special about our choice of graph, we will get something like this for any graph we come up with.
 
 \begin{definition}[Chromatic Polynomial of a Graph]\th\label{def:chromaticPoly}
@@ -1543,7 +1543,7 @@ We present an equivalent definition that's easier to state, but with the downsid
 \end{definition}
 
 You may notice that each term of the polynomial will have a power of \( z \) between 0 and \( \rk(\cM) \).
-The Heron-Rota-Welsh conjecture is about the coefficients of this polynomial, specifically once we collect the terms.
+The Heron--Rota--Welsh conjecture is about the coefficients of this polynomial, specifically once we collect the terms.
 
 \begin{definition}[Whitney Numbers of the First Kind]\label{def:whitneyNumber}
     Let \( \cM \) be a matroid with characteristic polynomial
@@ -1551,16 +1551,16 @@ The Heron-Rota-Welsh conjecture is about the coefficients of this polynomial, sp
         \chi_\cM(z) & = \sum_{X \subseteq E} {(-1)}^{|X|}z^{\rk(\cM) - \rk(X)} \\
                     & = \sum_{k=0}^{\rk(\cM)} (-1)^k w_k z^{\rk(\cM) - k}.
     \end{align*}
-    The unsigned portion of the coefficients \( w_0, w_1, \dots, w_{\rk(\cM)} \) are the \emph{Whitney numbers of the first kind}.
+    The unsigned portion of the coefficients, \( w_0, w_1, \dots, w_{\rk(\cM)} \), are the \emph{Whitney numbers of the first kind}.
 \end{definition}
 
-We'll return to these numbers soon, as they are main players of the Heron-Rota-Welsh conjecture.
+We will return to these numbers soon, as they are main players of the Heron--Rota--Welsh conjecture.
 
 \subsection{Properties of the Characteristic Polynomial}
 
 Let's establish some important properties of the characteristic polynomial.
 We mentioned loops while talking about simple matroids, but we should introduce them, and their dual coloops, officially.
-While there are many equivalent definitions, we'll use the ones that relate to how they interact with closures and rank.
+While there are many equivalent definitions, we will use the ones that relate to how they interact with closures and rank.
 \begin{definition}[Loop]\th\label{def:loop}
     For a matroid \( \cM \) with ground set \( e \in E \), we say \( e \) is a \emph{loop} if for all \( X \subseteq E \)
     \[
@@ -1590,11 +1590,11 @@ They generalize loops in a graph, where the term is particularly apt.
         \draw [in=-135, out=135, loop] (3) to (3) node [label={[label distance=0.63cm]left:{\( e \)}}] {};
     \end{tikzpicture}
     \vspace*{-1.75em}
-    \caption{The edge \( e \) here is a loop; it connects a vertex to itself}
+    \caption{The edge \( e \) here is a loop; it connects a vertex to itself.}
 \end{figure}
 
 Dual to a loop, is the coloop.
-It's slightly less intuitive when defined it terms of closure and rank, but has very useful properties.
+It is slightly less intuitive when defined it terms of closure and rank, but has very useful properties.
 \begin{definition}[Coloop]\th\label{def:coloop}
     For a matroid \( \cM \) with ground set \( e \in E \), we say \( e \) is a \emph{coloop} if
     \[
@@ -1633,7 +1633,7 @@ In graph theory, and some older matroid texts, a coloop sometimes goes by the mu
         \draw (5) to (4);
         \draw (2) to (3) node [midway, label={[label distance=-0.1cm]above:{\( e \)}}] {};
     \end{tikzpicture}
-    \caption{The edge \( e \) is a coloop; adding it to a cycleless set of edges will never create a cycle}
+    \caption{The edge \( e \) is a coloop; adding it to a cycleless set of edges will never create a cycle.}
 \end{figure}
 
 Now that we know what loops and coloops are, we can state some very useful properties of the characteristic polynomial.
@@ -1659,7 +1659,7 @@ Now that we know what loops and coloops are, we can state some very useful prope
 \end{proposition}
 \begin{proof}
     Let \( \cM \) be a matroid with \( E \) as its ground set.
-    We'll tackle these properties in order, since they both increase in complexity and the tools we use build on each other.
+    We will tackle these properties in order, since they both increase in complexity and the tools we use build on each other.
 
     \( (\chi 1 ) \) Assume \( \cM \) contains a loop \( \ell \in E \).
     We will be using the fact that we can write the power set of \( E \) as the disjoint union
@@ -1678,6 +1678,7 @@ Now that we know what loops and coloops are, we can state some very useful prope
     Two, from our definition of a loop we have that  \( \rk_\cM(X \cup \ell) = \rk_\cM(X) \).
     We see then that any matroid with a loop has a characteristic polynomial that is simply 0.
 
+
     \( (\chi 2 ) \) Now, let us assume that \( e \in E \) is a coloop of \( \cM \).
     We will be using the fact that \( \rk_\cM(X \cup e) = \rk_\cM(X) + 1 \) for \( X \subseteq E \) whenever \( e \notin X \) often in this step.
     Next, recall from definitions that \( \rk_\cM(\cM) = \rk_\cM(E) \).
@@ -1687,9 +1688,10 @@ Now that we know what loops and coloops are, we can state some very useful prope
     \[
         \rk_\cM(E \setminus e) = \rk_\cM(E) - 1.
     \]
-    Since \( rk_{\cM} ( \cM ) \) is just notational shorthand for \( rk_{\cM } ( E ) \), we can instead write
+    \enlargethispage{3\baselineskip}
+    Since \( \rk_{\cM} ( \cM ) \) is just notational shorthand for \( rk_{\cM } ( E ) \), we can instead write
     \[
-        rk_{\cM \setminus e} ( \cM \setminus e) = \rk_{\cM}({\cM}) - 1.
+        \rk_{\cM \setminus e} ( \cM \setminus e) = \rk_{\cM}({\cM}) - 1.
     \]
     With these things established, we see that
     \begin{align*}
@@ -1709,13 +1711,13 @@ Now that we know what loops and coloops are, we can state some very useful prope
     as desired.
 
     \( (\chi 3 ) \) Finally let us assume \( e \in E \) is neither a loop nor a coloop.
-    We'll start with the same general strategy of splitting subsets of \( E \) into disjoint sets across the sum,
+    We will start with the same general strategy of splitting subsets of \( E \) into disjoint sets across the sum,
     \begin{align*}
         \chi_\cM(z) & = \sum_{X \subseteq E} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X)}                                                                                                        \\
                     & = \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X)} +  \sum_{X \subseteq E \setminus e} (-1)^{|X \cup e|} z^{\rk_\cM(\cM) - \rk_\cM(X \cup e)} \\
                     & = \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X)} -  \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X \cup e)}.
     \end{align*}
-    To prevent this from becoming even more unwieldy, we'll look at each sum in this expression individually.
+    To prevent this from becoming even more unwieldy, we will look at each sum in this expression individually.
     Let's look at
     \[
         \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X)}
@@ -1727,7 +1729,7 @@ Now that we know what loops and coloops are, we can state some very useful prope
         \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X)} & = \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_{\cM \setminus e}(\cM \setminus e) - \rk_{\cM \setminus e}(X)} \\
                                                                                   & = \chi_{\cM \setminus e}(z). \tag{i}\label{eq:deletion}
     \end{align*}
-    Next we'll look at
+    Next we will look at
     \[
         \sum_{X \subseteq E \setminus e} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X \cup e)}.
     \]
@@ -1741,7 +1743,7 @@ Now that we know what loops and coloops are, we can state some very useful prope
         \rk_{\cM/e}( \cM/e ) = \rk_\cM({\cM}) - 1.
     \]
     Now we need another way to split up our sum.
-    For any \( X \subseteq E \setminus e \) it's either the case that \( e \in \cl_\cM(X) \) or \( e \notin \cl_\cM(X) \).
+    For any \( X \subseteq E \setminus e \) it is either the case that \( e \in \cl_\cM(X) \) or \( e \notin \cl_\cM(X) \).
     This lets us write
     \begin{align*}
         \sum_{\mathclap{X \subseteq E \setminus e}} (-1)^{|X|} z^{\rk_\cM(\cM) - \rk_\cM(X \cup e)}
@@ -1766,7 +1768,6 @@ Now that we know what loops and coloops are, we can state some very useful prope
         \chi_\cM(z) = \chi_{\cM \setminus e}(z) - \chi_{\cM / e}(z)
     \]
     completing the last portion of our proof.
-
 \end{proof}
 Property~\ref{prop:chi3} is called the \emph{deletion-contraction} property.
 This property lets us wrap up the graph connection.
@@ -1795,18 +1796,18 @@ From the work of Gian-Carlo Rota, \cite[Theorem~4]{rotaFoundationsCombinatorialT
     Let \( \cM \) be a simple matroid.
     Then the Whitney numbers of the first kind of \( \chi_\cM(z) \), \( w_0, w_1, \dots, w_{\rk(\cM)} \), are strictly positive and \( w_0 = 1 \).
 \end{proposition}
-Technically, Rota's theorem says they're non-zero and that they alternate in sign.
-We've defined the Whitney numbers of the first kind to be just the unsigned component of the coefficient, so we adjusted our property accordingly.
+Technically, Rota's theorem says they are non-zero and that they alternate in sign.
+We have defined the Whitney numbers of the first kind to be just the unsigned component of the coefficient, so we adjusted our property accordingly.
 Rota's paper uses the language of geometric lattices, which are precisely the lattices arising from flats of simple matroids.
 We found~\cite{zaslavskyMobiusFunctionCharacteristic1987} and~\cite{aignerWhitneyNumbers1987} to be a helpful bridge between Rota's work and how we understand the characteristic polynomial.
 Speaking of Rota, we may now, at long last, move on to his conjecture.
 
-\section{The Heron-Rota-Welsh Conjecture}
+\section{The Heron--Rota--Welsh Conjecture}
 
-We have all the knowledge of matroids necessary to state the Heron-Rota-Welsh conjecture.
+We have all the knowledge of matroids necessary to state the Heron--Rota--Welsh conjecture.
 Developed and formalized by Heron~\cite{heronMatroidPolynomials1972}, Rota~\cite{rotaCombinatorialTheoryOld1970}, and Welsh~\cite{welshMatroidTheory1976}, this was a conjecture about the coefficients of the characteristic polynomial of matroids.
 We say ``was'' because, as noted in the introduction, this has proven by Adiprasito, Huh, and Katz~\cite{adiprasitoHodgeTheoryCombinatorial2018}.
-We're going to keep calling it a conjecture though.
+We are going to keep calling it a conjecture though.
 First, a few definitions necessary to carefully state the conjecture.
 
 \begin{definition}[Unimodal]\th\label{def:unimodal}
@@ -1836,7 +1837,7 @@ We can define an even stronger condition.
 When all \( x_i \) are positive, log-concavity implies the sequence is also unimodal.
 This then is what allows us to at last state the conjecture.
 
-\begin{theorem}[Heron-Rota-Welsh Conjecture]\th\label{thm:HRW}
+\begin{theorem}[Heron--Rota--Welsh Conjecture]\th\label{thm:HRW}
     Let \( \cM \) be a matroid.
     If \( w_0, w_1, \dots, w_{\rk(\cM)} \) are the Whitney numbers of the first kind, then
     \[

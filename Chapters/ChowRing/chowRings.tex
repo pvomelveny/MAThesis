@@ -14,7 +14,7 @@ It is time now to delve into the world of algebra, developing the notion of a Ch
 The primary goal of this section will be to establish the link between the Chow ring and the characteristic polynomial of a matroid.
 This will form the first segment of our bridge from combinatorics to geometry.
 
-This section will take some algebraic knowledge for granted; we're not going to define a ring, for example.
+This section will take some algebraic knowledge for granted; we are not going to define a ring, for example.
 The main takeaway will be in the last section and should be enough to move on to the next chapter.
 However, even for those with some basic algebra we don't expect Chow rings to be a familiar object, so our first order of business is to define them.
 
@@ -32,7 +32,7 @@ While there are algebraic varieties hiding in the wings, we will see that the co
 \subsection{The Chow Ring of a Matroid}
 
 For our purposes, we will define the Chow ring to be this ``short-cut'' construction.
-That this construction corresponds to the idea of the Chow ring presented above, at least for representable matroids, comes from the work started by De Cocini and Procesi~\cite{deconciniWonderfulModelsSubspace1995} and generalized to the form we will use by Feichtner and Yuzvinsky~\cite{feichtnerChowRingsToric2004}.
+That this construction corresponds to the idea of the Chow ring presented above, at least for representable matroids, comes from the work started by De Concini and Procesi~\cite{deconciniWonderfulModelsSubspace1995} and generalized to the form we will use by Feichtner and Yuzvinsky~\cite{feichtnerChowRingsToric2004}.
 \begin{definition}[The Chow Ring of a Matroid]\label{def:chowRing}
     Let \( \cM = (E, \cL)\) be a matroid.
     Associate a polynomial ring with \( \cM \) given by
@@ -95,7 +95,7 @@ However, to get to the degree map we will need the property that Chow rings are 
 
 \subsection{This Will Be Graded}
 Our goal here is to show that the Chow ring is a graded ring.
-Those that feel that this property is obvious can skip to the next section; for everyone else we'll provide a quick summary.
+Those that feel that this property is obvious can skip to the next section; for everyone else we will provide a quick summary.
 \begin{definition}[Graded Ring]
     A ring \( R \) is \emph{graded} if the underlying additive group of \( R \) can be decomposed into a direct sum
     \[
@@ -191,7 +191,7 @@ The definition is quite straightforward, we just require one small proposition a
 %         \end{dcases}
 %     \]
 % \end{definition}
-% Truly, of all the definitions we've presented so far, the M\"obius function most deserves some serious contemplation over a cup of coffee.
+% Truly, of all the definitions we have presented so far, the M\"obius function most deserves some serious contemplation over a cup of coffee.
 % We won't go that far afield here, but we can now use it in an equivalent definition of the characteristic polynomial.
 % \begin{definition}[Characteristic Polynomial -- via M\"obius functions]
 %     Let \( \cM = (E, \cL) \) be a matroid.
@@ -249,17 +249,17 @@ The definition is quite straightforward, we just require one small proposition a
     where each matroid in the sum on the right-hand side has a ground set with one fewer element in its ground set than our original matroid.
     If either of these minors have a loop or coloop, that part of the sum has a factor of \( (z - 1) \) and we no longer need to worry about it.
     Otherwise, we can again use the deletion-contraction property to write these as the characteristic polynomial of matroids with one fewer element.
-    We can continue this until we've expressed the characteristic polynomial as the sum of characteristic polynomials of matroids that either have a loop, a coloop, or a single element in its ground set.
+    We can continue this until we have expressed the characteristic polynomial as the sum of characteristic polynomials of matroids that either have a loop, a coloop, or a single element in its ground set.
 
     Up to isomorphism, there are only two matroids with a single element.
     Both have a ground set \( E = \{a\} \), and they have independent sets \( \I = \{a\} \) or \( \I = \emptyset \).
-    If \( a \) is independent, then it's a coloop, since it increases the rank of every subset of \( E \setminus a \).
-    If \( a \) is not independent, then it's a loop by definition.
+    If \( a \) is independent, then it is a coloop, since it increases the rank of every subset of \( E \setminus a \).
+    If \( a \) is not independent, then it is a loop by definition.
 
     So this final sum actually consists only of matroids with coloops or loops, and so each has a factor of \( (z - 1) \).
     We conclude that \( \chi_{\cM}(z) \) must have a factor of \( (z - 1) \).
 \end{proof}
-Now that we're sure there will always be a factor of \( (z - 1) \), the reduced characteristic polynomial is easy to define in terms of the characteristic polynomial.
+Now that we are sure there will always be a factor of \( (z - 1) \), the reduced characteristic polynomial is easy to define in terms of the characteristic polynomial.
 \begin{definition}[Reduced Characteristic Polynomial]\label{def:reducedCharPoly}
     Let \( \cM \) be a matroid of rank \( r + 1 \).
     The \emph{reduced characteristic polynomial} of \( \cM \) is
@@ -312,7 +312,7 @@ The following proposition tells us why these coefficients are going to be import
                                                 & = \ow_0 z^{r+1} + \sum_{k=1}^r (-1)^k (\ow_k + \ow_{k-1})z^{r-k} + (-1)^{r+1}\ow_r,
     \end{align*}
     where the last two equalities are just a result of some clever reindexing.
-    For convenience, we'll define \( \ow_{-1} = \ow_{r+1} = 0 \).
+    For convenience, we will define \( \ow_{-1} = \ow_{r+1} = 0 \).
     We note that \( \{ \ow_{-1}, \ow_0, \ow_1, \dots, \ow_r, \ow_{r+1} \} \) remains a log-concave sequence.
     This lets us write
     \[
@@ -325,7 +325,7 @@ The following proposition tells us why these coefficients are going to be import
     for \( 0 \leq k \leq r+1 \).
 
     Now, we wish to show the log-concavity of the coefficients, so consider the expression \( w_k^2 - w_{k-1}w_{k+1} \).
-    If we can show this must be non-negative for any \( 0 < k < r+1 \), we'll have that the sequence is log-concave.
+    If we can show this must be non-negative for any \( 0 < k < r+1 \), we will have that the sequence is log-concave.
     First let's manipulate the expression a bit to get
     \begin{align*}
         w_k^2 - w_{k-1}w_{k+1} & = (\ow_k + \ow_{k-1})^2 - (\ow_{k-1} + \ow_{k-2})(\ow_{k+1} + \ow_{k})                                                                     \\
@@ -334,7 +334,7 @@ The following proposition tells us why these coefficients are going to be import
                                & \quad + (\ow_k \ow_{k-1} - \ow_k \ow_{k-1}) + (\ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} )                                                     \\
                                & = (\ow_k^2 - \ow_{k-1}\ow_{k+1}) + (\ow_{k-1}^2 - \ow_{k-2}\ow_{k}) + (\ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} ).
     \end{align*}
-    It's now this expression we want to show is non-negative.
+    It is now this expression we want to show is non-negative.
     Immediately we have that
     \begin{align*}
         \ow_k^2 - \ow_{k-1}\ow_{k+1} \geq 0, \\
@@ -346,12 +346,12 @@ The following proposition tells us why these coefficients are going to be import
         \ow_k \ow_{k-1} - \ow_{k+1} \ow_{k-2} \geq 0.
     \]
     If \( k = 1 \) or \( k = r \) then this is immediately true, as \(\ow_{k+1} \ow_{k-2} = 0\) in either of these cases.
-    So, we'll go forward and assume that \( 1 < k < r \).
+    So, we will go forward and assume that \( 1 < k < r \).
     Now, consider that it must be that
     \[
         \frac{\ow_{k-1}}{\ow_{k-2}} \geq \frac{\ow_k}{\ow_{k-1}} \geq \frac{\ow_{k+1}}{\ow_k}.
     \]
-    This follows directly from the definition of log-concavity and that they're all positive.
+    This follows directly from the definition of log-concavity and that they are all positive.
     This means
     \[
         \frac{\ow_{k-1}}{\ow_{k-2}} \geq \frac{\ow_{k+1}}{\ow_k}
@@ -367,7 +367,6 @@ The following proposition tells us why these coefficients are going to be import
     as desired.
 
     Having shown that \( w_k^2 - w_{k-1}w_{k+1} \) for all \( 1 \leq k \leq r \) must be non-negative, we conclude that the sequence \( \{ w_k \}_{k=0}^{r+1} \) is log-concave.
-
 \end{proof}
 It is actually this sequence, \(\{\ow_k\}_{k=0}^r \), that Adiprasito, Huh, and Katz spent most of \cite{adiprasitoHodgeTheoryCombinatorial2018} proving is log-concave.
 This too is our strategy, so these reduced coefficients really are key players in this story.
@@ -379,7 +378,7 @@ Right off the bat, let's learn a little jargon.
     A \emph{divisor} of a Chow ring \( A^\bullet(\cM) \) is any linear term, i.e., an element of \( A^1(\cM) \).
 \end{definition}
 We are working towards introducing a proposition from the Adiprasito, Huh, and Katz paper that links certain divisors to the reduced coefficients, via the degree map.
-We'll start by introducing these special divisors.
+We will start by introducing these special divisors.
 \begin{definition}[\texorpdfstring{\( \alpha \)}{alpha} and \texorpdfstring{\( \beta \)}{beta}]\label{def:alphaBeta}
     Let \( \cM \) be a matroid with ground set \( E \).
     For every element \( e \in E \) we define the divisors
@@ -421,14 +420,14 @@ There is a link between \( \alpha \) and \( \beta \) and the reduced coefficient
     for all \( 0 \leq k \leq r \).
 \end{proposition}
 Just to confirm our understanding of the degree map, recall it is defined on elements of \( A^r(\cM) \).
-Since \( \alpha, \beta \in A^1(\cM)\), we'll have \( \alpha^{r-k}\beta^k \in A^r(\cM) \) and so this makes sense as input to the degree map.
+Since \( \alpha, \beta \in A^1(\cM)\), we will have \( \alpha^{r-k}\beta^k \in A^r(\cM) \) and so this makes sense as input to the degree map.
 An alternative proof of~\th\ref{thm:coeffIsDeg} given by Dastidar and Ross,~\cite[Proposition~3.11]{dastidarMatroidPsiClasses2021}, shows that the right-hand side satisfies the deletion-contraction property.
 
 \th\ref{thm:coeffIsDeg} means that if we can prove
 \[
     \deg(\alpha^{r-k}\beta^k)^2 \geq \deg(\alpha^{r-k-1}\beta^{k-1}) \deg(\alpha^{r-k+1}\beta^{k+1})
 \]
-for \( 0 < k < r \) we'll have shown that the reduced coefficients are log-concave and thus so too are the original coefficients.
+for \( 0 < k < r \) we will have shown that the reduced coefficients are log-concave and thus so too are the original coefficients.
 Here now is where we diverge from the strategy put forth in \cite{adiprasitoHodgeTheoryCombinatorial2018}.
 They go on to show this relationship in a very algebraic manner, proving that the Chow ring of a matroid has many desirable properties that eventually yield the desired result.
 We, on the other hand, will now move into the world of geometry and find a different way to generate our log-concave sequence.
