@@ -6,9 +6,36 @@
 \RequirePackage{amsthm,amsmath,amssymb,amsfonts}
 \RequirePackage{latexsym,graphicx,enumerate,setspace,verbatim,tocloft,rotating}
 \RequirePackage{color}               % For creating colored text and background
-\RequirePackage{hyperref}            % For creating hyperlinks in cross references
+% \RequirePackage{hyperref}            % For creating hyperlinks in cross references
 \RequirePackage{subfiles}
 % other possibly useful packages: textcomp,mathrsfs,amscd,epsfig,euscript,cancel
+
+\usepackage{amssymb}
+\usepackage{enumitem} % Better labels
+%\usepackage[explicit]{titlesec}
+\usepackage[normalem]{ulem}         % Better underline, but keep default emph
+\usepackage{stackrel}               % Stack text nicely
+% \usepackage{xcolor}                 % Nicer Colors
+\usepackage{bm}                     % Nicer bold math symbols
+\usepackage{mathrsfs}               % I need more curly letters 
+\usepackage{mathtools}              % Mostly just for \substack
+\usepackage{relsize}
+\usepackage{ragged2e}
+\usepackage{caption}                % Better captions and
+\usepackage{subcaption}             % Captions for subfigures
+\usepackage{float}                   % Be strict about [H]ere in figures
+\usepackage{tikz}                   % Tikz
+\usetikzlibrary{angles, calc}
+\usepackage{tzplot}
+\usepackage{tikz-3dplot}
+\usepackage{tikz-cd}
+\usepackage[obeyFinal]{easy-todo} % Add to-do's
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+% \usepackage{fontspec}
+% \usepackage{libertinus-otf}
+\usepackage[a-3u]{pdfx}
+\usepackage[reftex]{theoremref}     % Use \th\label{name} and \thref 
+
 
 %%%%% Draft title page
 \newcommand\thesistitle{
